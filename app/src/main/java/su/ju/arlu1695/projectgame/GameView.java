@@ -1,0 +1,73 @@
+package su.ju.arlu1695.projectgame;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+
+public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+
+    private Player player;
+    private GameThread thread;
+    private Obstacles obstacles;
+    private Levels levels;
+    private Context context;
+
+    public GameView(Context context) {
+        super(context);
+        this.context = context;
+
+        getHolder().addCallback(this);
+
+        thread = new GameThread(getHolder(),this);
+        setFocusable(true);
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        thread.setRunning(true);
+        player = new Player();
+        obstacles = new Obstacles(5);
+        levels = new Levels(context);
+        levels.readLevelData(obstacles, 0); // selectedLevel >= 1 !!
+        thread.start();
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        boolean retry = true;
+        while (retry) {
+            try {
+                thread.setRunning(false);
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            retry = false;
+        }
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        if (canvas != null) {
+            canvas.drawColor(Color.BLUE);
+            player.draw(canvas);
+            obstacles.draw(canvas);
+
+        }
+
+    }
+
+    public void update() {
+
+    }
+}

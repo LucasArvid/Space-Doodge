@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/b_select"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:baselineAligned="false"
+        android:text="Start Game"
+        android:onClick="startGameButtonClicked"/>
+
+    <Button
+        android:id="@+id/b_create"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:text="Delete Sys"
+        android:onClick="save"/>
+    <Button
+        android:id="@+id/b_delete"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:text="Launch rockets"
+        android:onClick="load"/>
+
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+</LinearLayout>
