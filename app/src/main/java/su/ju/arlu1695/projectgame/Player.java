@@ -27,8 +27,8 @@ public class Player extends Activity {
 
         width = 100;
         height = 100;
-        velocityX = 5;
-        velocityY = 5;
+        velocityX = 10;
+        velocityY = 10;
         setLeftPosX((screenWidth/2)-50);
         setLeftPosY(screenHeight-screenHeight);
 
@@ -41,10 +41,13 @@ public class Player extends Activity {
     }
 
     public void update() {
+
         topPosX += velocityX;
         topPosY += velocityY;
 
     }
+
+
 
     public float getTopPosX() {
         return topPosX;

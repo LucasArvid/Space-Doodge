@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -75,23 +76,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void movePlayer(Direction direction){
-        switch (direction) {
-            case UP:
-                player.setVelocityY(-5);
-                break;
-            case DOWN:
-                player.setVelocityY(5);
-                break;
-            case LEFT:
-                player.setVelocityX(-5);
-                break;
-            case RIGHT:
-                player.setVelocityX(5);
-                break;
-        }
+
+
+
+            switch (direction) {
+                case UP:
+                    player.setVelocityY(-10);
+                    break;
+                case DOWN:
+                    player.setVelocityY(10);
+                    break;
+                case LEFT:
+                    player.setVelocityX(-10);
+                    break;
+                case RIGHT:
+                    player.setVelocityX(10);
+                    break;
+            }
+
     }
 
     public void update() {
+        logicHandler.insideScreen();
         player.update();
     }
 
