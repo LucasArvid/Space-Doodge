@@ -8,43 +8,95 @@ import android.graphics.Paint;
 
 public class Player extends Activity {
 
-    private float posX;
-    private float posY;
-    private int xVelocity = 10;
-    private int yVelocity = 5;
+    private float topPosX;
+    private float topPosY;
+    private float bottomPosY;
+    private float bottomPosX;
+
+    private float velocityX;
+    private float velocityY;
+
+    private float width;
+    private float height;
+
+
     private float screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private float screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
     public Player() {
-        posX = (screenWidth/2)-50;
-        posY = screenHeight-screenHeight;
+
+        width = 100;
+        height = 100;
+        velocityX = 5;
+        velocityY = 5;
+        setLeftPosX((screenWidth/2)-50);
+        setLeftPosY(screenHeight-screenHeight);
+
     }
 
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(Color.rgb(255,0,0));
-        canvas.drawRect((posX),(posY),(posX+100),(posY+100),paint);
+        canvas.drawRect((topPosX),(topPosY),(topPosX+width),(topPosY+height),paint);
     }
 
     public void update() {
-        posX += xVelocity;
-        posY += yVelocity;
+        topPosX += velocityX;
+        topPosY += velocityY;
+
     }
 
-    public float getPosXX() {
-        return posX;
+    public float getTopPosX() {
+        return topPosX;
     }
 
-    public float getPosY() {
-        return posY;
+    public float getBottomPosX() {
+        return bottomPosX;
     }
 
-    public void setPosX(float newPosX) {
-        posX = newPosX;
+    public float getTopPosY() {
+        return topPosY;
     }
 
-    public void setPosY(float newPosY) {
-        posX = newPosY;
+    public float getBottomPosY() {
+        return bottomPosY;
+    }
+
+    public void setLeftPosX(float xPosition) {
+        topPosX = xPosition;
+        bottomPosX = topPosX + width;
+    }
+    public void setLeftPosY(float yPosition) {
+        topPosY = yPosition;
+        bottomPosY = topPosY + height;
+    }
+
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+
+    public float getVelocityX() {
+        return velocityX;
+    }
+
+    public void setVelocityX(float velocityX) {
+        this.velocityX = velocityX;
+        velocityY = 0;
+    }
+
+    public float getVelocityY() {
+        return velocityY;
+    }
+
+    public void setVelocityY(float velocityY) {
+        this.velocityY = velocityY;
+        velocityX = 0;
     }
 
 }

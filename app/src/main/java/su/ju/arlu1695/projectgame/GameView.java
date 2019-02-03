@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -15,6 +16,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Obstacles obstacles;
     private Levels levels;
     private Context context;
+    private LogicHandler logicHandler;
+
+    private enum Direction{
+        UP,DOWN,LEFT,RIGHT
+    }
 
     public GameView(Context context) {
         super(context);
@@ -33,6 +39,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         obstacles = new Obstacles(5);
         levels = new Levels(context);
         levels.readLevelData(obstacles, 0); // selectedLevel >= 1 !!
+        logicHandler = new LogicHandler(player, obstacles);
         thread.start();
     }
 
@@ -67,7 +74,64 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
-    public void update() {
+    private void movePlayer(Direction direction){
+        switch (direction) {
+            case UP:
+                player.setVelocityY(-5);
+                break;
+            case DOWN:
+                player.setVelocityY(5);
+                break;
+            case LEFT:
+                player.setVelocityX(-5);
+                break;
+            case RIGHT:
+                player.setVelocityX(5);
+                break;
+        }
+    }
 
+    public void update() {
+        player.update();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN)
+            return true;
+
+        if(event.getAction() == MotionEvent.ACTION_MOVE){
+            float x = event.getX();
+            float y = event.getY();
+
+            float playerX = player.getTopPosX();
+            float playerY = player.getTopPosY();
+
+            float dx = x -playerX;
+            float dy = y - playerY;
+
+            float absDx = Math.abs(dx);
+            float absDy = Math.abs(dy);
+
+            if(absDx > absDy) {
+                // move in x-direction
+                if(dx > 0)
+                    movePlayer(Direction.RIGHT);
+
+                else
+                    movePlayer(Direction.LEFT);
+                ;
+            }
+            else{
+                // move in y-direction
+                if(dy > 0)
+                    movePlayer(Direction.DOWN);
+
+                else
+                    movePlayer(Direction.UP);
+
+            }
+        }
+        return true;
     }
 }

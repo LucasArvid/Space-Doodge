@@ -8,9 +8,6 @@ import android.graphics.Paint;
 public class Obstacles extends Activity {
 
     Rectangle[] array;
-
-
-
     private int numberOfObstacles;
 
     public Obstacles(int numberOfObstacles) {
@@ -25,19 +22,36 @@ public class Obstacles extends Activity {
 
     }
 
+
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(Color.rgb(0,255,0));
         for (int i = 0; i < numberOfObstacles; i++) {
-            canvas.drawRect((array[i].getLeftPosX()), (array[i].getRightPosX()), (array[i].getLeftPosY()), (array[i].getRightPosY()), paint);
+            canvas.drawRect((array[i].getTopPosX()), (array[i].getBottomPosX()), (array[i].getTopPosY()), (array[i].getBottomPosY()), paint);
         }
     }
 
-    public void update(){
-
+    public boolean intersects(Player player, Rectangle rectangle) {
+        return ((player.getTopPosY()+player.getHeight()) <= (rectangle.getBottomPosX()+rectangle.getHeight()) &&
+                (rectangle.getBottomPosX()+rectangle.getHeight()) <= (player.getBottomPosX()+player.getHeight()) &&
+                (player.getTopPosX()+player.getWidth()) <= (rectangle.getBottomPosY()+rectangle.getWidth()) &&
+                (rectangle.getTopPosX()+rectangle.getWidth()) <= (player.getBottomPosY()+player.getWidth()));
     }
 
     public int getNumberOfObstacles() {
+
         return numberOfObstacles;
     }
+
+
+    public Rectangle[] getArray() {
+        return array;
+    }
+
+    public void setArray(Rectangle[] array) {
+        this.array = array;
+    }
+
+
+
 }

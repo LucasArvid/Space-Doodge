@@ -4,12 +4,20 @@ import java.util.Random;
 
 public class Rectangle {
 
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
     private float width;
     private float height;
-    private float leftPosX = 0;
-    private float rightPosX = 0;
-    private float leftPosY = 0;
-    private float rightPosY = 0;
+    private float topPosX = 0;
+    private float bottomPosX = 0;
+    private float topPosY = 0;
+    private float bottomPosY = 0;
     private Random ran;
 
     public Rectangle() {
@@ -26,20 +34,20 @@ public class Rectangle {
         height = h;
     }
 
-    public float getLeftPosX() {
-        return leftPosX;
+    public float getTopPosX() {
+        return topPosX;
     }
 
-    public float getRightPosX() {
-        return rightPosX;
+    public float getBottomPosX() {
+        return bottomPosX;
     }
 
-    public float getRightPosY() {
-        return rightPosY;
+    public float getBottomPosY() {
+        return bottomPosY;
     }
 
-    public float getLeftPosY() {
-        return leftPosY;
+    public float getTopPosY() {
+        return topPosY;
     }
 
     public void setWidth(float w) {
@@ -51,12 +59,12 @@ public class Rectangle {
     }
 
     public void setLeftPosX(float xPosition) {
-        leftPosX = xPosition;
-        rightPosX = leftPosX + width;
+        topPosX = xPosition;
+        bottomPosX = topPosX + width;
     }
     public void setLeftPosY(float yPosition) {
-        leftPosY = yPosition;
-        rightPosY = leftPosY + height;
+        topPosY = yPosition;
+        bottomPosY = topPosY + height;
     }
 
 }
