@@ -46,8 +46,8 @@ public class Levels {
                 String[] tokens = line.split(",");
 
                 for (int i = 0; i <= (tokens.length-1); i+=2) {
-                    obstacles.array[i/2].setLeftPosX(Float.parseFloat(tokens[i]));
-                    obstacles.array[i/2].setLeftPosY(Float.parseFloat(tokens[i+1]));
+                    obstacles.array[i/2].setLeftPosX(Float.parseFloat(tokens[i+1]));
+                    obstacles.array[i/2].setLeftPosY(Float.parseFloat(tokens[i]));
 
                 }
 

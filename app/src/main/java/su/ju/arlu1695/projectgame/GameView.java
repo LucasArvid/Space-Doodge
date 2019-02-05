@@ -37,7 +37,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         thread.setRunning(true);
         player = new Player();
-        obstacles = new Obstacles(5);
+        obstacles = new Obstacles(7);
         levels = new Levels(context);
         levels.readLevelData(obstacles, 0); // selectedLevel >= 1 !!
         logicHandler = new LogicHandler(player, obstacles);

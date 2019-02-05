@@ -27,14 +27,14 @@ public class Obstacles extends Activity {
         Paint paint = new Paint();
         paint.setColor(Color.rgb(0,255,0));
         for (int i = 0; i < numberOfObstacles; i++) {
-            canvas.drawRect((array[i].getTopPosX()), (array[i].getBottomPosX()), (array[i].getTopPosY()), (array[i].getBottomPosY()), paint);
+            array[i].draw(canvas);
         }
     }
 
     public boolean intersects(Player player, Rectangle rectangle) {
         return ((player.getTopPosY()+player.getHeight()) <= (rectangle.getBottomPosX()+rectangle.getHeight()) &&
                 (rectangle.getBottomPosX()+rectangle.getHeight()) <= (player.getBottomPosX()+player.getHeight()) &&
-                (player.getTopPosX()+player.getWidth()) <= (rectangle.getBottomPosY()+rectangle.getWidth()) &&
+                (player.getTopPosX()+player.getWidth()) <= (rectangle.getRightPosY()+rectangle.getWidth()) &&
                 (rectangle.getTopPosX()+rectangle.getWidth()) <= (player.getBottomPosY()+player.getWidth()));
     }
 

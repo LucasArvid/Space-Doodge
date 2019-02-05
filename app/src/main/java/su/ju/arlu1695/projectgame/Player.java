@@ -25,8 +25,8 @@ public class Player extends Activity {
 
     public Player() {
 
-        width = 100;
-        height = 100;
+        width = Constants.SCREEN_WIDTH_COEFFICIENT;
+        height = Constants.SCREEN_WIDTH_COEFFICIENT;
         velocityX = 10;
         velocityY = 10;
         setLeftPosX((screenWidth/2)-50);

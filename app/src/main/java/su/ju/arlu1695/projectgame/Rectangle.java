@@ -1,5 +1,9 @@
 package su.ju.arlu1695.projectgame;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
 import java.util.Random;
 
 public class Rectangle {
@@ -16,22 +20,28 @@ public class Rectangle {
     private float height;
     private float topPosX = 0;
     private float bottomPosX = 0;
-    private float topPosY = 0;
-    private float bottomPosY = 0;
+    private float leftPosY = 0;
+    private float rightPosY = 0;
     private Random ran;
 
     public Rectangle() {
-        width = 100;
-        height = 100;
+        width = Constants.SCREEN_WIDTH_COEFFICIENT;
+        height = Constants.SCREEN_WIDTH_COEFFICIENT;
         ran = new Random();
         int randomNumber =  ran.nextInt(599) + 1;
-        setLeftPosX(randomNumber+100);
-        setLeftPosY(randomNumber);
 
     }
     public Rectangle(float w, float h) {
         width = w;
         height = h;
+    }
+
+    public void draw(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.rgb(0,255,0));
+        canvas.drawRect(leftPosY,topPosX,rightPosY,bottomPosX,paint);
+
+
     }
 
     public float getTopPosX() {
@@ -42,12 +52,12 @@ public class Rectangle {
         return bottomPosX;
     }
 
-    public float getBottomPosY() {
-        return bottomPosY;
+    public float getRightPosY() {
+        return rightPosY;
     }
 
-    public float getTopPosY() {
-        return topPosY;
+    public float getLeftPosY() {
+        return leftPosY;
     }
 
     public void setWidth(float w) {
@@ -59,12 +69,12 @@ public class Rectangle {
     }
 
     public void setLeftPosX(float xPosition) {
-        topPosX = xPosition;
+        topPosX = xPosition * Constants.SCREEN_WIDTH_COEFFICIENT;
         bottomPosX = topPosX + width;
     }
     public void setLeftPosY(float yPosition) {
-        topPosY = yPosition;
-        bottomPosY = topPosY + height;
+        leftPosY = yPosition * Constants.SCREEN_HEIGHT_COEFFICIENT;
+        rightPosY = leftPosY + height;
     }
 
 }
