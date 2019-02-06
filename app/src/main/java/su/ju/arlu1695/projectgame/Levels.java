@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 
 public class Levels {
@@ -26,6 +27,7 @@ public class Levels {
 
         this.context = context;
     }
+
 
     public void readLevelData(Obstacles obstacles,int selectedLevel) {
         InputStream is = context.getResources().openRawResource(R.raw.levels);
@@ -57,5 +59,6 @@ public class Levels {
             e.printStackTrace();
         }
     }
+
 
 }

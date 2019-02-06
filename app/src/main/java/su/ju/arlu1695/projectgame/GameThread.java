@@ -12,6 +12,7 @@ public class GameThread extends Thread {
     private GameView game;
     private boolean running;
     public static Canvas canvas;
+    public static final String EXTRA_LEVEL_INDEX = "levelSelectIndex";
 
     public GameThread(SurfaceHolder surfaceHolder, GameView game) {
         super();

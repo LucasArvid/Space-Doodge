@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startGameButtonClicked(View view) {
-        Intent intent = new Intent(this, MainGameActivity.class);
+        Intent intent = new Intent(this, LevelSelect.class);
         startActivity(intent);
     }
 
