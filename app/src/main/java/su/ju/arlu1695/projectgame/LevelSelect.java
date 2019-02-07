@@ -18,6 +18,8 @@ public class LevelSelect extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_levelselect);
+
+        getSupportActionBar().hide();
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(new ArrayAdapter<Constants.levelName>(
                 this,
