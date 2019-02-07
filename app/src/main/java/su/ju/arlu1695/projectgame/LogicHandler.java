@@ -16,12 +16,22 @@ public class LogicHandler {
     }
 
     public boolean playerCollide() {
+        if (MOVING) {
         for(int i = 0 ; i < obstacles.array.length; i++) {
             if (obstacles.intersects(player, obstacles.array[i]))
                 return true;
 
         }
+        }
         return false;
+    }
+
+    public void checkConditions() {
+        if(!playerCollide()){
+            player.setVelocityX(0);
+            player.setVelocityY(0);
+        }
+
     }
 
     public boolean insideScreen() {

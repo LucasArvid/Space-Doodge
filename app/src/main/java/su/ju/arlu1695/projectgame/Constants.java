@@ -10,11 +10,15 @@ public class Constants {
     public static int SCREEN_WIDTH_COEFFICIENT;
     public static int SCREEN_HEIGHT_COEFFICIENT;
 
+    public static int LEVEL_SELECTED;
+
     public static ArrayList<levelName> levels = new ArrayList<>();
     static {
-        levels.add(new levelName("Do A"));
-        levels.add(new levelName("Do B"));
-        levels.add(new levelName("Do C"));
+        levels.add(new levelName("Level 1"));
+        levels.add(new levelName("Level 2"));
+        levels.add(new levelName("Level 3"));
+        levels.add(new levelName("Level 4"));
+        levels.add(new levelName("Level 5"));
     }
 
     public static class levelName {

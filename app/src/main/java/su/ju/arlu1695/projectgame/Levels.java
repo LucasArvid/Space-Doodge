@@ -38,19 +38,17 @@ public class Levels {
         String line = "";
 
         try {
-            // Find correct level
-            for (int i = 0; i < selectedLevel; i++) {
+            // Find correct level.
+            for (int i = 0; i <= selectedLevel; i++) {
                 reader.readLine();
             }
             while ((line = reader.readLine()) != null) {
                 Log.d("My Activity", "line: " + line);
 
                 String[] tokens = line.split(",");
-
+                // Give the obstacles the right cordinates.
                 for (int i = 0; i <= (tokens.length-1); i+=2) {
-                    obstacles.array[i/2].setLeftPosX(Float.parseFloat(tokens[i+1]));
-                    obstacles.array[i/2].setLeftPosY(Float.parseFloat(tokens[i]));
-
+                    obstacles.array[i/2].setLeftPosX(Integer.parseInt(tokens[i+1]),Integer.parseInt(tokens[i]));
                 }
 
             }

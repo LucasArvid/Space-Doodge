@@ -39,7 +39,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         player = new Player();
         obstacles = new Obstacles(7);
         levels = new Levels(context);
-        levels.readLevelData(obstacles, 0); // selectedLevel >= 1 !!
+        levels.readLevelData(obstacles, Constants.LEVEL_SELECTED); // selectedLevel >= 1 !!
         logicHandler = new LogicHandler(player, obstacles);
         thread.start();
     }
@@ -67,7 +67,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         if (canvas != null) {
-            canvas.drawColor(Color.BLUE);
+            canvas.drawRGB(173, 245, 255);
             player.draw(canvas);
             obstacles.draw(canvas);
 
@@ -98,6 +98,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         logicHandler.insideScreen();
+       // logicHandler.checkConditions();
         player.update();
     }
 

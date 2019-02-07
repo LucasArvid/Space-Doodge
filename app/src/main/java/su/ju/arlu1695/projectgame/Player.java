@@ -5,45 +5,49 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 public class Player extends Activity {
 
-    private float topPosX;
-    private float topPosY;
-    private float bottomPosY;
-    private float bottomPosX;
+    private int topPosX;
+    private int topPosY;
+    private int bottomPosY;
+    private int bottomPosX;
 
-    private float velocityX;
-    private float velocityY;
+    private int velocityX;
+    private int velocityY;
 
-    private float width;
-    private float height;
+    private int width;
+    private int height;
+
+    private Rect player;
 
 
-    private float screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-    private float screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+    private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
     public Player() {
-
+        player = new Rect();
         width = Constants.SCREEN_WIDTH_COEFFICIENT;
         height = Constants.SCREEN_WIDTH_COEFFICIENT;
-        velocityX = 10;
-        velocityY = 10;
-        setLeftPosX((screenWidth/2)-50);
-        setLeftPosY(screenHeight-screenHeight);
+        velocityX = 0;
+        velocityY = 15;
+        setLeftPosX(0);
+        setLeftPosY(0);
 
     }
 
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(Color.rgb(255,0,0));
-        canvas.drawRect((topPosX),(topPosY),(topPosX+width),(topPosY+height),paint);
+        canvas.drawRect(player,paint);
     }
 
     public void update() {
 
-        topPosX += velocityX;
-        topPosY += velocityY;
+        player.set(topPosY,topPosX+ velocityX,bottomPosY,bottomPosX);
+        player.set(topPosY + velocityY,topPosX,bottomPosY,bottomPosX);
+
 
     }
 
@@ -65,11 +69,12 @@ public class Player extends Activity {
         return bottomPosY;
     }
 
-    public void setLeftPosX(float xPosition) {
+    public void setLeftPosX(int xPosition) {
         topPosX = xPosition;
         bottomPosX = topPosX + width;
+        player.set(topPosY,topPosX,bottomPosY,bottomPosX);
     }
-    public void setLeftPosY(float yPosition) {
+    public void setLeftPosY(int yPosition) {
         topPosY = yPosition;
         bottomPosY = topPosY + height;
     }
@@ -88,7 +93,7 @@ public class Player extends Activity {
         return velocityX;
     }
 
-    public void setVelocityX(float velocityX) {
+    public void setVelocityX(int velocityX) {
         this.velocityX = velocityX;
         velocityY = 0;
     }
@@ -97,7 +102,7 @@ public class Player extends Activity {
         return velocityY;
     }
 
-    public void setVelocityY(float velocityY) {
+    public void setVelocityY(int velocityY) {
         this.velocityY = velocityY;
         velocityX = 0;
     }

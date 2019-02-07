@@ -24,11 +24,12 @@ public class LevelSelect extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 Constants.levels
         ));
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(LevelSelect.this, MainGameActivity.class);
-                intent.putExtra(EXTRA_LEVEL_INDEX, position);
+                Constants.LEVEL_SELECTED = position;
                 startActivity(intent);
             }
 

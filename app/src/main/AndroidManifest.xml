@@ -19,6 +19,9 @@
 
         <activity android:name=".MainGameActivity"/>
         <activity android:name=".LevelSelect"/>
+        <activity android:name=".GameMode"/>
+        <activity android:name=".Settings"/>
+        <activity android:name=".Leaderboard"/>
     </application>
 
 </manifest>

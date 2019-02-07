@@ -3,8 +3,8 @@ package su.ju.arlu1695.projectgame;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
-import java.util.Random;
 
 public class Rectangle {
 
@@ -16,22 +16,21 @@ public class Rectangle {
         return height;
     }
 
-    private float width;
-    private float height;
-    private float topPosX = 0;
-    private float bottomPosX = 0;
-    private float leftPosY = 0;
-    private float rightPosY = 0;
-    private Random ran;
+    private int width;
+    private int height;
+    private int topPosX = 0;
+    private int bottomPosX = 0;
+    private int leftPosY = 0;
+    private int rightPosY = 0;
+    private Rect rectangle;
 
     public Rectangle() {
+        rectangle = new Rect(leftPosY,topPosX,rightPosY,bottomPosX);
         width = Constants.SCREEN_WIDTH_COEFFICIENT;
         height = Constants.SCREEN_WIDTH_COEFFICIENT;
-        ran = new Random();
-        int randomNumber =  ran.nextInt(599) + 1;
 
     }
-    public Rectangle(float w, float h) {
+    public Rectangle(int w, int h) {
         width = w;
         height = h;
     }
@@ -39,7 +38,7 @@ public class Rectangle {
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(Color.rgb(0,255,0));
-        canvas.drawRect(leftPosY,topPosX,rightPosY,bottomPosX,paint);
+        canvas.drawRect(rectangle,paint);
 
 
     }
@@ -60,21 +59,21 @@ public class Rectangle {
         return leftPosY;
     }
 
-    public void setWidth(float w) {
+    public void setWidth(int w) {
         width = w;
     }
 
-    public void setHeight(float h) {
+    public void setHeight(int h) {
         height = h;
     }
 
-    public void setLeftPosX(float xPosition) {
+    public void setLeftPosX(int xPosition, int yPosition) {
         topPosX = xPosition * Constants.SCREEN_WIDTH_COEFFICIENT;
         bottomPosX = topPosX + width;
-    }
-    public void setLeftPosY(float yPosition) {
         leftPosY = yPosition * Constants.SCREEN_HEIGHT_COEFFICIENT;
         rightPosY = leftPosY + height;
+        rectangle.set(leftPosY,topPosX,rightPosY,bottomPosX);
     }
+
 
 }
