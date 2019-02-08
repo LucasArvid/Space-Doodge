@@ -41,7 +41,7 @@ public class DuelLobby extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_duel_lobby);
         getSupportActionBar().hide();
-        FirebaseApp.initializeApp(this);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
 
