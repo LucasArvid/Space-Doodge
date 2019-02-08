@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "954348286065",
+    "firebase_url": "https://myfirebaseauthapp-8cd94.firebaseio.com",
+    "project_id": "myfirebaseauthapp-8cd94",
+    "storage_bucket": "myfirebaseauthapp-8cd94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954348286065:android:8c9b35779d634622",
+        "android_client_info": {
+          "package_name": "su.ju.arlu1695.projectgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "954348286065-ktj5j9q1udvkluvbeuhj9fb7j6pv575m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "su.ju.arlu1695.projectgame",
+            "certificate_hash": "85ba2b51c8ca1bd61b2438fff544f412d1ee3880"
+          }
+        },
+        {
+          "client_id": "954348286065-rdbe4op91k1h19atstafaagr29kqm6ea.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSjJ-MaY3O-wM3POIH2bYgkTVsgHJiWQ8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "954348286065-rdbe4op91k1h19atstafaagr29kqm6ea.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

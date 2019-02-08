@@ -24,9 +24,9 @@ public class GameMode extends AppCompatActivity {
         startActivity(intent);
     }
 
-   /* public void duelButtonClicked(View view) {
-        Intent intent = new Intent(this, LevelSelect.class);
+   public void duelButtonClicked(View view) {
+        Intent intent = new Intent(this, DuelLobby.class);
         startActivity(intent);
     }
-    */
+
 }
