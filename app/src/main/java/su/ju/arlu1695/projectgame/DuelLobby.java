@@ -45,6 +45,10 @@ public class DuelLobby extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        if (firebaseAuth.getCurrentUser() != null){
+
+        }
+
         progressDialog = new ProgressDialog(this);
 
         buttonRegister = (Button) findViewById(R.id.emailCreateAccountButton);
@@ -82,6 +86,7 @@ public class DuelLobby extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
                         if(task.isSuccessful()) {
                             //user registration and login successful
                             // start profile activity
@@ -94,14 +99,53 @@ public class DuelLobby extends AppCompatActivity {
                 });
     }
 
+    private void userLogin() {
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            // email empty
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            // password empty
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+
+        progressDialog.setMessage("Logging in, please wait...");
+        progressDialog.show();
+
+        firebaseAuth.signInWithEmailAndPassword(email,password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+                        if (task.isSuccessful()){
+
+                            Toast.makeText(DuelLobby.this, "Login Successfully",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(DuelLobby.this, "Login Unsuccessful, please try again",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
     public void signinOrRegisterClicked(View view) {
         if(view == buttonRegister) {
             registerUser();
         }
 
         else if (view == textViewSignin) {
-            //login activity
+            userLogin();
         }
+    }
+
+    public void loginButtonClicked(View view) {
+
     }
 
 

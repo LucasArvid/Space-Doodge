@@ -5,27 +5,65 @@
     android:orientation="vertical"
     android:background="@drawable/ice_cave">
 
-    <Button
-        android:id="@+id/b_select"
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:baselineAligned="false"
-        android:text="Start Game"
-        android:onClick="startGameButtonClicked"/>
 
-    <Button
-        android:id="@+id/b_create"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:text="Settings"
-        android:onClick="settingsButtonClicked" />
-    <Button
-        android:id="@+id/b_delete"
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:text="Leaderboard"
-        android:onClick="leaderboardButtonClicked"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="308dp"
+            android:layout_height="272dp"
+
+            android:layout_alignParentTop="true"
+
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="236dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="0dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/b_start_game"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:baselineAligned="false"
+                    android:onClick="startGameButtonClicked"
+                    android:text="Start Game"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+                <Button
+                    android:id="@+id/b_leaderboard"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:onClick="leaderboardButtonClicked"
+                    android:text="Leaderboard"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+                <Button
+                    android:id="@+id/b_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:onClick="settingsButtonClicked"
+                    android:text="Settings"
+
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 
 </LinearLayout>
