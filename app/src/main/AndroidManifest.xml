@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="su.ju.arlu1695.projectgame">
 
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,11 +20,12 @@
         </activity>
 
         <activity android:name=".MainGameActivity"/>
-        <activity android:name=".LevelSelect"/>
-        <activity android:name=".GameMode"/>
-        <activity android:name=".Settings"/>
-        <activity android:name=".Leaderboard"/>
-        <activity android:name=".DuelLobby"/>
+        <activity android:name=".LevelSelectActivity"/>
+        <activity android:name=".GameModeActivity"/>
+        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".LeaderboardActivity"/>
+        <activity android:name=".LoginActivity"/>
+        <activity android:name=".OnlineActivity"/>
     </application>
 
 </manifest>

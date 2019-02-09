@@ -7,24 +7,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Arrays;
-
-public class DuelLobby extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
@@ -39,14 +33,16 @@ public class DuelLobby extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_duel_lobby);
+        setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
 
 
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null){
-
+           /* finish();
+            startActivity(new Intent(this,OnlineActivity.class));
+             */
         }
 
         progressDialog = new ProgressDialog(this);
@@ -91,9 +87,9 @@ public class DuelLobby extends AppCompatActivity {
                             //user registration and login successful
                             // start profile activity
                             // display toast for now
-                            Toast.makeText(DuelLobby.this, "Registered Successfully",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Registered Successfully",Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(DuelLobby.this, "Error when registering, please try again",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Error when registering, please try again",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -125,10 +121,11 @@ public class DuelLobby extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if (task.isSuccessful()){
-
-                            Toast.makeText(DuelLobby.this, "Login Successfully",Toast.LENGTH_SHORT).show();
+                            finish();
+                            startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
+                            Toast.makeText(LoginActivity.this, "Login Successfully",Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(DuelLobby.this, "Login Unsuccessful, please try again",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Login Unsuccessful, please try again",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -145,6 +142,12 @@ public class DuelLobby extends AppCompatActivity {
     }
 
     public void loginButtonClicked(View view) {
+        userLogin();
+    }
+
+    public void forgottenPasswordClicked(View view) {
+        //To be done
+        Toast.makeText(this, "Too bad, write it down next time", Toast.LENGTH_SHORT).show();
 
     }
 

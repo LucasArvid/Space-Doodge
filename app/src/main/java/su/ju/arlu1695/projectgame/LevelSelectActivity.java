@@ -9,9 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import static su.ju.arlu1695.projectgame.GameThread.EXTRA_LEVEL_INDEX;
-
-public class LevelSelect extends AppCompatActivity {
+public class LevelSelectActivity extends AppCompatActivity {
 
     @Override
 
@@ -30,7 +28,7 @@ public class LevelSelect extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(LevelSelect.this, MainGameActivity.class);
+                Intent intent = new Intent(LevelSelectActivity.this, MainGameActivity.class);
                 Constants.LEVEL_SELECTED = position;
                 startActivity(intent);
             }

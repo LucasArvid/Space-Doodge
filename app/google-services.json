@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "954348286065",
-    "firebase_url": "https://myfirebaseauthapp-8cd94.firebaseio.com",
-    "project_id": "myfirebaseauthapp-8cd94",
-    "storage_bucket": "myfirebaseauthapp-8cd94.appspot.com"
+    "project_number": "336175886504",
+    "firebase_url": "https://icy-slide.firebaseio.com",
+    "project_id": "icy-slide",
+    "storage_bucket": "icy-slide.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:954348286065:android:8c9b35779d634622",
+        "mobilesdk_app_id": "1:336175886504:android:8c9b35779d634622",
         "android_client_info": {
           "package_name": "su.ju.arlu1695.projectgame"
         }
       },
       "oauth_client": [
         {
-          "client_id": "954348286065-ktj5j9q1udvkluvbeuhj9fb7j6pv575m.apps.googleusercontent.com",
+          "client_id": "336175886504-likftg26r121fiqauaoemo01p7rprboe.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "su.ju.arlu1695.projectgame",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "954348286065-rdbe4op91k1h19atstafaagr29kqm6ea.apps.googleusercontent.com",
+          "client_id": "336175886504-2nborf0it56gs89bs20gd5nm6vofnbd9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDSjJ-MaY3O-wM3POIH2bYgkTVsgHJiWQ8"
+          "current_key": "AIzaSyAWZcnjWY7OuyBA01y5ehagDlGUDkn3RUk"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "954348286065-rdbe4op91k1h19atstafaagr29kqm6ea.apps.googleusercontent.com",
+              "client_id": "336175886504-2nborf0it56gs89bs20gd5nm6vofnbd9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
