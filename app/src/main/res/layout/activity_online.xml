@@ -1,47 +1,56 @@
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/Login_layout"
+android:id="@+id/online_layout"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:background="@drawable/app_background"
-android:paddingBottom="@dimen/activity_vertical_margin"
-android:paddingLeft="@dimen/activity_horizontal_margin"
-android:paddingRight="@dimen/activity_horizontal_margin"
-android:paddingTop="@dimen/activity_vertical_margin">
+android:background="@color/primaryDark">
 
 <LinearLayout
     android:orientation="vertical"
-    android:gravity="bottom"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_centerVertical="true"
-    android:layout_centerHorizontal="true">
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/tv_welcomeuser"
+    <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
-        android:text="Welcome"
-        android:textSize="20dp"
-        android:layout_gravity="center"
-        android:paddingHorizontal="60dp"
-        android:paddingTop="10dp"/>
+        android:gravity="center_horizontal"
+        android:layout_marginTop="80dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Friends"
+            android:textColor="@color/white"
+            android:background="@drawable/transparent_button"
+            android:layout_marginRight="100dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Logout"
+
+            android:textColor="@color/white"
+            android:background="@drawable/transparent_button"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="100dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/transparent_button"
+        android:backgroundTint="@color/common_google_signin_btn_text_dark_disabled">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+    </LinearLayout>
 
 
-    <EditText
-        android:id="@+id/et_nickname"
-        style="@style/myEditText_style"
-        android:hint="Enter Nickname" />
-
-    <Button
-        style="@style/myButton_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="saveUserInformation"
-        android:text="Save to database" />
 
 
 </LinearLayout>

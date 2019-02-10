@@ -24,37 +24,13 @@ public class OnlineActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     UserInformation userInformation;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online);
         getSupportActionBar().hide();
 
-        firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser() == null) {
-            finish();
-
-            startActivity(new Intent(this,LoginActivity.class));
-        }
-
-        editTextView = (TextView) findViewById(R.id.tv_welcomeuser);
-        editTextName = (EditText) findViewById(R.id.et_nickname);
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-
-        editTextView.setText("Welcome " + user.getEmail());
-    }
-
-    public void saveUserInformation(View view) {
-
-        String nickname = editTextName.getText().toString().trim();
-        userInformation = new UserInformation(nickname);
-
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        databaseReference.child(user.getUid()).setValue(userInformation);
-
-        Toast.makeText(this, "Information Saved...", Toast.LENGTH_SHORT).show();
     }
 }

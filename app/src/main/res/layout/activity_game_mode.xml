@@ -3,27 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/ice_cave"
-
-    >
+    android:background="@color/primaryDark">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="14dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="92dp"
+        android:gravity="center_vertical"
+        android:layout_margin="55dp"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/b_Solo"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="212dp"
+            android:background="@drawable/transparent_button"
+            android:textColor="@color/white"
+            android:layout_margin="5dp"
             android:baselineAligned="false"
             android:onClick="soloButtonClicked"
             android:text="Solo" />
@@ -31,9 +27,10 @@
         <Button
             android:id="@+id/b_Duel"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginLeft="43dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent_button"
+            android:textColor="@color/white"
+            android:layout_margin="5dp"
             android:layout_marginBottom="317dp"
             android:onClick="duelButtonClicked"
             android:text="Duel" />

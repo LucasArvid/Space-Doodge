@@ -1,5 +1,6 @@
 package su.ju.arlu1695.projectgame;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,17 +18,25 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    private FirebaseUser user;
 
     private Button buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignin;
 
+    UserInformation userInformation;
+
     private ProgressDialog progressDialog;
+    private Dialog nickNameDialog;
 
 
     @Override
@@ -37,7 +46,11 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
+        nickNameDialog = new Dialog(this);
+
         firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        user = firebaseAuth.getCurrentUser();
 
         if (firebaseAuth.getCurrentUser() != null){
            /* finish();
@@ -77,16 +90,14 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog.setMessage("Registering User, please wait...");
         progressDialog.show();
-
+        setNickName();
         firebaseAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if(task.isSuccessful()) {
-                            //user registration and login successful
-                            // start profile activity
-                            // display toast for now
+                            setNickName();
                             Toast.makeText(LoginActivity.this, "Registered Successfully",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(LoginActivity.this, "Error when registering, please try again",Toast.LENGTH_SHORT).show();
@@ -148,6 +159,29 @@ public class LoginActivity extends AppCompatActivity {
     public void forgottenPasswordClicked(View view) {
         //To be done
         Toast.makeText(this, "Too bad, write it down next time", Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void setNickName() {
+        Button saveUsername;
+        nickNameDialog.setContentView(R.layout.nickname_popup);
+        saveUsername = (Button) nickNameDialog.findViewById(R.id.b_save_username);
+
+        saveUsername.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                EditText setNickName = (EditText) nickNameDialog.findViewById(R.id.et_nickname);
+                                                String nickname = setNickName.getText().toString().trim();
+                                                userInformation = new UserInformation(nickname);
+                                                FirebaseUser user = firebaseAuth.getCurrentUser();
+                                                databaseReference.child(user.getUid()).setValue(userInformation);
+                                                nickNameDialog.dismiss();
+                                                finish();
+                                                startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
+                                            }
+                                        });
+
+        nickNameDialog.show();
 
     }
 

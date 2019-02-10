@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/ice_cave">
+    android:background="@color/primaryDark">
 
 
     <RelativeLayout
@@ -13,18 +13,15 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_width="308dp"
-            android:layout_height="272dp"
-
+            android:layout_width="314dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:layout_alignParentTop="true"
-
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="236dp">
+            android:layout_centerHorizontal="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
@@ -35,26 +32,33 @@
 
                 <Button
                     android:id="@+id/b_start_game"
+                    android:background="@drawable/transparent_button"
+                    android:textColor="@color/white"
                     android:layout_width="match_parent"
-                    android:layout_height="96dp"
+                    android:layout_height="wrap_content"
                     android:baselineAligned="false"
+                    android:layout_margin="5dp"
                     android:onClick="startGameButtonClicked"
                     android:text="Start Game"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                 <Button
                     android:id="@+id/b_leaderboard"
-                    style="@style/Widget.AppCompat.Button"
+                    android:background="@drawable/transparent_button"
+                    android:textColor="@color/white"
+                    android:layout_margin="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="96dp"
+                    android:layout_height="wrap_content"
                     android:onClick="leaderboardButtonClicked"
                     android:text="Leaderboard"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                 <Button
-                    android:id="@+id/b_settings"
+                    android:background="@drawable/transparent_button"
+                    android:textColor="@color/white"
                     android:layout_width="match_parent"
-                    android:layout_height="96dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:onClick="settingsButtonClicked"
                     android:text="Settings"
 
