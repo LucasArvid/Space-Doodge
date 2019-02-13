@@ -2,7 +2,7 @@ package su.ju.arlu1695.projectgame;
 
 public class UserInformation {
     public String nickname;
-    private String pushId;
+    public static String pushId;
 
 
     public UserInformation() {

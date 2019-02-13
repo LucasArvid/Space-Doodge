@@ -12,6 +12,8 @@ public class Constants {
 
     public static int LEVEL_SELECTED;
 
+    public static final String FIREBASE_CLOUD_FUNCTIONS_BASE = "https://us-central1-icy-slide.cloudfunctions.net";
+
     public static ArrayList<levelName> levels = new ArrayList<>();
     static {
         levels.add(new levelName("Level 1"));

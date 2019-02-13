@@ -1,26 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ice_cave"
+    android:background="@color/primaryDark"
     android:orientation="vertical">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="30dp">
     <Switch
         android:id="@+id/s_music"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="204dp"
         android:text="Music"
-        android:textSize="40sp" />
+        android:textColor="@color/white"
+        android:background="@drawable/transparent_button"
+        android:textSize="30dp" />
 
     <Switch
         android:id="@+id/s_sound"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
-        android:textSize="40sp"
+        android:textSize="30dp"
+        android:textColor="@color/white"
+        android:background="@drawable/transparent_button"
         android:text="Sound" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="50dp"
+        android:paddingTop="35dp">
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Push notifications"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:background="@drawable/transparent_button" />
+    </LinearLayout>
+    </LinearLayout>
 
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -64,11 +64,14 @@ public class OnlineActivity extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mUserName.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     for (DataSnapshot dsName : ds.getChildren()) {
-                        String value = dsName.getValue().toString();
-                        mUserName.add(value);
-                        arrayAdapter.notifyDataSetChanged();
+                        if(dsName.getKey().equals("nickname")) {
+                            String value = dsName.getValue().toString();
+                            mUserName.add(value);
+                            arrayAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
                 textView.setText("Online users:");

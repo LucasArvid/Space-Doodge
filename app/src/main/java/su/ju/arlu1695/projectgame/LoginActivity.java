@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import static su.ju.arlu1695.projectgame.Util.savePushToken;
+
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
@@ -182,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     public void onSuccess(InstanceIdResult instanceIdResult) {
                                                         String newToken = instanceIdResult.getToken();
                                                         Log.e("newToken",newToken);
-                                                        MyFirebaseMessagingService.savePushToken(newToken,user.getUid());
+                                                        savePushToken(newToken,user.getUid());
 
                                                     }
                                                 });
