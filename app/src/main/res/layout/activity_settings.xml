@@ -17,30 +17,35 @@
         android:text="Music"
         android:textColor="@color/white"
         android:background="@drawable/transparent_button"
-        android:textSize="30dp" />
+        android:textSize="20dp"
+        android:checked="true"/>
 
     <Switch
         android:id="@+id/s_sound"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
-        android:textSize="30dp"
+        android:textSize="20dp"
         android:textColor="@color/white"
         android:background="@drawable/transparent_button"
-        android:text="Sound" />
+        android:text="Sound"
+        android:checked="true"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginHorizontal="50dp"
-        android:paddingTop="35dp">
+        android:paddingTop="35dp"
+        >
         <Switch
+            android:id="@+id/s_notifications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Push notifications"
             android:textColor="@color/white"
             android:textSize="15dp"
-            android:background="@drawable/transparent_button" />
+            android:background="@drawable/transparent_button"
+            android:checked="true"/>
     </LinearLayout>
     </LinearLayout>
 

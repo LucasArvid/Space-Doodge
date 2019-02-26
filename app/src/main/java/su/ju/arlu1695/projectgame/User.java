@@ -1,15 +1,15 @@
 package su.ju.arlu1695.projectgame;
 
-public class UserInformation {
+public class User {
     public String nickname;
     public static String pushId;
 
 
-    public UserInformation() {
+    public User() {
 
     }
 
-    public UserInformation(String nickname) {
+    public User(String nickname) {
         this.nickname = nickname;
     }
 

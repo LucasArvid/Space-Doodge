@@ -14,6 +14,16 @@ public class Constants {
 
     public static final String FIREBASE_CLOUD_FUNCTIONS_BASE = "https://us-central1-icy-slide.cloudfunctions.net";
 
+    public static final String CHANNEL_ID = "icy_slide";
+    public static final String CHANNEL_NAME = "Icy Slide";
+    public static final String CHANNEL_DESC = "Icy Slide Notifications";
+
+    public static User thisUser = new User();
+
+    public static boolean ALLOW_INVITES;
+    public static boolean ALLOW_MUSIC;
+    public static boolean ALLOW_SOUND;
+
     public static ArrayList<levelName> levels = new ArrayList<>();
     static {
         levels.add(new levelName("Level 1"));
@@ -30,5 +40,11 @@ public class Constants {
         public String toString() {
             return title;
         }
+    }
+
+    public static void setDefaultSettings() {
+        ALLOW_INVITES = true;
+        ALLOW_MUSIC = true;
+        ALLOW_SOUND  = true;
     }
 }

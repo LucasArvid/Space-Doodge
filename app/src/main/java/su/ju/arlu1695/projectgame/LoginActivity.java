@@ -21,10 +21,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import static su.ju.arlu1695.projectgame.Util.savePushToken;
 
@@ -39,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private TextView textViewSignin;
 
-    UserInformation userInformation;
+    User myUser;
 
     private ProgressDialog progressDialog;
     private Dialog nickNameDialog;
@@ -53,13 +57,15 @@ public class LoginActivity extends AppCompatActivity {
 
         nickNameDialog = new Dialog(this);
 
+
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         user = firebaseAuth.getCurrentUser();
 
         if (firebaseAuth.getCurrentUser() != null){
-           finish();
-           startActivity(new Intent(this,OnlineActivity.class));
+            setNotificationTopic();
+            finish();
+            startActivity(new Intent(this,OnlineActivity.class));
         }
 
         progressDialog = new ProgressDialog(this);
@@ -101,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if(task.isSuccessful()) {
+                            setNotificationTopic();
                             setNickName();
                             Toast.makeText(LoginActivity.this, "Registered Successfully",Toast.LENGTH_SHORT).show();
                         }else{
@@ -136,6 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if (task.isSuccessful()){
+                            setNotificationTopic();
                             finish();
                             startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
                             Toast.makeText(LoginActivity.this, "Login Successfully",Toast.LENGTH_SHORT).show();
@@ -176,9 +184,9 @@ public class LoginActivity extends AppCompatActivity {
                                             public void onClick(View view) {
                                                 EditText setNickName = (EditText) nickNameDialog.findViewById(R.id.et_nickname);
                                                 String nickname = setNickName.getText().toString().trim();
-                                                userInformation = new UserInformation(nickname);
+                                                myUser = new User(nickname);
                                                 final FirebaseUser user = firebaseAuth.getCurrentUser();
-                                                databaseReference.child("User").child(user.getUid()).setValue(userInformation);
+                                                databaseReference.child("User").child(user.getUid()).setValue(LoginActivity.this.user);
                                                 FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( LoginActivity.this, new OnSuccessListener<InstanceIdResult>() {
                                                     @Override
                                                     public void onSuccess(InstanceIdResult instanceIdResult) {
@@ -195,6 +203,31 @@ public class LoginActivity extends AppCompatActivity {
                                         });
 
         nickNameDialog.show();
+
+    }
+
+    public void setNotificationTopic () {
+        FirebaseUser topicUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference.child("User").child(topicUser.getUid()).child("nickname").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getKey().equals("nickname")) {
+                    String topic = dataSnapshot.getValue().toString();
+                    Constants.thisUser.setNickname(topic);
+                    FirebaseMessaging.getInstance().subscribeToTopic(topic);
+                    Toast.makeText(LoginActivity.this, topic,Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(LoginActivity.this, "what",Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        })    ;
+
 
     }
 
