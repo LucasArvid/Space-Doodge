@@ -42,7 +42,7 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">36sp</item>
     </style>
-
+    <!-- My Edit Text Style -->
     <style name="myEditText_style" >
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/edit_text_background</item>

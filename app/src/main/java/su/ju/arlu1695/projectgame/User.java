@@ -1,8 +1,11 @@
 package su.ju.arlu1695.projectgame;
 
+import java.util.ArrayList;
+
 public class User {
     public String nickname;
     public static String pushId;
+    public ArrayList<String> friendsList = new ArrayList<>();
 
 
     public User() {
@@ -16,6 +19,11 @@ public class User {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public void addFriend(String friend) {
+        friendsList.add(friend);
+    }
+
     public void setPushId(String pushId) {
         this.pushId = pushId;
     }

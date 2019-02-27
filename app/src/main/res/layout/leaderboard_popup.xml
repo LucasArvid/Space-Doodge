@@ -9,13 +9,16 @@
     android:layout_gravity="center">
     <TextView
         android:layout_width="30dp"
+        android:id="@+id/tv_exitButton"
         android:layout_height="30dp"
         android:textColor="@color/white"
         android:text="X"
         android:textStyle="bold"
         android:layout_gravity="end"
         android:gravity="center"
-        android:background="@drawable/circlebackground"/>
+        android:layout_marginRight="10dp"
+        android:background="@drawable/circlebackground"
+        android:onClick="popUpExitButtonCLicked"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

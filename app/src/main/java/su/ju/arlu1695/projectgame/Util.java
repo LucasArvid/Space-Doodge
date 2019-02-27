@@ -22,6 +22,13 @@ public class Util {
                 .setValue(refreshedToken);
 
     }
+
+    public static void saveNickName(String nickname, String userId) {
+        FirebaseDatabase.getInstance().getReference().child("User")
+                .child(userId)
+                .child("nickname")
+                .setValue(nickname);
+    }
     public static String getCurrentUserId() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null || currentUser.isAnonymous()) {

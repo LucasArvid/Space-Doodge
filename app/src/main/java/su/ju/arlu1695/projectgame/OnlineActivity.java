@@ -1,5 +1,6 @@
 package su.ju.arlu1695.projectgame;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -45,13 +46,21 @@ public class OnlineActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private FirebaseAuth firebaseAuth;
 
-    //List,Arr var
+    //User -List,Arr var
     private ListView userListView;
     private ArrayList<String> mUserName = new ArrayList<>();
+
+    //Friends -List,Arr
+    private ListView friendsListView;
+    private ArrayList<String> mFriendsName = new ArrayList<>();
+    private TextView findFried;
 
     // Variable for changing user status.
     private TextView textView;
     private UserList userList;
+
+    // Popup Dialog
+    private Dialog friendsDialog;
 
 
 
@@ -63,6 +72,8 @@ public class OnlineActivity extends AppCompatActivity {
 
         textView = (TextView) findViewById(R.id.user_list_status);
         userList = new UserList();
+
+        friendsDialog = new Dialog(this);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -103,6 +114,7 @@ public class OnlineActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String userClicked = userList.getUser(position).getNickname();
+                Toast.makeText(OnlineActivity.this, userClicked, Toast.LENGTH_SHORT).show();
                 OkHttpClient client = new OkHttpClient();
                 String format = String.format("%s/sendNotification?to=%s&fromName=%s&fromId=%s&type=invite&title=hello&body=body",
                         Constants.FIREBASE_CLOUD_FUNCTIONS_BASE,
@@ -132,6 +144,79 @@ public class OnlineActivity extends AppCompatActivity {
         firebaseAuth.signOut();
         finish();
         startActivity(new Intent(this, GameModeActivity.class));
+
+    }
+
+    public void friendsButtonClicked(View view) {
+
+
+        friendsDialog.setContentView(R.layout.friends_popup);
+
+        friendsListView = (ListView) friendsDialog.findViewById(R.id.lw_friends);
+        final ArrayAdapter<String> friendsArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mFriendsName);
+        friendsListView.setAdapter(friendsArrayAdapter);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mFriendsName.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    for (DataSnapshot dsFriends : ds.getChildren()) {
+                        if (dsFriends.getKey().equals("friends")){
+                            for (DataSnapshot dsName : dsFriends.getChildren()) {
+                                mFriendsName.add(dsName.getKey().toString());
+                                friendsArrayAdapter.notifyDataSetChanged();
+                            }
+                        }
+                        }
+                    }
+                }
+
+
+            @Override
+            public void onCancelled (@NonNull DatabaseError databaseError){
+
+            }
+
+        });
+
+
+        friendsDialog.show();
+    }
+
+    public void friendsExitButtonCLicked(View view) {
+        friendsDialog.dismiss();
+    }
+
+    public void addFriendButtonClicked(View view) {
+        findFried = (TextView) friendsDialog.findViewById(R.id.et_addFriend);
+
+        final String friend = findFried.getText().toString().trim();
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mUserName.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    for (DataSnapshot dsName : ds.getChildren()) {
+                        if(dsName.getValue().equals(friend)) {
+                            Constants.thisUser.friendsList.add(friend);
+                            FirebaseDatabase.getInstance().getReference().child("User").child(getCurrentUserId()).child("friends").child(friend).setValue("True");
+                            Toast.makeText(OnlineActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                textView.setText("Online users:");
+            }
+
+            @Override
+            public void onCancelled (@NonNull DatabaseError databaseError){
+
+            }
+
+        });
+
+
 
     }
 

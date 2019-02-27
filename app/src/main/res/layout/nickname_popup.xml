@@ -15,7 +15,9 @@
         android:textStyle="bold"
         android:layout_gravity="end"
         android:gravity="center"
-        android:background="@drawable/circlebackground"/>
+        android:layout_marginRight="10dp"
+        android:background="@drawable/circlebackground"
+        android:onClick="nicknameExitButtonClicked"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email here"
+            android:text="Welcome!"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
@@ -38,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email will not be displayed to other users."
+            android:text="Nickname will help other users identify you"
             android:textStyle="italic"
             android:textSize="10dp"
             android:textColor="@color/white"

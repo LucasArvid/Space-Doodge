@@ -3,6 +3,7 @@ package su.ju.arlu1695.projectgame;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.nfc.Tag;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -31,8 +32,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String fromName = remoteMessage.getData().get("fromName");
         String type = remoteMessage.getData().get("type");
 
+
+
         if (type.equals("invite") && Constants.ALLOW_INVITES) {
-            handleInvite(fromUserId, fromName);
+            handleInvite(fromUserId, fromName, getApplicationContext());
         }
         else if (type.equals("accept")) {
             /*
@@ -49,7 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
-    private void handleInvite(String fromUserId, String fromName) {
+    private void handleInvite(String fromUserId, String fromName, Context context) {
         //Reject handling
         Intent rejectIntent = new Intent(getApplicationContext(), NotificationHandler.class)
                 .setAction("reject")
@@ -71,16 +74,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Show Notification
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this, INVITE)
+                new NotificationCompat.Builder(context, Constants.CHANNEL_ID)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentText(String.format("%s has invite you to a duel", fromName))
                         .setContentTitle("Challenge!")
+                        .setChannelId(Constants.CHANNEL_ID)
                         .addAction(R.mipmap.ic_launcher, "Accept", pendingAcceptIntent)
-                        .setChannelId(INVITE)
                         .addAction(R.mipmap.ic_launcher, "Decline", pendingRejectIntent)
                         .setAutoCancel(true)
                         .setVibrate(new long[4000])
-                        .setPriority(NotificationCompat.PRIORITY_MAX);
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat mNotificationMgr = NotificationManagerCompat.from(this);
         mNotificationMgr.notify(1,mBuilder.build());

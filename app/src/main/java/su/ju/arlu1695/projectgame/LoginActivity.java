@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import static su.ju.arlu1695.projectgame.Util.getCurrentUserId;
+import static su.ju.arlu1695.projectgame.Util.saveNickName;
 import static su.ju.arlu1695.projectgame.Util.savePushToken;
 
 public class LoginActivity extends AppCompatActivity {
@@ -100,14 +103,12 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog.setMessage("Registering User, please wait...");
         progressDialog.show();
-        setNickName();
         firebaseAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if(task.isSuccessful()) {
-                            setNotificationTopic();
                             setNickName();
                             Toast.makeText(LoginActivity.this, "Registered Successfully",Toast.LENGTH_SHORT).show();
                         }else{
@@ -179,20 +180,22 @@ public class LoginActivity extends AppCompatActivity {
         nickNameDialog.setContentView(R.layout.nickname_popup);
         saveUsername = (Button) nickNameDialog.findViewById(R.id.b_save_username);
 
+
         saveUsername.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
                                                 EditText setNickName = (EditText) nickNameDialog.findViewById(R.id.et_nickname);
-                                                String nickname = setNickName.getText().toString().trim();
+                                                final String nickname = setNickName.getText().toString().trim();
                                                 myUser = new User(nickname);
                                                 final FirebaseUser user = firebaseAuth.getCurrentUser();
-                                                databaseReference.child("User").child(user.getUid()).setValue(LoginActivity.this.user);
+                                                databaseReference.child("User").child(user.getUid()).setValue(LoginActivity.this.myUser);
                                                 FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( LoginActivity.this, new OnSuccessListener<InstanceIdResult>() {
                                                     @Override
                                                     public void onSuccess(InstanceIdResult instanceIdResult) {
                                                         String newToken = instanceIdResult.getToken();
                                                         Log.e("newToken",newToken);
-                                                        savePushToken(newToken,user.getUid());
+                                                        savePushToken(newToken, user.getUid());
+                                                        setNotificationTopic();
 
                                                     }
                                                 });
@@ -229,6 +232,10 @@ public class LoginActivity extends AppCompatActivity {
         })    ;
 
 
+    }
+
+    public void nicknameExitButtonClicked(View view) {
+        nickNameDialog.dismiss();
     }
 
 

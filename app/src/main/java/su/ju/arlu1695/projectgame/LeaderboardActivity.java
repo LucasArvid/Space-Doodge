@@ -43,6 +43,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     private ListView leaderBoardListView;
     private ArrayList<String> mLeaderBoardList = new ArrayList<>();
     private TextView tvLevelSelected;
+    private TextView exitButton;
 
 
 
@@ -81,6 +82,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         leaderboardDialog.setContentView(R.layout.leaderboard_popup);
 
         leaderBoardListView = (ListView) leaderboardDialog.findViewById(R.id.lw_level_scores);
+        exitButton = (TextView) leaderboardDialog.findViewById(R.id.tv_exitButton);
         tvLevelSelected = (TextView) leaderboardDialog.findViewById(R.id.tv_levelSelected);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mLeaderBoardList);
         leaderBoardListView.setAdapter(arrayAdapter);
@@ -120,5 +122,9 @@ public class LeaderboardActivity extends AppCompatActivity {
             }
         });
         leaderboardDialog.show();
+    }
+
+    public void popUpExitButtonCLicked(View view) {
+        leaderboardDialog.dismiss();
     }
 }
