@@ -2,25 +2,23 @@ package su.ju.arlu1695.projectgame;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Paint;
+
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.service.autofill.Dataset;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
+
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -73,6 +71,7 @@ public class OnlineActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.user_list_status);
         userList = new UserList();
 
+        // Popup dialog
         friendsDialog = new Dialog(this);
 
 
@@ -80,10 +79,12 @@ public class OnlineActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("User");
 
+
         userListView = (ListView) findViewById(R.id.user_listView);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mUserName);
         userListView.setAdapter(arrayAdapter);
 
+        // Parse Database for users.
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -110,6 +111,7 @@ public class OnlineActivity extends AppCompatActivity {
 
         });
 
+        // Send game invite to user clicked via notification.
         userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -147,6 +149,7 @@ public class OnlineActivity extends AppCompatActivity {
 
     }
 
+    // Open friends list popup activity
     public void friendsButtonClicked(View view) {
 
 
@@ -156,32 +159,56 @@ public class OnlineActivity extends AppCompatActivity {
         final ArrayAdapter<String> friendsArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mFriendsName);
         friendsListView.setAdapter(friendsArrayAdapter);
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        // Parse only current users friends list.
+        FirebaseDatabase.getInstance().getReference().child("User").child(getCurrentUserId()).child("friends").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mFriendsName.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    for (DataSnapshot dsFriends : ds.getChildren()) {
-                        if (dsFriends.getKey().equals("friends")){
-                            for (DataSnapshot dsName : dsFriends.getChildren()) {
-                                mFriendsName.add(dsName.getKey().toString());
-                                friendsArrayAdapter.notifyDataSetChanged();
-                            }
-                        }
-                        }
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    if(ds.getValue().equals("True")) {
+                        mFriendsName.add(ds.getKey());
+                        friendsArrayAdapter.notifyDataSetChanged();
                     }
-                }
 
+                }
+            }
 
             @Override
-            public void onCancelled (@NonNull DatabaseError databaseError){
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        // Open friends profile page.
+        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                friendsDialog.setContentView(R.layout.friend_profile_popup);
+                friendProfilePopUp(view,position);
+
 
             }
 
         });
 
 
+
         friendsDialog.show();
+    }
+    // Profile popup activity handler.
+    public void friendProfilePopUp(View view, int position) {
+
+        // Connect TV,layouts and Buttons.
+        TextView tv_friend = (TextView) friendsDialog.findViewById(R.id.tv_friendsName);
+        LinearLayout friendRankingsLayout = (LinearLayout) friendsDialog.findViewById(R.id.friend_ranking_layout);
+
+
+        String friend = mFriendsName.get(position);
+        tv_friend.setText(friend + "'s profile");
+
+        // ToDO parse Database and add new textViews to layout if user has any top 5 ranking spots.
+
+
     }
 
     public void friendsExitButtonCLicked(View view) {
@@ -193,20 +220,20 @@ public class OnlineActivity extends AppCompatActivity {
 
         final String friend = findFried.getText().toString().trim();
 
+        // Verify that friend request has a recipient.
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUserName.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     for (DataSnapshot dsName : ds.getChildren()) {
                         if(dsName.getValue().equals(friend)) {
                             Constants.thisUser.friendsList.add(friend);
                             FirebaseDatabase.getInstance().getReference().child("User").child(getCurrentUserId()).child("friends").child(friend).setValue("True");
                             Toast.makeText(OnlineActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            return;
                         }
                     }
                 }
-                textView.setText("Online users:");
             }
 
             @Override
@@ -219,5 +246,6 @@ public class OnlineActivity extends AppCompatActivity {
 
 
     }
+
 
 }

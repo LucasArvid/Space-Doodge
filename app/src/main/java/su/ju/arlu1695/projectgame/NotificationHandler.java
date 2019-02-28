@@ -22,7 +22,7 @@ import okhttp3.Response;
 
 import static su.ju.arlu1695.projectgame.Util.getCurrentUserId;
 
-
+// Directed to from MyFirebaseMessagingService
 public class NotificationHandler extends BroadcastReceiver {
 
     private static final String LOG_TAG = "NotificationHandler";
@@ -33,6 +33,8 @@ public class NotificationHandler extends BroadcastReceiver {
        String me = Constants.thisUser.getNickname();
        String to = intent.getExtras().getString("to");
        String fromUserId = intent.getExtras().getString("withId");
+
+       // Open a Http request for sending notification.
        OkHttpClient client = new OkHttpClient();
 
        String format = String.format("%s/sendNotification?to=%s&fromName=%s&fromId=%s&type=%s&title=hello&body=hello",

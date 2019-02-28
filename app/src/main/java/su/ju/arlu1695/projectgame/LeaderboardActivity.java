@@ -90,7 +90,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
 
 
-
+        // Parse database for highscores on selected level.
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

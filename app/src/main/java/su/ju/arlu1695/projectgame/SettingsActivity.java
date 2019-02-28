@@ -20,7 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         getSupportActionBar().hide();
 
-
+        // Declaration of switches
         allowNotifications = (Switch) findViewById(R.id.s_notifications);
         allowMusic = (Switch) findViewById(R.id.s_music);
         allowSound = (Switch) findViewById(R.id.s_sound);
@@ -62,6 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    // Return to user set settings (returns to default otherwise.)
     private void resumeSettingsActivity() {
         allowNotifications.setChecked(Constants.ALLOW_INVITES);
         allowMusic.setChecked(Constants.ALLOW_MUSIC);

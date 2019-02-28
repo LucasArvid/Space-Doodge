@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import okhttp3.OkHttpClient;
 
+// Class for easy access to functions used often in multiple classes.
 public class Util {
 
     private static String me;

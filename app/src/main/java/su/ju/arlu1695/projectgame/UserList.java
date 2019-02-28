@@ -3,6 +3,7 @@ package su.ju.arlu1695.projectgame;
 import java.util.ArrayList;
 import java.util.List;
 
+// List for keeping track of online users localy, used for sending invites and so forth.
 public class UserList {
     private ArrayList<User> users;
 

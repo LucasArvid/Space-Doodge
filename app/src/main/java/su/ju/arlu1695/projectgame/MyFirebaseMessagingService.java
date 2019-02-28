@@ -25,6 +25,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         Log.d(LOG_TAG, "From: " + remoteMessage.getFrom());
 
+
+        // Grab data + text from recieved notification.
         String title = remoteMessage.getNotification().getTitle();
         String body = remoteMessage.getNotification().getBody();
 
@@ -33,7 +35,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String type = remoteMessage.getData().get("type");
 
 
-
+        // Verify type of notification
         if (type.equals("invite") && Constants.ALLOW_INVITES) {
             handleInvite(fromUserId, fromName, getApplicationContext());
         }
@@ -97,6 +99,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
+    // Default notification builder.
     public static void displayNotification(Context context, String title, String body) {
 
         NotificationCompat.Builder mBuilder =

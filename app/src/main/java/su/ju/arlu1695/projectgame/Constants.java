@@ -12,18 +12,23 @@ public class Constants {
 
     public static int LEVEL_SELECTED;
 
+    // http address for notifications request from backend.
     public static final String FIREBASE_CLOUD_FUNCTIONS_BASE = "https://us-central1-icy-slide.cloudfunctions.net";
 
+    // Channel constants needed for Notification channel on API 26+
     public static final String CHANNEL_ID = "icy_slide";
     public static final String CHANNEL_NAME = "Icy Slide";
     public static final String CHANNEL_DESC = "Icy Slide Notifications";
 
+    // Local tracking of current user. Used for e.g. sending notifications
     public static User thisUser = new User();
 
     public static boolean ALLOW_INVITES;
     public static boolean ALLOW_MUSIC;
     public static boolean ALLOW_SOUND;
 
+
+    // Level select array list.
     public static ArrayList<levelName> levels = new ArrayList<>();
     static {
         levels.add(new levelName("Level 1"));
@@ -33,6 +38,7 @@ public class Constants {
         levels.add(new levelName("Level 5"));
     }
 
+
     public static class levelName {
         public String title;
         public levelName(String title) { this.title = title; }
@@ -41,6 +47,7 @@ public class Constants {
             return title;
         }
     }
+
 
     public static void setDefaultSettings() {
         ALLOW_INVITES = true;

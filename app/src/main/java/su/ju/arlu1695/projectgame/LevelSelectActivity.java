@@ -18,6 +18,8 @@ public class LevelSelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_levelselect);
 
         getSupportActionBar().hide();
+
+        // Simple ListView of levels grabbed from local csv resource.
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(new ArrayAdapter<Constants.levelName>(
                 this,
