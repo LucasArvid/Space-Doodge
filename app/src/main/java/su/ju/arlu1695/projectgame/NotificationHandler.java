@@ -13,7 +13,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -34,7 +36,8 @@ public class NotificationHandler extends BroadcastReceiver {
        String to = intent.getExtras().getString("to");
        String fromUserId = intent.getExtras().getString("withId");
 
-       // Open a Http request for sending notification.
+
+       // Open a Http request for sending notification reply.
        OkHttpClient client = new OkHttpClient();
 
        String format = String.format("%s/sendNotification?to=%s&fromName=%s&fromId=%s&type=%s&title=hello&body=hello",
@@ -62,7 +65,20 @@ public class NotificationHandler extends BroadcastReceiver {
            //handle accept
            String gameId = fromUserId + "-" + getCurrentUserId();
            // Setup game on Firebase database.
+           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenger").setValue(to);
+           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenged").setValue(me);
+           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("playerOneReady").setValue("false");
+           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("playerTwoReady").setValue("false");
+           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("startGame").setValue("false");
+           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("level").setValue("0");
+
+           context.startActivity(new Intent(context, GameLobbyActivity.class)
+                   .putExtra("type", "duel")
+                   .putExtra("me", "challenged")
+                   .putExtra("gameId", fromUserId + "-" + getCurrentUserId())
+                   .putExtra("fromName", to));
        }
+
 
     }
 

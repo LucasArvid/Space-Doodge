@@ -40,13 +40,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             handleInvite(fromUserId, fromName, getApplicationContext());
         }
         else if (type.equals("accept")) {
-            /*
-            startActivity(new Intent(getBaseContext(), MainActivity.class)
-                .putExtra("type", "wifi")
-                .putExtra("me", "x")
-                .putExtra("gameId", getCurrentUserId() + "-" + fromId)
-                .putExtra("withId", fromId));
-                */
+
+            startActivity(new Intent(getBaseContext(), GameLobbyActivity.class)
+                .putExtra("type", "duel")
+                .putExtra("me", "challenger")
+                .putExtra("gameId", getCurrentUserId() + "-" + fromUserId)
+                .putExtra("fromName", fromName));
+
         }
         else if (type.equals("reject")) {
             displayNotification(getApplicationContext(),"Ouch!","Your game invite has been rejected");
