@@ -1,3 +1,4 @@
+/*
 package su.ju.arlu1695.projectgame;
 
 
@@ -60,3 +61,4 @@ public class Levels {
 
 
 }
+*/
