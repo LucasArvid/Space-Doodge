@@ -1,5 +1,7 @@
 package su.ju.arlu1695.projectgame;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public class Constants {
@@ -11,6 +13,8 @@ public class Constants {
     public static int SCREEN_HEIGHT_COEFFICIENT;
 
     public static int LEVEL_SELECTED;
+
+    public static Context GAME_CONTEXT;
 
     // http address for notifications request from backend.
     public static final String FIREBASE_CLOUD_FUNCTIONS_BASE = "https://us-central1-icy-slide.cloudfunctions.net";

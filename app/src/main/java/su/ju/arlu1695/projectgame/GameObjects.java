@@ -7,5 +7,5 @@ public interface GameObjects {
 
 
     public void draw(Canvas canvas);
-    public void update(Point Point);
+    public void update();
 }

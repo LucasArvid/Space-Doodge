@@ -25,7 +25,7 @@ public class GameplayScene implements Scene {
         playerPoint = new Point(Constants.SCREEN_WIDTH/2,3*Constants.SCREEN_HEIGHT/4);
         player.update(playerPoint);
 
-        obstacleHandler = new ObstacleHandler(200,350, 75, Color.BLACK);
+        obstacleHandler = new ObstacleHandler(200,350, 100, Color.BLACK);
     }
 
     public void resetGame() {
@@ -64,7 +64,7 @@ public class GameplayScene implements Scene {
     @Override
     public void draw(Canvas canvas) {
         if (canvas != null) {
-            canvas.drawRGB(173, 245, 255);
+            canvas.drawRGB(53, 48, 71);
             player.draw(canvas);
             obstacleHandler.draw(canvas);
         }
@@ -72,7 +72,7 @@ public class GameplayScene implements Scene {
         if (gameOver) {
             Paint paint = new Paint();
             paint.setTextSize(100);
-            paint.setColor(Color.BLUE);
+            paint.setColor(Color.WHITE);
             drawCenterText(canvas,paint,"Game Over");
         }
     }

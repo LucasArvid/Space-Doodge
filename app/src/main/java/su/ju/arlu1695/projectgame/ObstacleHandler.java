@@ -74,7 +74,7 @@ public class ObstacleHandler {
             ob.draw(canvas);
         Paint paint = new Paint();
         paint.setTextSize(100);
-        paint.setColor(Color.BLUE);
+        paint.setColor(Color.WHITE);
         canvas.drawText("Score: " + score,50, 100, paint);
     }
 }

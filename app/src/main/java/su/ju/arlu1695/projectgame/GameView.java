@@ -24,6 +24,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         this.context = context;
         getHolder().addCallback(this);
+
+        Constants.GAME_CONTEXT = context;
+
         thread = new GameThread(getHolder(),this);
 
         handler = new SceneHandler();

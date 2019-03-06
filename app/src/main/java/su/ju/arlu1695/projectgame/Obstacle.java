@@ -1,6 +1,9 @@
 package su.ju.arlu1695.projectgame;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -11,12 +14,19 @@ public class Obstacle implements GameObjects{
     private Rect rectangleTwo;
     private int color;
 
+    private Bitmap idleImg;
+
 
     public Obstacle(int obstacleHeight, int color, int startX, int startY, int playerGap) {
         this.color = color;
         // left,top,right,bottom
         rectangle = new Rect(0, startY, startX, startY + obstacleHeight);
         rectangleTwo = new Rect(startX + playerGap, startY, Constants.SCREEN_WIDTH, startY + obstacleHeight);
+
+        // Animations
+        BitmapFactory bitmapFactory = new BitmapFactory();
+        idleImg = bitmapFactory.decodeResource(Constants.GAME_CONTEXT.getResources(), R.drawable.slice03_03);
+
 
 
     }
@@ -25,16 +35,6 @@ public class Obstacle implements GameObjects{
         return Rect.intersects(rectangle, player.getRectangle()) || Rect.intersects(rectangleTwo, player.getRectangle());
     }
 
-    /*
-    public boolean intersects(Player player) {
-        if (rectangle.contains(player.getRectangle().left, player.getRectangle().top)
-            || rectangle.contains(player.getRectangle().right, player.getRectangle().top)
-            || rectangle.contains(player.getRectangle().left, player.getRectangle().bottom)
-            || rectangle.contains(player.getRectangle().right, player.getRectangle().bottom))
-        return true; // if
-    return false; // else
-    }
-    */
     public void incrementY(float y) {
         rectangle.top += y;
         rectangle.bottom += y;
@@ -47,7 +47,7 @@ public class Obstacle implements GameObjects{
     }
 
     @Override
-    public void update(Point point) {
+    public void update() {
 
     }
 
@@ -57,5 +57,8 @@ public class Obstacle implements GameObjects{
         paint.setColor(color);
         canvas.drawRect(rectangle,paint);
         canvas.drawRect(rectangleTwo,paint);
+
+        canvas.drawBitmap(idleImg, null, rectangle, new Paint());
+        canvas.drawBitmap(idleImg, null, rectangleTwo, new Paint());
     }
 }
