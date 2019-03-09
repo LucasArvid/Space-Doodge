@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -59,7 +61,6 @@ public class OnlineActivity extends AppCompatActivity {
 
     // Popup Dialog
     private Dialog friendsDialog;
-
 
 
     @Override
@@ -200,11 +201,37 @@ public class OnlineActivity extends AppCompatActivity {
 
         // Connect TV,layouts and Buttons.
         TextView tv_friend = (TextView) friendsDialog.findViewById(R.id.tv_friendsName);
+        final TextView tv_friend_rank = (TextView) friendsDialog.findViewById(R.id.tv_friend_rank);
         LinearLayout friendRankingsLayout = (LinearLayout) friendsDialog.findViewById(R.id.friend_ranking_layout);
 
 
-        String friend = mFriendsName.get(position);
+        final String friend = mFriendsName.get(position);
         tv_friend.setText(friend + "'s profile");
+
+        FirebaseDatabase.getInstance().getReference().child("leaderboard").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int level = 0;
+                int rank = 0;
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    level++;
+                    for(DataSnapshot hsDs : ds.getChildren()){
+                        rank++;
+                        if (hsDs.getValue().equals(friend))
+                            tv_friend_rank.setText(String.format("Level %d Place %d",
+                                    level,
+                                    rank
+                            ));
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         // ToDO parse Database and add new textViews to layout if user has any top 5 ranking spots.
 

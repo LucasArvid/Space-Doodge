@@ -1,11 +1,20 @@
 package su.ju.arlu1695.projectgame;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class GameplayScene implements Scene {
 
@@ -15,23 +24,34 @@ public class GameplayScene implements Scene {
     private Point playerPoint;
     private ObstacleHandler obstacleHandler;
 
+    private Levels level;
+
     private boolean playerMoving = false;
     private boolean gameOver = false;
     private long gameOverDelay;
+    private boolean uiRunning = false;
+
+    private Button restartButton;
+    private Button exitButton;
 
     public GameplayScene() {
+        // Get level data
+        level = new Levels(Constants.GAME_CONTEXT);
+        level.readLevelData();
         // Instantiate Player
         player = new Player(new Rect(100,100,200,200), Color.rgb(255,0,0));
         playerPoint = new Point(Constants.SCREEN_WIDTH/2,3*Constants.SCREEN_HEIGHT/4);
         player.update(playerPoint);
 
-        obstacleHandler = new ObstacleHandler(200,350, 100, Color.BLACK);
+        // Obstacle handler instantiated dependent on level.
+        obstacleHandler = new ObstacleHandler(level.getPlayerGap(),level.getObstacleGap(), level.getObstacleHeight(), Color.BLACK);
     }
 
     public void resetGame() {
+        gameOver = false;
         playerPoint = new Point(Constants.SCREEN_WIDTH/2,3*Constants.SCREEN_HEIGHT/4);
         player.update(playerPoint);
-        obstacleHandler = new ObstacleHandler(200,350, 75, Color.BLACK);
+        obstacleHandler = new ObstacleHandler(level.getPlayerGap(),level.getObstacleGap(), level.getObstacleHeight(), Color.BLACK);
         playerMoving = false;
     }
 
@@ -46,11 +66,10 @@ public class GameplayScene implements Scene {
             case MotionEvent.ACTION_DOWN:
                 if(!gameOver && player.getRectangle().contains((int)event.getX(), (int)event.getY()))
                     playerMoving = true;
-                if(gameOver && System.currentTimeMillis() - gameOverDelay >= 2000){
-                    resetGame();
-                    gameOver = false;
+                if(gameOver && System.currentTimeMillis() - gameOverDelay >= 1000){
+                        resetGame();
                 }
-                break;
+                 break;
             case MotionEvent.ACTION_MOVE:
                 if(!gameOver && playerMoving)
                     playerPoint.set((int)event.getX(),(int)event.getY());
@@ -61,10 +80,62 @@ public class GameplayScene implements Scene {
         }
     }
 
+    /*public void gameOverUI() {
+        uiRunning = true;
+        final Dialog gameOverDialog = new Dialog(Constants.GAME_CONTEXT);
+        gameOverDialog.setContentView(R.layout.activity_game_over);
+
+        LinearLayout gameOverLayout = (LinearLayout) gameOverDialog.findViewById(R.id.ll_game_over);
+        exitButton = (Button)gameOverDialog.findViewById(R.id.b_gameOverExit);
+        restartButton = (Button)gameOverDialog.findViewById(R.id.b_gameOverRestart);
+
+        // reuse GameOver Layout as popup
+        ViewGroup.LayoutParams params = gameOverLayout.getLayoutParams();
+        params.height = Constants.SCREEN_HEIGHT;
+        params.width = Constants.SCREEN_WIDTH;
+        gameOverLayout.setLayoutParams(params);
+
+        TextView tv_score = (TextView) gameOverDialog.findViewById(R.id.tv_my_score);
+        tv_score.setText(String.format(
+                "Final Score: %s",
+                obstacleHandler.getScore()
+        ));
+        restartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resetGame();
+                gameOver = false;
+                uiRunning = false;
+                gameOverDialog.dismiss();
+            }
+        });
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gameOver = false;
+                Constants.GAME_CONTEXT.startActivity(new Intent(Constants.GAME_CONTEXT, MainActivity.class));
+                uiRunning = false;
+                gameOverDialog.dismiss();
+            }
+        });
+        gameOverDialog.show();
+
+    } */
+
+    public void gameOverUI() {
+        uiRunning = true;
+
+        Constants.GAME_CONTEXT.startActivity(new Intent(Constants.GAME_CONTEXT, GameOverActivity.class)
+                .putExtra("score", obstacleHandler.getScore())
+                .putExtra("me", "solo"));
+
+
+    }
+
     @Override
     public void draw(Canvas canvas) {
         if (canvas != null) {
-            canvas.drawRGB(53, 48, 71);
+            canvas.drawRGB(level.getR(),level.getG(),level.getB());
             player.draw(canvas);
             obstacleHandler.draw(canvas);
         }
@@ -73,7 +144,7 @@ public class GameplayScene implements Scene {
             Paint paint = new Paint();
             paint.setTextSize(100);
             paint.setColor(Color.WHITE);
-            drawCenterText(canvas,paint,"Game Over");
+            drawCenterText(canvas,paint,"Tap to restart");
         }
     }
 
@@ -97,6 +168,7 @@ public class GameplayScene implements Scene {
 
             if (obstacleHandler.collisionDetected(player)) {
                 gameOver = true;
+                gameOverUI();
                 gameOverDelay = System.currentTimeMillis();
             }
 

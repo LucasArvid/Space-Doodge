@@ -19,6 +19,9 @@ public class LevelSelectActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        Intent intent = getIntent();
+        final String me = intent.getExtras().getString("me");
+
         // Simple ListView of levels grabbed from local csv resource.
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(new ArrayAdapter<Constants.levelName>(
@@ -30,7 +33,10 @@ public class LevelSelectActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(LevelSelectActivity.this, MainGameActivity.class);
+                Intent intent = new Intent(LevelSelectActivity.this, MainGameActivity.class)
+                        .putExtra("mode","solo")
+                        .putExtra("gameId", "solo")
+                        .putExtra("me", me);
                 Constants.LEVEL_SELECTED = position;
                 startActivity(intent);
             }

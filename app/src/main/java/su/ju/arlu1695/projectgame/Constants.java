@@ -31,6 +31,8 @@ public class Constants {
     public static boolean ALLOW_MUSIC;
     public static boolean ALLOW_SOUND;
 
+    public static GameThread thread;
+
 
     // Level select array list.
     public static ArrayList<levelName> levels = new ArrayList<>();

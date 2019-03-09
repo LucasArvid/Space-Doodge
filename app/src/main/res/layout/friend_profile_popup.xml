@@ -66,6 +66,7 @@
 
 
             <TextView
+                android:id="@+id/tv_friend_rank"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:text="Level 1 Place 5"
@@ -118,7 +119,8 @@
         android:onClick="saveUserInformation"
         android:background="@drawable/transparent_button"
         android:textColor="@color/white"
-        android:text="Remove Friend" />
+        android:text="Remove Friend"
+        android:textAllCaps="false"/>
 
 
 </LinearLayout>

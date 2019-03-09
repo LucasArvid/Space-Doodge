@@ -36,6 +36,7 @@
         <activity android:name=".LoginActivity"/>
         <activity android:name=".OnlineActivity"/>
         <activity android:name=".GameLobbyActivity"/>
+        <activity android:name=".GameOverActivity"/>
     </application>
 
 </manifest>

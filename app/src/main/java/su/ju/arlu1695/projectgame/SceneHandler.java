@@ -1,5 +1,6 @@
 package su.ju.arlu1695.projectgame;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
@@ -10,9 +11,13 @@ public class SceneHandler {
     private ArrayList<Scene> scenes = new ArrayList<>();
     public static int ACTIVE_SCENE;
 
-    public SceneHandler() {
+    public SceneHandler(String mode, String gameId,String me) {
         ACTIVE_SCENE = 0;
-        scenes.add(new GameplayScene());
+
+        if (mode.equals("online"))
+            scenes.add(new GameplaySceneOnline(gameId,me));
+        else
+            scenes.add(new GameplayScene());
     }
 
     public void recieveTouch(MotionEvent event) {

@@ -9,7 +9,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class MainGameActivity extends Activity {
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +17,12 @@ public class MainGameActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        this.setContentView(new GameView(this));
+        Intent intent = getIntent();
+        String mode = intent.getStringExtra("mode");
+        String gameId = intent.getStringExtra("gameId");
+        String me = intent.getStringExtra("me");
+        this.setContentView(new GameView(this, mode,gameId,me));
+
+
     }
 }

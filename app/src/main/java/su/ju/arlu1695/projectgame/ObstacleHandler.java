@@ -77,4 +77,8 @@ public class ObstacleHandler {
         paint.setColor(Color.WHITE);
         canvas.drawText("Score: " + score,50, 100, paint);
     }
+
+    public int getScore() {
+        return score;
+    }
 }

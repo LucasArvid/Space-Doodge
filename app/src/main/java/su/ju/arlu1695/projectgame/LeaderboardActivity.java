@@ -28,6 +28,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static su.ju.arlu1695.projectgame.Util.savePushToken;
 
@@ -103,16 +104,18 @@ public class LeaderboardActivity extends AppCompatActivity {
                             tick++;
                             String user = dsUsers.getValue().toString();
                             String score = dsUsers.getKey();
-                            String format = String.format("%s:  %s  Time:%s",
-                                    tick,
+                            String format = String.format("Player: %s   Score:%s",
                                     user,
                                     score);
                             mLeaderBoardList.add(format);
+                            Collections.reverse(mLeaderBoardList);
                             arrayAdapter.notifyDataSetChanged();
+                            if(tick == 50)
+                                return;
                         }
                     }
                 }
-                tvLevelSelected.setText(String.format("Level %s highscores.",(position + 1)));
+                tvLevelSelected.setText(String.format("Level %s Top50.",(position + 1)));
             }
 
 

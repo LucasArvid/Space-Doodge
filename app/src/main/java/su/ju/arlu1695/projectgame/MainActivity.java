@@ -1,22 +1,41 @@
+/*
+ Level design assets credit : www.kenney.nl
+ Usage allowed for personal and/or commercial projects.
+ */
 package su.ju.arlu1695.projectgame;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import static su.ju.arlu1695.projectgame.Constants.CHANNEL_DESC;
 import static su.ju.arlu1695.projectgame.Constants.CHANNEL_ID;
 import static su.ju.arlu1695.projectgame.Constants.CHANNEL_NAME;
+import static su.ju.arlu1695.projectgame.Util.getCurrentUserId;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private String gameId;
+    private String me;
+    private int score;
+    private String opponentScore;
+    private String wonOrLost;
+    private String mode;
 
 
     @Override
@@ -24,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -35,7 +55,11 @@ public class MainActivity extends AppCompatActivity {
         Constants.SCREEN_HEIGHT_COEFFICIENT = Constants.SCREEN_HEIGHT / 13;
         Constants.SCREEN_WIDTH_COEFFICIENT = Constants.SCREEN_WIDTH / 10;
 
+
         createNotificationChannel();
+
+
+        //testOnline();
 
     }
 
@@ -71,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void testOnline(){
+        startActivity(new Intent(this, GameLobbyActivity.class)
+                .putExtra("mode", "online")
+                .putExtra("me", "challenged")
+                .putExtra("gameId", "Zjb3LfBbJcSeu4i0j6KJ6ckYNO72-ylP7GwE0xxOEn3UDQA46LaX0roX2")
+                .putExtra("fromName", "Lucky"));
+
+    }
 
 
 }

@@ -46,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private TextView textViewSignin;
 
+    private String mode;
+
     User myUser;
 
     private ProgressDialog progressDialog;
@@ -60,6 +62,10 @@ public class LoginActivity extends AppCompatActivity {
 
         nickNameDialog = new Dialog(this);
 
+        Intent intent = getIntent();
+        mode = intent.getStringExtra("mode");
+
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -68,7 +74,11 @@ public class LoginActivity extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null){
             setNotificationTopic();
             finish();
-            startActivity(new Intent(this,OnlineActivity.class));
+            if(mode.equals("solo"))
+                startActivity(new Intent(this,LevelSelectActivity.class)
+                                .putExtra("me","solo"));
+            else if(mode.equals("duel"))
+                startActivity(new Intent(this,OnlineActivity.class));
         }
 
         progressDialog = new ProgressDialog(this);
@@ -103,6 +113,9 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog.setMessage("Registering User, please wait...");
         progressDialog.show();
+
+        setupFirebaseUser();
+
         firebaseAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -146,7 +159,11 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             setNotificationTopic();
                             finish();
-                            startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
+                            if(mode.equals("solo"))
+                                startActivity(new Intent(LoginActivity.this,LevelSelectActivity.class)
+                                        .putExtra("me","solo"));
+                            else if(mode.equals("duel"))
+                                startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
                             Toast.makeText(LoginActivity.this, "Login Successfully",Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(LoginActivity.this, "Login Unsuccessful, please try again",Toast.LENGTH_SHORT).show();
@@ -201,7 +218,11 @@ public class LoginActivity extends AppCompatActivity {
                                                 });
                                                 nickNameDialog.dismiss();
                                                 finish();
-                                                startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
+                                                if(mode.equals("solo"))
+                                                    startActivity(new Intent(LoginActivity.this,LevelSelectActivity.class)
+                                                            .putExtra("me","solo"));
+                                                else if(mode.equals("duel"))
+                                                    startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
                                             }
                                         });
 
@@ -229,13 +250,22 @@ public class LoginActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        })    ;
+        });
 
 
     }
 
     public void nicknameExitButtonClicked(View view) {
         nickNameDialog.dismiss();
+    }
+
+    private void setupFirebaseUser() {
+        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level1").setValue("0");
+        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level2").setValue("0");
+        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level3").setValue("0");
+        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level4").setValue("0");
+        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level5").setValue("0");
+
     }
 
 

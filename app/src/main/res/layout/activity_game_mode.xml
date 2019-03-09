@@ -14,6 +14,29 @@
         android:layout_margin="55dp"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tv_auth_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Currently Offline"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="15dp"
+            android:layout_marginBottom="10dp"/>
+
+        <Button
+            android:id="@+id/b_offline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:background="@drawable/transparent_button"
+            android:textColor="@color/white"
+            android:layout_margin="5dp"
+            android:textAllCaps="false"
+            android:baselineAligned="false"
+            android:onClick="offlineButtonClicked"
+            android:text="Offline" />
+
         <Button
             android:id="@+id/b_Solo"
             android:layout_width="match_parent"
@@ -23,6 +46,7 @@
             android:textColor="@color/white"
             android:layout_margin="5dp"
             android:baselineAligned="false"
+            android:textAllCaps="false"
             android:onClick="soloButtonClicked"
             android:text="Solo" />
 
@@ -34,8 +58,22 @@
             android:textColor="@color/white"
             android:layout_margin="5dp"
             android:layout_marginBottom="317dp"
+            android:textAllCaps="false"
             android:onClick="duelButtonClicked"
             android:text="Duel" />
+
+        <Button
+            android:id="@+id/b_game_mode_logout"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:background="@drawable/transparent_button"
+            android:textColor="@color/white"
+            android:layout_margin="5dp"
+            android:onClick="gameModelogoutButtonClicked"
+            android:text="Log Out" />
     </LinearLayout>
 
 

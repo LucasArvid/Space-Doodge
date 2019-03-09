@@ -64,9 +64,12 @@ public class NotificationHandler extends BroadcastReceiver {
        if (intent.getAction().equals("accept")){
            //handle accept
            String gameId = fromUserId + "-" + getCurrentUserId();
+
            // Setup game on Firebase database.
-           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenger").setValue(to);
-           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenged").setValue(me);
+           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenger").child("Score").setValue("0");
+           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenged").child("Score").setValue("0");
+           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenged").child("Dead").setValue("false");
+           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenger").child("Dead").setValue("false");
            FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("playerOneReady").setValue("false");
            FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("playerTwoReady").setValue("false");
            FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("startGame").setValue("false");

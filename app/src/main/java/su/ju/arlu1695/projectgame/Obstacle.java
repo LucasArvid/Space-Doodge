@@ -1,5 +1,6 @@
 package su.ju.arlu1695.projectgame;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -7,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.widget.Toast;
 
 public class Obstacle implements GameObjects{
 
@@ -23,9 +25,9 @@ public class Obstacle implements GameObjects{
         rectangle = new Rect(0, startY, startX, startY + obstacleHeight);
         rectangleTwo = new Rect(startX + playerGap, startY, Constants.SCREEN_WIDTH, startY + obstacleHeight);
 
-        // Animations
-        BitmapFactory bitmapFactory = new BitmapFactory();
-        idleImg = bitmapFactory.decodeResource(Constants.GAME_CONTEXT.getResources(), R.drawable.slice03_03);
+        // levelDesign
+        loadLevelAssets();
+
 
 
 
@@ -42,8 +44,32 @@ public class Obstacle implements GameObjects{
         rectangleTwo.bottom += y;
     }
 
+
+
     public Rect getRectangle() {
         return rectangle;
+    }
+
+    private void loadLevelAssets() {
+        BitmapFactory bitmapFactory = new BitmapFactory();
+        switch (Constants.LEVEL_SELECTED) {
+            case 0:
+                idleImg = bitmapFactory.decodeResource(Constants.GAME_CONTEXT.getResources(), R.drawable.dirtslice03);
+                break;
+            case 1:
+                idleImg = bitmapFactory.decodeResource(Constants.GAME_CONTEXT.getResources(), R.drawable.grassslice03);
+                break;
+            case 2:
+                idleImg = bitmapFactory.decodeResource(Constants.GAME_CONTEXT.getResources(), R.drawable.sandslice03);
+                break;
+            case 3:
+                idleImg = bitmapFactory.decodeResource(Constants.GAME_CONTEXT.getResources(), R.drawable.tundraslice03);
+                break;
+            case 4:
+                idleImg = bitmapFactory.decodeResource(Constants.GAME_CONTEXT.getResources(), R.drawable.metalslice03);
+                break;
+
+        }
     }
 
     @Override

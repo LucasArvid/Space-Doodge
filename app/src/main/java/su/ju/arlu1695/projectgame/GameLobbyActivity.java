@@ -170,7 +170,13 @@ public class GameLobbyActivity extends AppCompatActivity {
                     // Start game
                     if (dataSnapshot.child("startGame").getValue().equals("true") && r1 && r2) {
                         Toast.makeText(GameLobbyActivity.this, "Start GAME!?", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(GameLobbyActivity.this, MainGameActivity.class));
+                        startActivity(new Intent(GameLobbyActivity.this, MainGameActivity.class)
+                                .putExtra("mode","online")
+                                .putExtra("gameId", gameId)
+                                .putExtra("me",me)
+                                .putExtra("fromName",fromName));
+                        FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("startGame").setValue("false");
+                        finish();
                     }
                 }
             }
