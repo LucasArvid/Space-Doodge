@@ -18,7 +18,7 @@
             android:id="@+id/tv_auth_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Currently Offline"
+            android:text="@string/currently_offline"
             android:textColor="@color/white"
             android:gravity="center"
             android:textSize="15dp"
@@ -35,7 +35,7 @@
             android:textAllCaps="false"
             android:baselineAligned="false"
             android:onClick="offlineButtonClicked"
-            android:text="Offline" />
+            android:text="@string/offline" />
 
         <Button
             android:id="@+id/b_Solo"
@@ -48,7 +48,7 @@
             android:baselineAligned="false"
             android:textAllCaps="false"
             android:onClick="soloButtonClicked"
-            android:text="Solo" />
+            android:text="@string/solo" />
 
         <Button
             android:id="@+id/b_Duel"
@@ -60,7 +60,7 @@
             android:layout_marginBottom="317dp"
             android:textAllCaps="false"
             android:onClick="duelButtonClicked"
-            android:text="Duel" />
+            android:text="@string/duel" />
 
         <Button
             android:id="@+id/b_game_mode_logout"
@@ -73,7 +73,7 @@
             android:textColor="@color/white"
             android:layout_margin="5dp"
             android:onClick="gameModelogoutButtonClicked"
-            android:text="Log Out" />
+            android:text="@string/log_out" />
     </LinearLayout>
 
 

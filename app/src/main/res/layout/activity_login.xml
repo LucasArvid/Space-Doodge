@@ -28,13 +28,13 @@
     <EditText
             android:id="@+id/fieldEmail"
             style="@style/myEditText_style"
-            android:hint="Enter Email"
+            android:hint="@string/enter_email"
             android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/fieldPassword"
             style="@style/myEditText_style"
-            android:hint="Enter Password"
+            android:hint="@string/enter_password"
             android:inputType="textPassword"
             android:autofillHints="" />
 
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:onClick="signinOrRegisterClicked"
-            android:text="Sign in" />
+            android:text="@string/sign_in" />
 
         <Button
             android:id="@+id/emailCreateAccountButton"
@@ -63,19 +63,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:onClick="signinOrRegisterClicked"
-            android:text="Create account" />
+            android:text="@string/create_account" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:text="Forgot your password?"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="20dp"
-        android:clickable="true"
-        android:onClick="forgottenPasswordClicked"/>
+
 
 
 </LinearLayout>

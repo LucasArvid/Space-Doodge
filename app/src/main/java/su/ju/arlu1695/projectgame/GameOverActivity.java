@@ -1,5 +1,6 @@
 package su.ju.arlu1695.projectgame;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,10 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import static android.view.View.GONE;
-import static su.ju.arlu1695.projectgame.Util.getCurrentUserId;
 
 public class GameOverActivity extends AppCompatActivity {
 
@@ -29,6 +27,8 @@ public class GameOverActivity extends AppCompatActivity {
     private int score;
     private String opponentScore;
     private String wonOrLost;
+
+    private ProgressDialog progressDialog;
 
     private Button restartButton;
 
@@ -40,6 +40,7 @@ public class GameOverActivity extends AppCompatActivity {
     private TextView tv_hsUpdate;
 
     private ImageView iv_alien;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,8 @@ public class GameOverActivity extends AppCompatActivity {
         score = extrasBundle.getInt("score");
         wonOrLost = extrasBundle.getString("wonOrLost");
         opponentScore = extrasBundle.getString("opponentScore");
+
+        progressDialog = new ProgressDialog(this);
 
         tv_score = (TextView) findViewById(R.id.tv_my_score);
 
@@ -77,9 +80,11 @@ public class GameOverActivity extends AppCompatActivity {
 
     public void handleOfflinePlay() {
         tv_score.setText(String.format(
-                "Final Score: %s",
+                "%s: %s",
+                Constants.GAME_CONTEXT.getResources().getString(R.string.final_score),
                 score
         ));
+        tv_hsUpdate.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.highscores_only_updated_in_solo));
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,28 +97,15 @@ public class GameOverActivity extends AppCompatActivity {
 
     public void handleSoloPlay() {
         tv_score.setText(String.format(
-                "Final Score: %s",
+                "%s: %s",
+                Constants.GAME_CONTEXT.getResources().getString(R.string.final_score),
                 score
         ));
-        final String format = String.format("level%d",
-                (Constants.LEVEL_SELECTED+1)); // levels start from index 0, database starts from 1
-        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        firebaseRef.child("User").child(currentUser.getUid()).child("highscore")
-                .addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.child(format).getValue(Integer.class) < score || dataSnapshot.child(format).getValue() == null ) {
-                        firebaseRef.child("User").child(currentUser.getUid()).child("highscore").child(format).setValue(score);
-                        firebaseRef.child("leaderboard").child(format).child(Integer.toString(score)).setValue(Constants.thisUser.getNickname());
-                    }
+        tv_hsUpdate.setText(" ");
+        progressDialog.setMessage(Constants.GAME_CONTEXT.getResources().getString(R.string.updating_highscores_please_wait));
+        progressDialog.show();
+        udpateScore();
 
-                }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,30 +131,89 @@ public class GameOverActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child(me).child("Score").setValue(score);
         if(wonOrLost.equals("lost"))
             FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child(me).child("Dead").setValue("true");
+        else if(wonOrLost.equals("won"))
+            FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).setValue(null); // remove game from database
 
         restartButton.setVisibility(GONE);
 
         tv_score.setText(String.format(
-                "Final Score: %s",
+                "%s: %s",
+                Constants.GAME_CONTEXT.getResources().getString(R.string.final_score),
                 score
         ));
 
 
         if(wonOrLost.equals("won")) {
-            tv_wonOrLoss.setText("Hurray, opponent died!");
+            tv_wonOrLoss.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.hurray_opponent_died));
             iv_alien.setImageResource(R.drawable.aliengreen);
         }
         else if (wonOrLost.equals("lost")) {
-            tv_wonOrLoss.setText("Bitter defeat!");
+            tv_wonOrLoss.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.bitter_defeat));
 
         }
-        tv_hsUpdate.setText("Highscore will be updated!");
+        tv_hsUpdate.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.highscores_only_updated_in_solo));
 
 
     }
 
+    private void udpateScore() {
+        final String format = String.format("level%d",
+                (Constants.LEVEL_SELECTED+1)); // levels start from index 0, database starts from 1
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseRef.child("User").child(currentUser.getUid()).child("highscore")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child(format).getValue(Integer.class) < score || dataSnapshot.child(format).getValue() == null ) {
+                            firebaseRef.child("User").child(currentUser.getUid()).child("highscore").child(format).setValue(score);
+                            tv_hsUpdate.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.new_highscore));
+                            updateLeaderboard();
+                        } else
+                            progressDialog.dismiss();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+    }
+
+    private void updateLeaderboard() {
+        final String format = String.format("level%d",
+                (Constants.LEVEL_SELECTED+1)); // levels start from index 0, database starts from 1
+        firebaseRef.child("leaderboard").child(format).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int count = 0; // top 50 count
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    count++;
+                    if (ds.getValue(String.class).equals(Constants.thisUser.getNickname())){
+                        String child = ds.getKey();
+                        firebaseRef.child("leaderboard").child(format).child(child).setValue(null);
+                        firebaseRef.child("leaderboard").child(format).child(Integer.toString(score)).setValue(Constants.thisUser.getNickname());
+                        break;
+                    }
+                    if (count >= 50) // not placed in top 50
+                        break;
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void gameOverExitButtonClicked(View view) {
         finish();
+        Constants.stopMediaPlayer();
+        Constants.startMediaPlayer(R.raw.soft_and_furious_06_and_never_come_back);
         startActivity(new Intent(this, MainActivity.class));
     }
 }

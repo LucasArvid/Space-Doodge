@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:id="@+id/tv_levelSelected"
             android:layout_height="wrap_content"
-            android:text="Getting Highscores..."
+            android:text="@string/getting_highscores"
             android:textStyle="italic"
             android:textSize="15dp"
             android:textColor="@color/white"

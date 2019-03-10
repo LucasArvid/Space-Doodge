@@ -16,8 +16,9 @@ public class LevelSelectActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_levelselect);
-
         getSupportActionBar().hide();
+
+        Constants.startMediaPlayer(0);
 
         Intent intent = getIntent();
         final String me = intent.getExtras().getString("me");
@@ -43,5 +44,17 @@ public class LevelSelectActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Constants.pauseMediaPlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Constants.startMediaPlayer(0);
     }
 }

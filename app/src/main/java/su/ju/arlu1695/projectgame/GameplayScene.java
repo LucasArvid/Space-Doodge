@@ -24,6 +24,8 @@ public class GameplayScene implements Scene {
     private Point playerPoint;
     private ObstacleHandler obstacleHandler;
 
+    private String me;
+
     private Levels level;
 
     private boolean playerMoving = false;
@@ -34,7 +36,7 @@ public class GameplayScene implements Scene {
     private Button restartButton;
     private Button exitButton;
 
-    public GameplayScene() {
+    public GameplayScene(String me) {
         // Get level data
         level = new Levels(Constants.GAME_CONTEXT);
         level.readLevelData();
@@ -42,6 +44,8 @@ public class GameplayScene implements Scene {
         player = new Player(new Rect(100,100,200,200), Color.rgb(255,0,0));
         playerPoint = new Point(Constants.SCREEN_WIDTH/2,3*Constants.SCREEN_HEIGHT/4);
         player.update(playerPoint);
+
+        this.me = me;
 
         // Obstacle handler instantiated dependent on level.
         obstacleHandler = new ObstacleHandler(level.getPlayerGap(),level.getObstacleGap(), level.getObstacleHeight(), Color.BLACK);
@@ -80,54 +84,13 @@ public class GameplayScene implements Scene {
         }
     }
 
-    /*public void gameOverUI() {
-        uiRunning = true;
-        final Dialog gameOverDialog = new Dialog(Constants.GAME_CONTEXT);
-        gameOverDialog.setContentView(R.layout.activity_game_over);
-
-        LinearLayout gameOverLayout = (LinearLayout) gameOverDialog.findViewById(R.id.ll_game_over);
-        exitButton = (Button)gameOverDialog.findViewById(R.id.b_gameOverExit);
-        restartButton = (Button)gameOverDialog.findViewById(R.id.b_gameOverRestart);
-
-        // reuse GameOver Layout as popup
-        ViewGroup.LayoutParams params = gameOverLayout.getLayoutParams();
-        params.height = Constants.SCREEN_HEIGHT;
-        params.width = Constants.SCREEN_WIDTH;
-        gameOverLayout.setLayoutParams(params);
-
-        TextView tv_score = (TextView) gameOverDialog.findViewById(R.id.tv_my_score);
-        tv_score.setText(String.format(
-                "Final Score: %s",
-                obstacleHandler.getScore()
-        ));
-        restartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resetGame();
-                gameOver = false;
-                uiRunning = false;
-                gameOverDialog.dismiss();
-            }
-        });
-        exitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameOver = false;
-                Constants.GAME_CONTEXT.startActivity(new Intent(Constants.GAME_CONTEXT, MainActivity.class));
-                uiRunning = false;
-                gameOverDialog.dismiss();
-            }
-        });
-        gameOverDialog.show();
-
-    } */
 
     public void gameOverUI() {
         uiRunning = true;
 
         Constants.GAME_CONTEXT.startActivity(new Intent(Constants.GAME_CONTEXT, GameOverActivity.class)
                 .putExtra("score", obstacleHandler.getScore())
-                .putExtra("me", "solo"));
+                .putExtra("me", me));
 
 
     }
@@ -144,7 +107,7 @@ public class GameplayScene implements Scene {
             Paint paint = new Paint();
             paint.setTextSize(100);
             paint.setColor(Color.WHITE);
-            drawCenterText(canvas,paint,"Tap to restart");
+            drawCenterText(canvas,paint,Constants.GAME_CONTEXT.getResources().getString(R.string.tap_to_restart));
         }
     }
 

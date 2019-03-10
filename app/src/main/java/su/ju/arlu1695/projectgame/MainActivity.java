@@ -4,6 +4,7 @@
  */
 package su.ju.arlu1695.projectgame;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -45,11 +46,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
+
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         // setup default Constants, grab device dimensions.
-        Constants.setDefaultSettings();
+        Constants.setupContext(this);
+        Constants.startMediaPlayer(R.raw.soft_and_furious_06_and_never_come_back);
         Constants.SCREEN_WIDTH = dm.widthPixels;
         Constants.SCREEN_HEIGHT = dm.heightPixels;
         Constants.SCREEN_HEIGHT_COEFFICIENT = Constants.SCREEN_HEIGHT / 13;
@@ -102,6 +105,18 @@ public class MainActivity extends AppCompatActivity {
                 .putExtra("gameId", "Zjb3LfBbJcSeu4i0j6KJ6ckYNO72-ylP7GwE0xxOEn3UDQA46LaX0roX2")
                 .putExtra("fromName", "Lucky"));
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Constants.pauseMediaPlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Constants.startMediaPlayer(0);
     }
 
 

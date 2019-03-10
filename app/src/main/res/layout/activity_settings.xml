@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="204dp"
-        android:text="Music"
+        android:text="@string/music"
         android:textColor="@color/white"
         android:background="@drawable/transparent_button"
         android:textSize="20dp"
@@ -28,7 +28,7 @@
         android:textSize="20dp"
         android:textColor="@color/white"
         android:background="@drawable/transparent_button"
-        android:text="Sound"
+        android:text="@string/sound"
         android:checked="true"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:id="@+id/s_notifications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Push notifications"
+            android:text="@string/push_notifications"
             android:textColor="@color/white"
             android:textSize="15dp"
             android:background="@drawable/transparent_button"

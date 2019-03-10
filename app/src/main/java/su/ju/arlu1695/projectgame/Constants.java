@@ -1,6 +1,9 @@
 package su.ju.arlu1695.projectgame;
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
+import android.support.annotation.RawRes;
 
 import java.util.ArrayList;
 
@@ -13,6 +16,9 @@ public class Constants {
     public static int SCREEN_HEIGHT_COEFFICIENT;
 
     public static int LEVEL_SELECTED;
+
+    private static  MediaPlayer mediaPlayer;
+    private static Context mainContext; // context for media player
 
     public static Context GAME_CONTEXT;
 
@@ -27,9 +33,9 @@ public class Constants {
     // Local tracking of current user. Used for e.g. sending notifications
     public static User thisUser = new User();
 
-    public static boolean ALLOW_INVITES;
-    public static boolean ALLOW_MUSIC;
-    public static boolean ALLOW_SOUND;
+    public static boolean ALLOW_INVITES = true;
+    public static boolean ALLOW_MUSIC = true;
+    public static boolean ALLOW_SOUND = true;
 
     public static GameThread thread;
 
@@ -54,10 +60,32 @@ public class Constants {
         }
     }
 
+    // filePath = 0 for simple resume
+    public static void startMediaPlayer(int filePath) {
+        if(!ALLOW_MUSIC)
+            return;
+        if (mediaPlayer == null && filePath != 0) {
+            mediaPlayer = MediaPlayer.create(mainContext, filePath);
+            mediaPlayer.isLooping();
+        }
+        mediaPlayer.start();
 
-    public static void setDefaultSettings() {
-        ALLOW_INVITES = true;
-        ALLOW_MUSIC = true;
-        ALLOW_SOUND  = true;
+    }
+
+    public static void stopMediaPlayer() {
+        if(mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    public static void pauseMediaPlayer() {
+        if(mediaPlayer!= null)
+            mediaPlayer.pause();
+    }
+
+    public static void setupContext(Context context) {
+        mainContext = context;
+
     }
 }

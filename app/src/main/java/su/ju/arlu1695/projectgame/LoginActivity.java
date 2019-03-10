@@ -100,21 +100,20 @@ public class LoginActivity extends AppCompatActivity {
 
         if(TextUtils.isEmpty(email)) {
             // email empty
-            Toast.makeText(this,"Please enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getResources().getString(R.string.please_enter_email), Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(TextUtils.isEmpty(password)) {
             // password empty
-            Toast.makeText(this,"Please enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getResources().getString(R.string.please_enter_password), Toast.LENGTH_SHORT).show();
             return;
         }
         // register user
 
-        progressDialog.setMessage("Registering User, please wait...");
+        progressDialog.setMessage(getResources().getString(R.string.registering_user));
         progressDialog.show();
 
-        setupFirebaseUser();
 
         firebaseAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -123,9 +122,9 @@ public class LoginActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         if(task.isSuccessful()) {
                             setNickName();
-                            Toast.makeText(LoginActivity.this, "Registered Successfully",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.registered_successfully),Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(LoginActivity.this, "Error when registering, please try again",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.error_when_registering),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -137,18 +136,18 @@ public class LoginActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(email)) {
             // email empty
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.please_enter_email), Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
             // password empty
-            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.please_enter_password), Toast.LENGTH_SHORT).show();
             return;
 
         }
 
-        progressDialog.setMessage("Logging in, please wait...");
+        progressDialog.setMessage(getResources().getString(R.string.logging_in_please_wait));
         progressDialog.show();
 
         firebaseAuth.signInWithEmailAndPassword(email,password)
@@ -164,9 +163,9 @@ public class LoginActivity extends AppCompatActivity {
                                         .putExtra("me","solo"));
                             else if(mode.equals("duel"))
                                 startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
-                            Toast.makeText(LoginActivity.this, "Login Successfully",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_successfull),Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(LoginActivity.this, "Login Unsuccessful, please try again",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_unsuccessfull),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -186,11 +185,6 @@ public class LoginActivity extends AppCompatActivity {
         userLogin();
     }
 
-    public void forgottenPasswordClicked(View view) {
-        //To be done
-        Toast.makeText(this, "Too bad, write it down next time", Toast.LENGTH_SHORT).show();
-
-    }
 
     public void setNickName() {
         Button saveUsername;
@@ -216,6 +210,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                                     }
                                                 });
+                                                setupFirebaseUser();
                                                 nickNameDialog.dismiss();
                                                 finish();
                                                 if(mode.equals("solo"))
@@ -239,10 +234,8 @@ public class LoginActivity extends AppCompatActivity {
                     String topic = dataSnapshot.getValue().toString();
                     Constants.thisUser.setNickname(topic);
                     FirebaseMessaging.getInstance().subscribeToTopic(topic);
-                    Toast.makeText(LoginActivity.this, topic,Toast.LENGTH_SHORT).show();
                 }
-                else
-                    Toast.makeText(LoginActivity.this, "what",Toast.LENGTH_SHORT).show();
+
 
             }
 
@@ -260,12 +253,25 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupFirebaseUser() {
-        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level1").setValue("0");
-        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level2").setValue("0");
-        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level3").setValue("0");
-        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level4").setValue("0");
-        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level5").setValue("0");
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level1").setValue(0);
+        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level2").setValue(0);
+        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level3").setValue(0);
+        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level4").setValue(0);
+        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level5").setValue(0);
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Constants.pauseMediaPlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Constants.startMediaPlayer(0);
     }
 
 

@@ -1,19 +1,12 @@
 package su.ju.arlu1695.projectgame;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.NotificationManagerCompat;
+
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -27,30 +20,14 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         getSupportActionBar().hide();
 
+        Constants.startMediaPlayer(0);
+
         // Declaration of switches
         allowNotifications = (Switch) findViewById(R.id.s_notifications);
         allowMusic = (Switch) findViewById(R.id.s_music);
         allowSound = (Switch) findViewById(R.id.s_sound);
         resumeSettingsActivity();
 
-        FirebaseDatabase.getInstance().getReference().child("Games").child("Zjb3LfBbJcSeu4i0j6KJ6ckYNO72-ylP7GwE0xxOEn3UDQA46LaX0roX2").child("challenged").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    // Look for opponent death
-                    if (dataSnapshot.child("Dead").getValue().equals("true")) {
-                        String opponentScore = dataSnapshot.child("Score").getValue().toString();
-                        Toast.makeText(SettingsActivity.this, opponentScore, Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         allowNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -67,8 +44,10 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(compoundButton.isChecked() == true) {
+                    Constants.startMediaPlayer(R.raw.soft_and_furious_06_and_never_come_back);
                     Constants.ALLOW_MUSIC = true;
                 } else {
+                    Constants.stopMediaPlayer();
                     Constants.ALLOW_MUSIC = false;
                 }
             }
@@ -93,5 +72,17 @@ public class SettingsActivity extends AppCompatActivity {
         allowMusic.setChecked(Constants.ALLOW_MUSIC);
         allowSound.setChecked(Constants.ALLOW_SOUND);
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Constants.pauseMediaPlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Constants.startMediaPlayer(0);
     }
 }

@@ -17,6 +17,9 @@ public class MainGameActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        Constants.stopMediaPlayer();
+        Constants.startMediaPlayer(R.raw.soft_and_furious_05_falling_into_the_game);
+
         Intent intent = getIntent();
         String mode = intent.getStringExtra("mode");
         String gameId = intent.getStringExtra("gameId");
@@ -25,4 +28,6 @@ public class MainGameActivity extends Activity {
 
 
     }
+
+
 }

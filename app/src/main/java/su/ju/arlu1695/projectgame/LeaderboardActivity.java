@@ -1,36 +1,26 @@
 package su.ju.arlu1695.projectgame;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static su.ju.arlu1695.projectgame.Util.savePushToken;
 
 public class LeaderboardActivity extends AppCompatActivity {
 
@@ -38,7 +28,6 @@ public class LeaderboardActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference myRef;
 
-    private ProgressDialog progressDialog;
     private Dialog leaderboardDialog;
 
     private ListView leaderBoardListView;
@@ -52,6 +41,8 @@ public class LeaderboardActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
+
+        Constants.startMediaPlayer(0);
 
         getSupportActionBar().hide();
 
@@ -97,20 +88,22 @@ public class LeaderboardActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 mLeaderBoardList.clear();
-                int tick = 0;
+                int count = 0; // top 50 count
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     if (ds.getKey().equals("level"+(position+1))) {
                         for (DataSnapshot dsUsers : ds.getChildren()) {
-                            tick++;
+                            count++;
                             String user = dsUsers.getValue().toString();
                             String score = dsUsers.getKey();
-                            String format = String.format("Player: %s   Score:%s",
+                            String format = String.format("%s: %s   %s:%s",
+                                    getResources().getString(R.string.player),
                                     user,
+                                    getResources().getString(R.string.score),
                                     score);
                             mLeaderBoardList.add(format);
                             Collections.reverse(mLeaderBoardList);
                             arrayAdapter.notifyDataSetChanged();
-                            if(tick == 50)
+                            if(count == 50) // not placed in top 50
                                 return;
                         }
                     }
@@ -130,4 +123,17 @@ public class LeaderboardActivity extends AppCompatActivity {
     public void popUpExitButtonCLicked(View view) {
         leaderboardDialog.dismiss();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Constants.pauseMediaPlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Constants.startMediaPlayer(0);
+    }
 }
+

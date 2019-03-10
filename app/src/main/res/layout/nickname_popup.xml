@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome!"
+            android:text="@string/welcome"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nickname will help other users identify you"
+            android:text="@string/nickname_will_help_users_id_you"
             android:textStyle="italic"
             android:textSize="10dp"
             android:textColor="@color/white"
@@ -63,7 +63,7 @@
             <EditText
                 android:id="@+id/et_nickname"
                 style="@style/myEditText_style"
-                android:hint="Enter Nickname" />
+                android:hint="@string/enter_nickname" />
 
             <Button
                 android:id="@+id/b_save_username"
@@ -73,7 +73,7 @@
                 android:onClick="saveUserInformation"
                 android:background="@drawable/transparent_button"
                 android:textColor="@color/white"
-                android:text="Save" />
+                android:text="@string/save" />
 
         </LinearLayout>
 

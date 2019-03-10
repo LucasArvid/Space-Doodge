@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -159,17 +158,16 @@ public class GameLobbyActivity extends AppCompatActivity {
                     String levelString = dataSnapshot.child("level").getValue().toString();
                     int levelInt = Integer.parseInt(levelString);
                     if(levelInt > 0) {
-                        tv_levelSelected.setText(String.format("Level %s has been chosen.",levelInt));
+                        tv_levelSelected.setText(String.format("Level %s &s.",levelInt,Constants.GAME_CONTEXT.getResources().getString(R.string.has_been_chosen)));
                         Constants.LEVEL_SELECTED = (levelInt-1); // Level 1 = index 0;
                     }
                     // Players not ready
                     if ((dataSnapshot.child("startGame").getValue().equals("true")) && !(r1 && r2)) {
                         Button startGameButton = (Button) findViewById(R.id.b_level_start);
-                        startGameButton.setText("Waiting for players...");
+                        startGameButton.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.waiting_for_players));
                     }
                     // Start game
                     if (dataSnapshot.child("startGame").getValue().equals("true") && r1 && r2) {
-                        Toast.makeText(GameLobbyActivity.this, "Start GAME!?", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(GameLobbyActivity.this, MainGameActivity.class)
                                 .putExtra("mode","online")
                                 .putExtra("gameId", gameId)

@@ -29,6 +29,8 @@ public class GameModeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_mode);
 
+        Constants.startMediaPlayer(0);
+
         firebaseAuth = FirebaseAuth.getInstance();
         tv_auth_status = (TextView) findViewById(R.id.tv_auth_status);
 
@@ -41,7 +43,7 @@ public class GameModeActivity extends AppCompatActivity {
 
     public void offlineButtonClicked(View view) {
         Intent intent = new Intent(this, LevelSelectActivity.class)
-                .putExtra("me","offline");
+                .putExtra("me", "offline");
         startActivity(intent);
     }
 
@@ -65,10 +67,22 @@ public class GameModeActivity extends AppCompatActivity {
     private void getAuthStatus() {
 
         if (firebaseAuth.getCurrentUser() != null) {
-            tv_auth_status.setText("Currently logged in");
+            tv_auth_status.setText(getResources().getString(R.string.currently_logged_in));
 
         }else
-            tv_auth_status.setText("Currently not logged in");
+            tv_auth_status.setText(getResources().getString(R.string.currently_offline));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Constants.pauseMediaPlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Constants.startMediaPlayer(0);
     }
 
 }

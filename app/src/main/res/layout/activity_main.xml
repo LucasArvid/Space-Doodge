@@ -39,7 +39,7 @@
                     android:baselineAligned="false"
                     android:layout_margin="5dp"
                     android:onClick="startGameButtonClicked"
-                    android:text="Start Game"
+                    android:text="@string/start_game"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                 <Button
@@ -50,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="leaderboardButtonClicked"
-                    android:text="Leaderboard"
+                    android:text="@string/leaderboard"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                 <Button
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:onClick="settingsButtonClicked"
-                    android:text="Settings"
+                    android:text="@string/settings"
 
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
             </LinearLayout>

@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Top 5 spots"
+            android:text="@string/top_5_ranks"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
@@ -61,53 +61,10 @@
             android:orientation="horizontal"
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
-
-            <TextView
-                android:id="@+id/tv_friend_rank"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="Level 1 Place 5"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:background="@drawable/transparent_button"/>
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="Level 2 Place 5"
-                android:textStyle="bold"
-                android:layout_marginLeft="7dp"
-                android:textColor="@color/white"
-                android:background="@drawable/transparent_button"/>
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:background="@drawable/transparent_button"
-                android:text="Level 3 Place 5"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="Level 4 Place 5"
-                android:textStyle="bold"
-                android:layout_marginLeft="7dp"
-                android:textColor="@color/white"
-                android:background="@drawable/transparent_button"/>
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="Level 4 Place 5"
-                android:textStyle="bold"
-                android:layout_marginLeft="7dp"
-                android:textColor="@color/white"
-                android:background="@drawable/transparent_button"/>
         </LinearLayout>
+
     </HorizontalScrollView>
 
     <Button
@@ -116,10 +73,10 @@
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:onClick="saveUserInformation"
+        android:onClick="removeFriendButtonClicked"
         android:background="@drawable/transparent_button"
         android:textColor="@color/white"
-        android:text="Remove Friend"
+        android:text="@string/remove_friend"
         android:textAllCaps="false"/>
 
 

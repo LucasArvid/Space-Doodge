@@ -19,7 +19,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Add friend"
+            android:hint="@string/add_friend"
             android:layout_weight="1"/>
 
         <ImageView
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:id="@+id/tv_friends"
             android:layout_height="wrap_content"
-            android:text="Friends"
+            android:text="@string/friends"
             android:textStyle="italic"
             android:textSize="15dp"
             android:textColor="@color/white"

@@ -8,14 +8,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
+import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -69,6 +72,8 @@ public class OnlineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_online);
         getSupportActionBar().hide();
 
+        Constants.startMediaPlayer(0);
+
         textView = (TextView) findViewById(R.id.user_list_status);
         userList = new UserList();
 
@@ -102,7 +107,7 @@ public class OnlineActivity extends AppCompatActivity {
                         }
                     }
                 }
-                textView.setText("Online users:");
+                textView.setText(getResources().getString(R.string.online_users));
             }
 
                 @Override
@@ -116,8 +121,7 @@ public class OnlineActivity extends AppCompatActivity {
         userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String userClicked = userList.getUser(position).getNickname();
-                Toast.makeText(OnlineActivity.this, userClicked, Toast.LENGTH_SHORT).show();
+                String userClicked = mUserName.get(position);
                 OkHttpClient client = new OkHttpClient();
                 String format = String.format("%s/sendNotification?to=%s&fromName=%s&fromId=%s&type=invite&title=hello&body=body",
                         Constants.FIREBASE_CLOUD_FUNCTIONS_BASE,
@@ -201,14 +205,13 @@ public class OnlineActivity extends AppCompatActivity {
 
         // Connect TV,layouts and Buttons.
         TextView tv_friend = (TextView) friendsDialog.findViewById(R.id.tv_friendsName);
-        final TextView tv_friend_rank = (TextView) friendsDialog.findViewById(R.id.tv_friend_rank);
-        LinearLayout friendRankingsLayout = (LinearLayout) friendsDialog.findViewById(R.id.friend_ranking_layout);
-
+        final LinearLayout ll_ranking_layout = (LinearLayout) friendsDialog.findViewById(R.id.friend_ranking_layout);
+        Button b_removeFriend = (Button) friendsDialog.findViewById(R.id.b_remove_friend);
 
         final String friend = mFriendsName.get(position);
-        tv_friend.setText(friend + "'s profile");
+        tv_friend.setText(friend + getResources().getString(R.string.s_profile));
 
-        FirebaseDatabase.getInstance().getReference().child("leaderboard").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("leaderboard").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int level = 0;
@@ -217,11 +220,21 @@ public class OnlineActivity extends AppCompatActivity {
                     level++;
                     for(DataSnapshot hsDs : ds.getChildren()){
                         rank++;
-                        if (hsDs.getValue().equals(friend))
-                            tv_friend_rank.setText(String.format("Level %d Place %d",
+                        if (hsDs.getValue().equals(friend)) {
+                            TextView tv_friend_rank = new TextView(new ContextThemeWrapper(OnlineActivity.this, R.style.myFriendRank_style), null, 0);
+                            tv_friend_rank.setText(String.format("Level %d Rank %d",
                                     level,
                                     rank
                             ));
+
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            params.setMargins(18,0,0,0);
+                            tv_friend_rank.setLayoutParams(params);
+                            ll_ranking_layout.addView(tv_friend_rank);
+
+                            rank = 0;
+                            break;
+                        }
 
                     }
                 }
@@ -233,6 +246,29 @@ public class OnlineActivity extends AppCompatActivity {
             }
         });
 
+        b_removeFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference().child("User").child(getCurrentUserId()).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            if (ds.getKey().equals(friend))
+                                FirebaseDatabase.getInstance().getReference().child("User").child(getCurrentUserId()).child("friends").child(friend).setValue(null);
+                                friendsDialog.dismiss();
+                                return;
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
         // ToDO parse Database and add new textViews to layout if user has any top 5 ranking spots.
 
 
@@ -248,7 +284,7 @@ public class OnlineActivity extends AppCompatActivity {
         final String friend = findFried.getText().toString().trim();
 
         // Verify that friend request has a recipient.
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -256,7 +292,6 @@ public class OnlineActivity extends AppCompatActivity {
                         if(dsName.getValue().equals(friend)) {
                             Constants.thisUser.friendsList.add(friend);
                             FirebaseDatabase.getInstance().getReference().child("User").child(getCurrentUserId()).child("friends").child(friend).setValue("True");
-                            Toast.makeText(OnlineActivity.this, "Success", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
@@ -272,6 +307,18 @@ public class OnlineActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Constants.pauseMediaPlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Constants.startMediaPlayer(0);
     }
 
 

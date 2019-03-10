@@ -17,7 +17,7 @@ public class SceneHandler {
         if (mode.equals("online"))
             scenes.add(new GameplaySceneOnline(gameId,me));
         else
-            scenes.add(new GameplayScene());
+            scenes.add(new GameplayScene(me));
     }
 
     public void recieveTouch(MotionEvent event) {

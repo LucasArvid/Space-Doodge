@@ -1,23 +1,13 @@
 package su.ju.arlu1695.projectgame;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.constraint.solver.widgets.Rectangle;
+
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -27,23 +17,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private SceneHandler handler;
 
-    private Player player;
-    private Point playerPoint;
-    private ObstacleHandler obstacleHandler;
 
-    private Levels level;
-
-    private String gameId;
-    private String me;
-
-    private String opponent;
-    private String opponentScore = "0";
-
-    private boolean playerMoving = false;
-    private boolean gameOver = false;
-    private long gameOverDelay;
-    private boolean uiRunning = false;
-    private String wonOrLost = "lost";
 
 
     public GameView(Context context, String mode, String gameId, String me) {
@@ -106,17 +80,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // default return true
     }
 
-    public void gameOverUI() {
-        uiRunning = true;
 
-        Constants.GAME_CONTEXT.startActivity(new Intent(Constants.GAME_CONTEXT, GameOverActivity.class)
-                .putExtra("score", obstacleHandler.getScore())
-                .putExtra("me", me)
-                .putExtra("gameId", gameId)
-                .putExtra("wonOrLost",wonOrLost)
-                .putExtra("opponentScore",opponentScore));
-
-    }
 
 
 }
