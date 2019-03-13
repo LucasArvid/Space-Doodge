@@ -47,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Constants.startMediaPlayer(R.raw.soft_and_furious_06_and_never_come_back);
                     Constants.ALLOW_MUSIC = true;
                 } else {
-                    Constants.stopMediaPlayer();
+                    Constants.pauseMediaPlayer();
                     Constants.ALLOW_MUSIC = false;
                 }
             }
