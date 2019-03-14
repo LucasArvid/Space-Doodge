@@ -33,8 +33,10 @@ public class GameplayScene implements Scene {
     private long gameOverDelay;
     private boolean uiRunning = false;
 
-    private Button restartButton;
-    private Button exitButton;
+    private int START_POS_X = Constants.SCREEN_WIDTH/2;
+    private int START_POS_Y = Constants.SCREEN_HEIGHT - 150;
+
+
 
     public GameplayScene(String me) {
         // Get level data
@@ -42,7 +44,7 @@ public class GameplayScene implements Scene {
         level.readLevelData();
         // Instantiate Player
         player = new Player(new Rect(100,100,200,200), Color.rgb(255,0,0));
-        playerPoint = new Point(Constants.SCREEN_WIDTH/2,3*Constants.SCREEN_HEIGHT/4);
+        playerPoint = new Point(START_POS_X,START_POS_Y);
         player.update(playerPoint);
 
         this.me = me;
@@ -53,9 +55,9 @@ public class GameplayScene implements Scene {
 
     public void resetGame() {
         gameOver = false;
-        playerPoint = new Point(Constants.SCREEN_WIDTH/2,3*Constants.SCREEN_HEIGHT/4);
         player.update(playerPoint);
         obstacleHandler = new ObstacleHandler(level.getPlayerGap(),level.getObstacleGap(), level.getObstacleHeight(), Color.BLACK);
+        playerPoint = new Point(START_POS_X,START_POS_Y);
         playerMoving = false;
     }
 

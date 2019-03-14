@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,12 +15,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,26 +38,39 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import static su.ju.arlu1695.projectgame.Util.getCurrentUserId;
-import static su.ju.arlu1695.projectgame.Util.saveNickName;
 import static su.ju.arlu1695.projectgame.Util.savePushToken;
 
 public class LoginActivity extends AppCompatActivity {
+    // Google login request code
+    private int RC_SIGN_IN = 101;
 
+    // Firebase user tracking
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
     private FirebaseUser user;
 
+    // Firebase database reference
+    private DatabaseReference databaseReference;
+
+    // layout connections
     private Button buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewSignin;
 
+    // Google sign in client
+    private GoogleSignInClient mGoogleSignInClient;
+    private ProgressDialog googleSignInProgressDialog; // Login progress
+    private ProgressDialog googleAccountProgressDialog; // Account change progress
+    // Google signin button
+    private SignInButton googleSignInButton;
+
+    // Intent extra for identifying if duel or solo play
     private String mode;
 
     User myUser;
 
-    private ProgressDialog progressDialog;
+    // Progress dialogs for successful/failed login
+    private ProgressDialog progressDialog; // Email Login
     private Dialog nickNameDialog;
 
 
@@ -71,6 +91,14 @@ public class LoginActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         user = firebaseAuth.getCurrentUser();
 
+        // Google Sign in Button
+        googleSignInButton = (SignInButton) findViewById(R.id.googleSignInButton);
+        googleSignInProgressDialog = new ProgressDialog(this);
+        googleAccountProgressDialog = new ProgressDialog(this);
+        googleAccountProgressDialog.setMessage(getResources().getString(R.string.changing_account));
+        googleSignInProgressDialog.setMessage(getResources().getString(R.string.logging_in_please_wait));
+        configureGoogleSignIn();
+
         if (firebaseAuth.getCurrentUser() != null){
             setNotificationTopic();
             finish();
@@ -89,6 +117,14 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = (EditText) findViewById(R.id.fieldPassword);
 
         textViewSignin = (TextView) findViewById(R.id.emailSignInButton);
+
+        googleSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                googleSignInProgressDialog.show();
+                googleSignIn();
+            }
+        });
 
 
 
@@ -122,7 +158,6 @@ public class LoginActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         if(task.isSuccessful()) {
                             setNickName();
-                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.registered_successfully),Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(LoginActivity.this, getResources().getString(R.string.error_when_registering),Toast.LENGTH_SHORT).show();
                         }
@@ -163,7 +198,6 @@ public class LoginActivity extends AppCompatActivity {
                                         .putExtra("me","solo"));
                             else if(mode.equals("duel"))
                                 startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
-                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_successfull),Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_unsuccessfull),Toast.LENGTH_SHORT).show();
                         }
@@ -260,6 +294,83 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level4").setValue(0);
         FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level5").setValue(0);
 
+    }
+
+
+    private void configureGoogleSignIn() {
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("336175886504-2nborf0it56gs89bs20gd5nm6vofnbd9.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+        // Build a googlesigninclient specified by gso
+        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
+                            googleSignInProgressDialog.dismiss();
+                            googleAccountProgressDialog.dismiss();
+                            if (isNew) {
+                                setNickName();
+                            } else {
+                                finish();
+                                if(mode.equals("solo"))
+                                    startActivity(new Intent(LoginActivity.this,LevelSelectActivity.class)
+                                            .putExtra("me","solo"));
+                                else if(mode.equals("duel"))
+                                    startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
+                            }
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_unsuccessfull),Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+
+
+    private void googleSignIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Toast.makeText(this, "Google Login Failed,", Toast.LENGTH_SHORT).show();
+                // ...
+            }
+        }
+    }
+
+    public void googleChangeAccountClicked(View view) {
+        firebaseAuth.signOut();
+        mGoogleSignInClient.signOut();
+        googleSignIn();
+        googleAccountProgressDialog.show();
     }
 
     @Override

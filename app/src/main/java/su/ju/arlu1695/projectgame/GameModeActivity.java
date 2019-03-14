@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +23,7 @@ public class GameModeActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private TextView tv_auth_status;
+    private Button logOutButton;
 
     @Override
 
@@ -33,6 +35,7 @@ public class GameModeActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         tv_auth_status = (TextView) findViewById(R.id.tv_auth_status);
+        logOutButton = (Button) findViewById(R.id.b_game_mode_logout);
 
         getAuthStatus();
 
@@ -68,10 +71,14 @@ public class GameModeActivity extends AppCompatActivity {
 
         if (firebaseAuth.getCurrentUser() != null) {
             tv_auth_status.setText(getResources().getString(R.string.currently_logged_in));
+            logOutButton.setVisibility(View.VISIBLE);
 
-        }else
+        }else {
             tv_auth_status.setText(getResources().getString(R.string.currently_offline));
+            logOutButton.setVisibility(View.INVISIBLE);
+        }
     }
+
 
     @Override
     public void onPause() {
@@ -83,6 +90,7 @@ public class GameModeActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Constants.startMediaPlayer(0);
+        getAuthStatus();
     }
 
 }

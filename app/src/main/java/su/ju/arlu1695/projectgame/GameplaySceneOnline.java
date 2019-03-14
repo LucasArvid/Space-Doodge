@@ -25,6 +25,7 @@ public class GameplaySceneOnline implements Scene {
     private Point playerPoint;
     private ObstacleHandler obstacleHandler;
 
+    // Class containing level information parsed from raw csv resource
     private Levels level;
 
     private String gameId;
@@ -35,12 +36,13 @@ public class GameplaySceneOnline implements Scene {
 
     private boolean playerMoving = false;
     private boolean gameOver = false;
-    private long gameOverDelay;
     private boolean uiRunning = false;
+
+    private int START_POS_X = Constants.SCREEN_WIDTH/2;
+    private int START_POS_Y = Constants.SCREEN_HEIGHT - 150;
+
     private String wonOrLost = "lost";
 
-    private Button restartButton;
-    private Button exitButton;
 
     public GameplaySceneOnline(String gameId, String me) {
 
@@ -51,7 +53,7 @@ public class GameplaySceneOnline implements Scene {
         level.readLevelData();
         // Instantiate Player
         player = new Player(new Rect(100,100,200,200), Color.rgb(255,0,0));
-        playerPoint = new Point(Constants.SCREEN_WIDTH/2,3*Constants.SCREEN_HEIGHT/4);
+        playerPoint = new Point(START_POS_X,START_POS_Y);
         player.update(playerPoint);
 
         // Obstacle handler instantiated dependent on level.
@@ -90,12 +92,6 @@ public class GameplaySceneOnline implements Scene {
 
     }
 
-    public void resetGame() {
-        playerPoint = new Point(Constants.SCREEN_WIDTH/2,3*Constants.SCREEN_HEIGHT/4);
-        player.update(playerPoint);
-        obstacleHandler = new ObstacleHandler(200,350, 75, Color.BLACK);
-        playerMoving = false;
-    }
 
     @Override
     public void terminate() {
@@ -108,11 +104,6 @@ public class GameplaySceneOnline implements Scene {
             case MotionEvent.ACTION_DOWN:
                 if(!gameOver && player.getRectangle().contains((int)event.getX(), (int)event.getY()))
                     playerMoving = true;
-                //if(gameOver && System.currentTimeMillis() - gameOverDelay >= 1000){
-                /*if(gameOver){
-                    if(!uiRunning)
-                        gameOverUI();
-                } */
                 break;
             case MotionEvent.ACTION_MOVE:
                 if(!gameOver && playerMoving)
@@ -155,7 +146,6 @@ public class GameplaySceneOnline implements Scene {
             if (obstacleHandler.collisionDetected(player)) {
                 gameOver = true;
                 gameOverUI();
-                gameOverDelay = System.currentTimeMillis();
             }
 
         }

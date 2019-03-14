@@ -15,6 +15,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread thread;
     private Context context;
 
+    // Scene handler for easier switching and managing of scenes.
     private SceneHandler handler;
 
 

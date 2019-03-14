@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primaryDark"
     android:orientation="vertical">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="30dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <Switch
         android:id="@+id/s_music"
         android:layout_width="match_parent"
@@ -16,38 +17,96 @@
         android:layout_marginTop="204dp"
         android:text="@string/music"
         android:textColor="@color/white"
+        android:layout_marginHorizontal="25dp"
         android:background="@drawable/transparent_button"
         android:textSize="20dp"
         android:checked="true"/>
 
+
     <Switch
-        android:id="@+id/s_sound"
+        android:id="@+id/s_notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:textSize="20dp"
+        android:text="@string/push_notifications"
         android:textColor="@color/white"
+        android:textSize="15dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginHorizontal="80dp"
         android:background="@drawable/transparent_button"
-        android:text="@string/sound"
         android:checked="true"/>
+
+
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="50dp"
-        android:paddingTop="35dp"
-        >
-        <Switch
-            android:id="@+id/s_notifications"
-            android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:srcCompat="@drawable/alien_pink_duck" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:srcCompat="@drawable/slice03_03" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/push_notifications"
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            android:background="@drawable/transparent_button"
-            android:checked="true"/>
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:srcCompat="@drawable/snake_slime" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+        </View>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:srcCompat="@drawable/alien_yellow_stand" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:srcCompat="@drawable/slice03_03" />
+
+        </LinearLayout>
+
     </LinearLayout>
-    </LinearLayout>
+
+
+
+
 
 
 

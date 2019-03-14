@@ -12,7 +12,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Switch allowNotifications;
     private Switch allowMusic;
-    private Switch allowSound;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,7 +24,6 @@ public class SettingsActivity extends AppCompatActivity {
         // Declaration of switches
         allowNotifications = (Switch) findViewById(R.id.s_notifications);
         allowMusic = (Switch) findViewById(R.id.s_music);
-        allowSound = (Switch) findViewById(R.id.s_sound);
         resumeSettingsActivity();
 
 
@@ -53,16 +51,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        allowSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(compoundButton.isChecked() == true) {
-                    Constants.ALLOW_SOUND = true;
-                } else {
-                    Constants.ALLOW_SOUND = false;
-                }
-            }
-        });
 
     }
 
@@ -70,7 +58,6 @@ public class SettingsActivity extends AppCompatActivity {
     private void resumeSettingsActivity() {
         allowNotifications.setChecked(Constants.ALLOW_INVITES);
         allowMusic.setChecked(Constants.ALLOW_MUSIC);
-        allowSound.setChecked(Constants.ALLOW_SOUND);
 
     }
 

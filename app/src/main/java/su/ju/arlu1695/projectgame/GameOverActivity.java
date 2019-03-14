@@ -131,8 +131,26 @@ public class GameOverActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child(me).child("Score").setValue(score);
         if(wonOrLost.equals("lost"))
             FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child(me).child("Dead").setValue("true");
-        else if(wonOrLost.equals("won"))
+        else if(wonOrLost.equals("won")) {
             FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).setValue(null); // remove game from database
+            FirebaseDatabase.getInstance().getReference().child("User").child(Util.getCurrentUserId()).child("wins").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()) {
+                        int prevScore = dataSnapshot.getValue(Integer.class);
+                        FirebaseDatabase.getInstance().getReference().child("User").child(Util.getCurrentUserId()).child("wins").setValue(prevScore + 1); // Add 1 to current wins
+                    }
+                    else
+                        FirebaseDatabase.getInstance().getReference().child("User").child(Util.getCurrentUserId()).child("wins").setValue(score); // First win
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
 
         restartButton.setVisibility(GONE);
 
@@ -185,21 +203,15 @@ public class GameOverActivity extends AppCompatActivity {
     private void updateLeaderboard() {
         final String format = String.format("level%d",
                 (Constants.LEVEL_SELECTED+1)); // levels start from index 0, database starts from 1
-        firebaseRef.child("leaderboard").child(format).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRef.child("leaderboard").child(format).child(format).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int count = 0; // top 50 count
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    count++;
-                    if (ds.getValue(String.class).equals(Constants.thisUser.getNickname())){
-                        String child = ds.getKey();
-                        firebaseRef.child("leaderboard").child(format).child(child).setValue(null);
-                        firebaseRef.child("leaderboard").child(format).child(Integer.toString(score)).setValue(Constants.thisUser.getNickname());
-                        break;
-                    }
-                    if (count >= 50) // not placed in top 50
-                        break;
-                }
+                if (dataSnapshot.child(Constants.thisUser.getNickname()).exists()) {
+                    firebaseRef.child("leaderboard").child(format).child(Constants.thisUser.getNickname()).setValue(null);
+                    firebaseRef.child("leaderboard").child(format).child(Constants.thisUser.getNickname()).setValue(score);
+                } else
+                    firebaseRef.child("leaderboard").child(format).child(Constants.thisUser.getNickname()).setValue(score);
+
                 progressDialog.dismiss();
             }
 

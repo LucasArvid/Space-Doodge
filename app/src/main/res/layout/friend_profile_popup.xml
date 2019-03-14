@@ -7,17 +7,23 @@
     android:background="@color/primaryDark"
     android:padding="5dp"
     android:layout_gravity="center">
-    <TextView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:textColor="@color/white"
-        android:text="X"
-        android:textStyle="bold"
-        android:layout_gravity="end"
-        android:gravity="center"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/circlebackground"
-        android:onClick="friendsExitButtonCLicked"/>
+
+
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:textColor="@color/white"
+            android:text="X"
+            android:textStyle="bold"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/circlebackground"
+            android:onClick="friendsExitButtonCLicked"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,17 +73,37 @@
 
     </HorizontalScrollView>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/friend_total_wins"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Total Wins: "
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            android:background="@drawable/transparent_button"/>
+    </LinearLayout>
+
     <Button
         android:id="@+id/b_remove_friend"
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+
         android:onClick="removeFriendButtonClicked"
         android:background="@drawable/transparent_button"
         android:textColor="@color/white"
         android:text="@string/remove_friend"
         android:textAllCaps="false"/>
+
+
 
 
 </LinearLayout>

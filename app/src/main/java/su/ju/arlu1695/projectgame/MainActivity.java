@@ -55,14 +55,7 @@ public class MainActivity extends AppCompatActivity {
         Constants.startMediaPlayer(R.raw.soft_and_furious_06_and_never_come_back);
         Constants.SCREEN_WIDTH = dm.widthPixels;
         Constants.SCREEN_HEIGHT = dm.heightPixels;
-        Constants.SCREEN_HEIGHT_COEFFICIENT = Constants.SCREEN_HEIGHT / 13;
-        Constants.SCREEN_WIDTH_COEFFICIENT = Constants.SCREEN_WIDTH / 10;
-
-
-        createNotificationChannel();
-
-
-        //testOnline();
+        createNotificationChannel(); // Required for API 26+
 
     }
 
@@ -81,9 +74,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /* Create the NotificationChannel for API 26+ because
+       the NotificationChannel class is new and not in the support library */
     private void createNotificationChannel() {
-        // Create the NotificationChannel for API 26+ because
-        // the NotificationChannel class is new and not in the support library
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String description = CHANNEL_DESC;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME,
@@ -96,15 +90,6 @@ public class MainActivity extends AppCompatActivity {
                     getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-    }
-
-    private void testOnline(){
-        startActivity(new Intent(this, GameLobbyActivity.class)
-                .putExtra("mode", "online")
-                .putExtra("me", "challenged")
-                .putExtra("gameId", "Zjb3LfBbJcSeu4i0j6KJ6ckYNO72-ylP7GwE0xxOEn3UDQA46LaX0roX2")
-                .putExtra("fromName", "Lucky"));
-
     }
 
     @Override

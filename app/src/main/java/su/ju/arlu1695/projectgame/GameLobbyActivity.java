@@ -110,7 +110,7 @@ public class GameLobbyActivity extends AppCompatActivity {
             tv_playerTwo.setText(Constants.thisUser.getNickname());
             tv_playerOne.setText(fromName);
 
-            tv_levelSelected.setText(String.format("%s is choosing level", fromName));
+            tv_levelSelected.setText(String.format("%s %s", fromName, getResources().getString(R.string.is_chosing_level)));
             Button levelSelectButton = (Button) findViewById(R.id.b_level_select);
             Button levelStartButton = (Button) findViewById(R.id.b_level_start);
             levelStartButton.setVisibility(View.GONE);
@@ -158,13 +158,13 @@ public class GameLobbyActivity extends AppCompatActivity {
                     String levelString = dataSnapshot.child("level").getValue().toString();
                     int levelInt = Integer.parseInt(levelString);
                     if(levelInt > 0) {
-                        tv_levelSelected.setText(String.format("Level %s &s.",levelInt,Constants.GAME_CONTEXT.getResources().getString(R.string.has_been_chosen)));
+                        tv_levelSelected.setText(String.format("Level %s %s.",levelInt,getResources().getString(R.string.has_been_chosen)));
                         Constants.LEVEL_SELECTED = (levelInt-1); // Level 1 = index 0;
                     }
                     // Players not ready
                     if ((dataSnapshot.child("startGame").getValue().equals("true")) && !(r1 && r2)) {
                         Button startGameButton = (Button) findViewById(R.id.b_level_start);
-                        startGameButton.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.waiting_for_players));
+                        startGameButton.setText(getResources().getString(R.string.waiting_for_players));
                     }
                     // Start game
                     if (dataSnapshot.child("startGame").getValue().equals("true") && r1 && r2) {

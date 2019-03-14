@@ -13,7 +13,7 @@
     <string name="offline">Offline Spel</string>
     <string name="solo">Ensam Spel</string>
     <string name="duel">Duell</string>
-    <string name="select_a_level">Välj nivå</string>
+    <string name="select_a_level">Välj level</string>
     <string name="log_out">Logga ut</string>
     <string name="enter_email">Ange Email</string>
     <string name="enter_password">Ange Lösenord</string>
@@ -54,4 +54,8 @@
     <string name="registered_successfully">Registrering lyckades</string>
     <string name="registering_user">Registrerar  användare, vänligen vänta</string>
     <string name="new_highscore">Nytt highscore!</string>
+    <string name="is_chosing_level">väljer level</string>
+    <string name="changing_account">Byter konto, vänligen vänta...</string>
+    <string name="getting_highscores_for_level">"Hämtar highscore för level: "</string>
+    <string name="total_wins">"Antal vinster: "</string>
 </resources>

@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "336175886504-ns9is8b1dc1afo8r6pasf3ue3rthg12u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "su.ju.arlu1695.projectgame",
+            "certificate_hash": "e69f4d499e19806c1710bd2ac7e53e5058398b9d"
+          }
+        },
+        {
           "client_id": "336175886504-2nborf0it56gs89bs20gd5nm6vofnbd9.apps.googleusercontent.com",
           "client_type": 3
         }

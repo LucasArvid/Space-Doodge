@@ -53,4 +53,8 @@
     <string name="registered_successfully">Registered successfully</string>
     <string name="registering_user">Registering user, please wait...</string>
     <string name="new_highscore">New highscore!</string>
+    <string name="is_chosing_level">is chosing the level</string>
+    <string name="changing_account">Changing account, please wait...</string>
+    <string name="getting_highscores_for_level">Getting highscores for level:</string>
+    <string name="total_wins">Total wins:</string>
 </resources>
