@@ -58,4 +58,10 @@
     <string name="changing_account">Byter konto, vänligen vänta...</string>
     <string name="getting_highscores_for_level">"Hämtar highscore för level: "</string>
     <string name="total_wins">"Antal vinster: "</string>
+    <string name="google_login_faield">Google login misslyckades</string>
+    <string name="has_invited_you_to_a_game">har bjudit in dig till en duell</string>
+    <string name="accept">Acceptera</string>
+    <string name="decline">Avböj</string>
+    <string name="challenged">Utmanad!</string>
+    <string name="game_invite_has_been_rejected">Din inbjudan har avböjts</string>
 </resources>

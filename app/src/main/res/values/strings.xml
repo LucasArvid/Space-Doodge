@@ -56,5 +56,11 @@
     <string name="is_chosing_level">is chosing the level</string>
     <string name="changing_account">Changing account, please wait...</string>
     <string name="getting_highscores_for_level">Getting highscores for level:</string>
-    <string name="total_wins">Total wins:</string>
+    <string name="total_wins">Total wins: </string>
+    <string name="google_login_faield">Google login failed</string>
+    <string name="has_invited_you_to_a_game">has invited you to a duel</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="challenged">Challenged!</string>
+    <string name="game_invite_has_been_rejected">Your game invite has been rejected</string>
 </resources>

@@ -1,4 +1,4 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.game.data;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -6,7 +6,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-public class Obstacle implements GameObjects{
+import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.interfaces.GameObjects;
+import su.ju.arlu1695.projectgame.utils.Constants;
+
+public class Obstacle implements GameObjects {
 
     private Rect rectangle;
     private Rect rectangleTwo;
@@ -21,7 +25,7 @@ public class Obstacle implements GameObjects{
         rectangle = new Rect(0, startY, startX, startY + obstacleHeight);
         rectangleTwo = new Rect(startX + playerGap, startY, Constants.SCREEN_WIDTH, startY + obstacleHeight);
 
-        // levelDesign
+        // Load assets
         loadLevelAssets();
 
 

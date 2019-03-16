@@ -1,30 +1,29 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.services;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.nfc.Tag;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import static su.ju.arlu1695.projectgame.Util.getCurrentUserId;
+import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.activities.GameLobbyActivity;
+import su.ju.arlu1695.projectgame.utils.Constants;
+
+import static su.ju.arlu1695.projectgame.utils.Util.getCurrentUserId;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
     private static final String LOG_TAG = "MyFirebaseMessaging";
-    public static final String INVITE = "Invite";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d(LOG_TAG, "From: " + remoteMessage.getFrom());
-
 
         // Grab data + text from recieved notification.
         String title = remoteMessage.getNotification().getTitle();
@@ -49,7 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         }
         else if (type.equals("reject")) {
-            displayNotification(getApplicationContext(),"Ouch!","Your game invite has been rejected");
+            displayNotification(getApplicationContext(),"Ouch!",getResources().getString(R.string.game_invite_has_been_rejected));
         }
 
     }
@@ -78,24 +77,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, Constants.CHANNEL_ID)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentText(String.format("%s has invite you to a duel", fromName))
-                        .setContentTitle("Challenge!")
+                        .setContentText(String.format("%s %s", fromName,getResources().getString(R.string.has_invited_you_to_a_game)))
+                        .setContentTitle(getResources().getString(R.string.challenged))
                         .setChannelId(Constants.CHANNEL_ID)
-                        .addAction(R.mipmap.ic_launcher, "Accept", pendingAcceptIntent)
-                        .addAction(R.mipmap.ic_launcher, "Decline", pendingRejectIntent)
+                        .addAction(R.mipmap.ic_launcher, getResources().getString(R.string.accept), pendingAcceptIntent)
+                        .addAction(R.mipmap.ic_launcher, getResources().getString(R.string.decline), pendingRejectIntent)
                         .setAutoCancel(true)
                         .setVibrate(new long[4000])
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat mNotificationMgr = NotificationManagerCompat.from(this);
         mNotificationMgr.notify(1,mBuilder.build());
-
     }
 
     @Override
     public void onNewToken(String token) {
         super.onNewToken(token);
-        Log.d(LOG_TAG,"Refreshed token: " + token);
 
     }
 

@@ -1,10 +1,13 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.game.handlers;
 
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
+
+import su.ju.arlu1695.projectgame.game.scenes.GameplayScene;
+import su.ju.arlu1695.projectgame.game.scenes.GameplaySceneOnline;
+import su.ju.arlu1695.projectgame.interfaces.Scene;
 
 public class SceneHandler {
 

@@ -1,11 +1,15 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.game.handlers;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 
 import java.util.ArrayList;
+
+import su.ju.arlu1695.projectgame.game.data.Obstacle;
+import su.ju.arlu1695.projectgame.game.data.Player;
+import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.utils.Constants;
 
 public class ObstacleHandler {
 
@@ -51,6 +55,11 @@ public class ObstacleHandler {
         }
     }
 
+    /*
+        Increment the obstacles downwards and make sure that the player gap is
+        not generated outside the game screen.
+        score++ when an obstacle has left the game screen
+     */
     public void update() {
         int elapsedTime = (int) (System.currentTimeMillis() - startTime);
         startTime = System.currentTimeMillis();

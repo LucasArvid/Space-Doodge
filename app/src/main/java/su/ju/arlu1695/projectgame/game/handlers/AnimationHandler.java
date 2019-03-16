@@ -1,7 +1,9 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.game.handlers;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+
+import su.ju.arlu1695.projectgame.game.data.Animation;
 
 public class AnimationHandler {
 

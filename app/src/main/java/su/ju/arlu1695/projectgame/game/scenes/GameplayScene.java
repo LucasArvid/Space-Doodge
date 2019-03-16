@@ -1,6 +1,9 @@
-package su.ju.arlu1695.projectgame;
+/*  ------------------------------------------------
+    This scene is only reached if the user started a
+    offline or solo game.
+    ------------------------------------------------ */
+package su.ju.arlu1695.projectgame.game.scenes;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,13 +11,16 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import su.ju.arlu1695.projectgame.game.data.Levels;
+import su.ju.arlu1695.projectgame.game.handlers.ObstacleHandler;
+import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.game.handlers.SceneHandler;
+import su.ju.arlu1695.projectgame.activities.GameOverActivity;
+import su.ju.arlu1695.projectgame.game.data.Player;
+import su.ju.arlu1695.projectgame.interfaces.Scene;
+import su.ju.arlu1695.projectgame.utils.Constants;
+
 
 public class GameplayScene implements Scene {
 
@@ -24,7 +30,7 @@ public class GameplayScene implements Scene {
     private Point playerPoint;
     private ObstacleHandler obstacleHandler;
 
-    private String me;
+    private String me; // me contains "offline" or "solo", identifying what game mode the user started
 
     private Levels level;
 
@@ -42,6 +48,7 @@ public class GameplayScene implements Scene {
         // Get level data
         level = new Levels(Constants.GAME_CONTEXT);
         level.readLevelData();
+
         // Instantiate Player
         player = new Player(new Rect(100,100,200,200), Color.rgb(255,0,0));
         playerPoint = new Point(START_POS_X,START_POS_Y);
@@ -72,9 +79,9 @@ public class GameplayScene implements Scene {
             case MotionEvent.ACTION_DOWN:
                 if(!gameOver && player.getRectangle().contains((int)event.getX(), (int)event.getY()))
                     playerMoving = true;
-                if(gameOver && System.currentTimeMillis() - gameOverDelay >= 1000){
+                // Allows the player to restart the game 1+ seconds after death
+                if(gameOver && System.currentTimeMillis() - gameOverDelay >= 1000)
                         resetGame();
-                }
                  break;
             case MotionEvent.ACTION_MOVE:
                 if(!gameOver && playerMoving)
@@ -87,13 +94,12 @@ public class GameplayScene implements Scene {
     }
 
 
-    public void gameOverUI() {
+    public void gameOverActivity() {
         uiRunning = true;
 
         Constants.GAME_CONTEXT.startActivity(new Intent(Constants.GAME_CONTEXT, GameOverActivity.class)
                 .putExtra("score", obstacleHandler.getScore())
                 .putExtra("me", me));
-
 
     }
 
@@ -113,7 +119,7 @@ public class GameplayScene implements Scene {
         }
     }
 
-    // andreas1724, copied from StackOverFlow
+    // andreas1724, taken from StackOverFlow. Draws a text in the center of the gameView.
     private void drawCenterText(Canvas canvas, Paint paint, String text) {
         paint.setTextAlign(Paint.Align.LEFT);
         canvas.getClipBounds(r);
@@ -133,7 +139,7 @@ public class GameplayScene implements Scene {
 
             if (obstacleHandler.collisionDetected(player)) {
                 gameOver = true;
-                gameOverUI();
+                gameOverActivity();
                 gameOverDelay = System.currentTimeMillis();
             }
 

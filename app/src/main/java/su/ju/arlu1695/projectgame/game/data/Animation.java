@@ -1,4 +1,4 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.game.data;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Animation {
+
     private Bitmap[] frames;
     private int frameIndex;
 
@@ -36,6 +37,7 @@ public class Animation {
         lastFrame = System.currentTimeMillis();
     }
 
+    // Scales the rect object to the size of the art asset to avoid stretched art
     private void scaleRect(Rect rect) {
         float whRatio = (float)(frames[frameIndex].getWidth())/frames[frameIndex].getHeight();
         if(rect.width() > rect.height()) {

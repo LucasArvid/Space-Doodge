@@ -1,4 +1,4 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +37,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import static su.ju.arlu1695.projectgame.Util.savePushToken;
+import su.ju.arlu1695.projectgame.utils.Constants;
+import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.utils.Util;
 
 public class LoginActivity extends AppCompatActivity {
     // Google login request code
@@ -50,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Firebase database reference
     private DatabaseReference databaseReference;
+    private DatabaseReference userRef;
 
     // layout connections
     private Button buttonRegister;
@@ -61,13 +63,11 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private ProgressDialog googleSignInProgressDialog; // Login progress
     private ProgressDialog googleAccountProgressDialog; // Account change progress
-    // Google signin button
+    // Google sign in button
     private SignInButton googleSignInButton;
 
     // Intent extra for identifying if duel or solo play
     private String mode;
-
-    User myUser;
 
     // Progress dialogs for successful/failed login
     private ProgressDialog progressDialog; // Email Login
@@ -80,14 +80,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
 
-        nickNameDialog = new Dialog(this);
+        nickNameDialog = new Dialog(this); // nickname popup
 
         Intent intent = getIntent();
         mode = intent.getStringExtra("mode");
 
-
-
+        // Firebase connections
         firebaseAuth = FirebaseAuth.getInstance();
+        userRef = FirebaseDatabase.getInstance().getReference().child("User");
         databaseReference = FirebaseDatabase.getInstance().getReference();
         user = firebaseAuth.getCurrentUser();
 
@@ -99,14 +99,11 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInProgressDialog.setMessage(getResources().getString(R.string.logging_in_please_wait));
         configureGoogleSignIn();
 
+        // If user already logged in, bypass this activity
         if (firebaseAuth.getCurrentUser() != null){
             setNotificationTopic();
             finish();
-            if(mode.equals("solo"))
-                startActivity(new Intent(this,LevelSelectActivity.class)
-                                .putExtra("me","solo"));
-            else if(mode.equals("duel"))
-                startActivity(new Intent(this,OnlineActivity.class));
+            startNextActivity(mode);
         }
 
         progressDialog = new ProgressDialog(this);
@@ -169,14 +166,14 @@ public class LoginActivity extends AppCompatActivity {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
+        // email not entered
         if (TextUtils.isEmpty(email)) {
-            // email empty
             Toast.makeText(this, getResources().getString(R.string.please_enter_email), Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // password not entered
         if (TextUtils.isEmpty(password)) {
-            // password empty
             Toast.makeText(this, getResources().getString(R.string.please_enter_password), Toast.LENGTH_SHORT).show();
             return;
 
@@ -193,11 +190,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             setNotificationTopic();
                             finish();
-                            if(mode.equals("solo"))
-                                startActivity(new Intent(LoginActivity.this,LevelSelectActivity.class)
-                                        .putExtra("me","solo"));
-                            else if(mode.equals("duel"))
-                                startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
+                            startNextActivity(mode);
                         }else{
                             Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_unsuccessfull),Toast.LENGTH_SHORT).show();
                         }
@@ -214,12 +207,6 @@ public class LoginActivity extends AppCompatActivity {
             userLogin();
         }
     }
-
-    public void loginButtonClicked(View view) {
-        userLogin();
-    }
-
-
     public void setNickName() {
         Button saveUsername;
         nickNameDialog.setContentView(R.layout.nickname_popup);
@@ -231,15 +218,11 @@ public class LoginActivity extends AppCompatActivity {
                                             public void onClick(View view) {
                                                 EditText setNickName = (EditText) nickNameDialog.findViewById(R.id.et_nickname);
                                                 final String nickname = setNickName.getText().toString().trim();
-                                                myUser = new User(nickname);
                                                 final FirebaseUser user = firebaseAuth.getCurrentUser();
-                                                databaseReference.child("User").child(user.getUid()).setValue(LoginActivity.this.myUser);
+                                                userRef.child(user.getUid()).child("nickname").setValue(nickname);
                                                 FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( LoginActivity.this, new OnSuccessListener<InstanceIdResult>() {
                                                     @Override
                                                     public void onSuccess(InstanceIdResult instanceIdResult) {
-                                                        String newToken = instanceIdResult.getToken();
-                                                        Log.e("newToken",newToken);
-                                                        savePushToken(newToken, user.getUid());
                                                         setNotificationTopic();
 
                                                     }
@@ -247,11 +230,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 setupFirebaseUser();
                                                 nickNameDialog.dismiss();
                                                 finish();
-                                                if(mode.equals("solo"))
-                                                    startActivity(new Intent(LoginActivity.this,LevelSelectActivity.class)
-                                                            .putExtra("me","solo"));
-                                                else if(mode.equals("duel"))
-                                                    startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
+                                                startNextActivity(mode);
                                             }
                                         });
 
@@ -259,19 +238,21 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+    // Subscribe to user personal notification topic
     public void setNotificationTopic () {
         FirebaseUser topicUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference.child("User").child(topicUser.getUid()).child("nickname").addValueEventListener(new ValueEventListener() {
+
+        userRef.child(topicUser.getUid()).child("nickname").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getKey().equals("nickname")) {
                     String topic = dataSnapshot.getValue().toString();
-                    Constants.thisUser.setNickname(topic);
+                    Constants.currentUser = topic;
                     FirebaseMessaging.getInstance().subscribeToTopic(topic);
                 }
-
-
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -279,20 +260,22 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
     }
+
 
     public void nicknameExitButtonClicked(View view) {
         nickNameDialog.dismiss();
     }
 
+
     private void setupFirebaseUser() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level1").setValue(0);
-        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level2").setValue(0);
-        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level3").setValue(0);
-        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level4").setValue(0);
-        FirebaseDatabase.getInstance().getReference().child("User").child(user.getUid()).child("highscore").child("level5").setValue(0);
+        DatabaseReference hsRef = userRef.child(user.getUid()).child("highscore");
+        hsRef.child("level1").setValue(0);
+        hsRef.child("level2").setValue(0);
+        hsRef.child("level3").setValue(0);
+        hsRef.child("level4").setValue(0);
+        hsRef.child("level5").setValue(0);
 
     }
 
@@ -307,6 +290,7 @@ public class LoginActivity extends AppCompatActivity {
         // Build a googlesigninclient specified by gso
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
     }
+
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
@@ -323,11 +307,7 @@ public class LoginActivity extends AppCompatActivity {
                                 setNickName();
                             } else {
                                 finish();
-                                if(mode.equals("solo"))
-                                    startActivity(new Intent(LoginActivity.this,LevelSelectActivity.class)
-                                            .putExtra("me","solo"));
-                                else if(mode.equals("duel"))
-                                    startActivity(new Intent(LoginActivity.this,OnlineActivity.class));
+                                startNextActivity(mode);
                             }
 
                         } else {
@@ -360,11 +340,12 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(this, "Google Login Failed,", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.google_login_faield), Toast.LENGTH_SHORT).show();
                 // ...
             }
         }
     }
+
 
     public void googleChangeAccountClicked(View view) {
         firebaseAuth.signOut();
@@ -373,11 +354,26 @@ public class LoginActivity extends AppCompatActivity {
         googleAccountProgressDialog.show();
     }
 
+
+    private void startNextActivity(String mode) {
+        // Set online flag true
+
+        userRef.child(Util.getCurrentUserId()).child("online").setValue("true");
+
+        if(mode.equals("solo"))
+            startActivity(new Intent(LoginActivity.this, LevelSelectActivity.class)
+                    .putExtra("me","solo"));
+        else if(mode.equals("duel"))
+            startActivity(new Intent(LoginActivity.this, OnlineActivity.class));
+    }
+
+
     @Override
     public void onPause() {
         super.onPause();
         Constants.pauseMediaPlayer();
     }
+
 
     @Override
     public void onResume() {

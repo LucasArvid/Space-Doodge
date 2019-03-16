@@ -4,29 +4,24 @@
  */
 package su.ju.arlu1695.projectgame;
 
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
+import su.ju.arlu1695.projectgame.activities.GameModeActivity;
+import su.ju.arlu1695.projectgame.activities.LeaderboardActivity;
+import su.ju.arlu1695.projectgame.activities.SettingsActivity;
+import su.ju.arlu1695.projectgame.utils.Constants;
+import su.ju.arlu1695.projectgame.R;
 
-import static su.ju.arlu1695.projectgame.Constants.CHANNEL_DESC;
-import static su.ju.arlu1695.projectgame.Constants.CHANNEL_ID;
-import static su.ju.arlu1695.projectgame.Constants.CHANNEL_NAME;
-import static su.ju.arlu1695.projectgame.Util.getCurrentUserId;
+import static su.ju.arlu1695.projectgame.utils.Constants.CHANNEL_DESC;
+import static su.ju.arlu1695.projectgame.utils.Constants.CHANNEL_ID;
+import static su.ju.arlu1695.projectgame.utils.Constants.CHANNEL_NAME;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -92,11 +87,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onPause() {
         super.onPause();
         Constants.pauseMediaPlayer();
     }
+
 
     @Override
     public void onResume() {

@@ -1,4 +1,4 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import su.ju.arlu1695.projectgame.utils.Constants;
+import su.ju.arlu1695.projectgame.R;
 
 public class LevelSelectActivity extends AppCompatActivity {
 
@@ -39,6 +42,7 @@ public class LevelSelectActivity extends AppCompatActivity {
                         .putExtra("gameId", "solo")
                         .putExtra("me", me);
                 Constants.LEVEL_SELECTED = position;
+                finish();
                 startActivity(intent);
             }
 

@@ -1,4 +1,4 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -21,7 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+
+import su.ju.arlu1695.projectgame.utils.Constants;
+import su.ju.arlu1695.projectgame.R;
 
 
 public class LeaderboardActivity extends AppCompatActivity {
@@ -73,6 +75,10 @@ public class LeaderboardActivity extends AppCompatActivity {
                                         });
     }
 
+    /*
+        Parses the database for leaderboard for requested level ( position ).
+        Only looks for the top 50 players.
+     */
     private void showHighScores (final int position) {
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -90,7 +96,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mLeaderBoardList);
         leaderBoardListView.setAdapter(arrayAdapter);
 
-        // sort firebase by value, lowest first
+        // Sort firebase by value, lowest first and then grab a query of the ordered data
         myRef.child("level"+(position+1)).orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -131,9 +137,11 @@ public class LeaderboardActivity extends AppCompatActivity {
         progressDialog.show();
     }
 
+
     public void popUpExitButtonCLicked(View view) {
         leaderboardDialog.dismiss();
     }
+
 
     @Override
     public void onPause() {
@@ -141,10 +149,13 @@ public class LeaderboardActivity extends AppCompatActivity {
         Constants.pauseMediaPlayer();
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         Constants.startMediaPlayer(0);
     }
+
+
 }
 

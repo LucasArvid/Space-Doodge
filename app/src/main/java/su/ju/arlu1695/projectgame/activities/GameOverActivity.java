@@ -1,4 +1,4 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,6 +17,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import su.ju.arlu1695.projectgame.utils.Constants;
+import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.utils.Util;
 
 import static android.view.View.GONE;
 
@@ -50,6 +54,7 @@ public class GameOverActivity extends AppCompatActivity {
 
         firebaseRef =  FirebaseDatabase.getInstance().getReference();
 
+        // getting Intent extras
         Bundle extrasBundle = getIntent().getExtras();
         gameId = extrasBundle.getString("gameId");
         me = extrasBundle.getString("me");
@@ -57,15 +62,15 @@ public class GameOverActivity extends AppCompatActivity {
         wonOrLost = extrasBundle.getString("wonOrLost");
         opponentScore = extrasBundle.getString("opponentScore");
 
-        progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this); // Updating score progress message
 
         tv_score = (TextView) findViewById(R.id.tv_my_score);
-
         tv_wonOrLoss = (TextView) findViewById(R.id.tv_game_won_lost);
         tv_hsUpdate = (TextView) findViewById(R.id.tv_highscore_update);
 
         restartButton = (Button) findViewById(R.id.b_gameOverRestart);
 
+        // ImageView connection to display different art depending on if winner or loser (Only in DUEL mode)
         iv_alien = (ImageView) findViewById(R.id.iv_gameover_alien);
 
         if(me.equals("solo"))
@@ -104,8 +109,8 @@ public class GameOverActivity extends AppCompatActivity {
         tv_hsUpdate.setText(" ");
         progressDialog.setMessage(Constants.GAME_CONTEXT.getResources().getString(R.string.updating_highscores_please_wait));
         progressDialog.show();
-        udpateScore();
 
+        udpateScore();
 
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +137,7 @@ public class GameOverActivity extends AppCompatActivity {
         if(wonOrLost.equals("lost"))
             FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child(me).child("Dead").setValue("true");
         else if(wonOrLost.equals("won")) {
-            FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).setValue(null); // remove game from database
+            // FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).setValue(null); // remove game from database
             FirebaseDatabase.getInstance().getReference().child("User").child(Util.getCurrentUserId()).child("wins").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -174,9 +179,12 @@ public class GameOverActivity extends AppCompatActivity {
 
     }
 
+    /*
+        Updates the users score on the database if it is a new personal highscore
+     */
     private void udpateScore() {
         final String format = String.format("level%d",
-                (Constants.LEVEL_SELECTED+1)); // levels start from index 0, database starts from 1
+                (Constants.LEVEL_SELECTED+1)); //  +1 since levels start from index 0, database starts from 1
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseRef.child("User").child(currentUser.getUid()).child("highscore")
                 .addValueEventListener(new ValueEventListener() {
@@ -188,7 +196,6 @@ public class GameOverActivity extends AppCompatActivity {
                             updateLeaderboard();
                         } else
                             progressDialog.dismiss();
-
                     }
 
                     @Override
@@ -196,21 +203,23 @@ public class GameOverActivity extends AppCompatActivity {
 
                     }
                 });
-
-
     }
 
+    /*
+        Updates the leaderboard with the new personal highscore.
+        This function is only reached if it actually is a new personal highscore
+     */
     private void updateLeaderboard() {
         final String format = String.format("level%d",
                 (Constants.LEVEL_SELECTED+1)); // levels start from index 0, database starts from 1
         firebaseRef.child("leaderboard").child(format).child(format).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(Constants.thisUser.getNickname()).exists()) {
-                    firebaseRef.child("leaderboard").child(format).child(Constants.thisUser.getNickname()).setValue(null);
-                    firebaseRef.child("leaderboard").child(format).child(Constants.thisUser.getNickname()).setValue(score);
+                if (dataSnapshot.child(Constants.currentUser).exists()) {
+                    firebaseRef.child("leaderboard").child(format).child(Constants.currentUser).setValue(null);
+                    firebaseRef.child("leaderboard").child(format).child(Constants.currentUser).setValue(score);
                 } else
-                    firebaseRef.child("leaderboard").child(format).child(Constants.thisUser.getNickname()).setValue(score);
+                    firebaseRef.child("leaderboard").child(format).child(Constants.currentUser).setValue(score);
 
                 progressDialog.dismiss();
             }
@@ -224,8 +233,9 @@ public class GameOverActivity extends AppCompatActivity {
 
     public void gameOverExitButtonClicked(View view) {
         finish();
+        Intent intent = new Intent("finish_game");
+        sendBroadcast(intent);
         Constants.stopMediaPlayer();
-        Constants.startMediaPlayer(R.raw.soft_and_furious_06_and_never_come_back);
-        startActivity(new Intent(this, MainActivity.class));
+        Constants.startMediaPlayer(R.raw.soft_and_furious_06_and_never_come_back); // stops level music and starts main menu music
     }
 }

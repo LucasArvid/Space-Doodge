@@ -19,24 +19,24 @@
             </intent-filter>
         </activity>
 
-        <service android:name="MyFirebaseMessagingService"
+        <service android:name=".services.MyFirebaseMessagingService"
                  android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <receiver android:name=".NotificationHandler" />
+        <receiver android:name=".services.NotificationHandler" />
 
-        <activity android:name=".MainGameActivity"/>
-        <activity android:name=".LevelSelectActivity"/>
-        <activity android:name=".GameModeActivity"/>
-        <activity android:name=".SettingsActivity"/>
-        <activity android:name=".LeaderboardActivity"/>
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".OnlineActivity"/>
-        <activity android:name=".GameLobbyActivity"/>
-        <activity android:name=".GameOverActivity"/>
+        <activity android:name=".activities.MainGameActivity"/>
+        <activity android:name=".activities.LevelSelectActivity"/>
+        <activity android:name=".activities.GameModeActivity"/>
+        <activity android:name=".activities.SettingsActivity"/>
+        <activity android:name=".activities.LeaderboardActivity"/>
+        <activity android:name=".activities.LoginActivity"/>
+        <activity android:name=".activities.OnlineActivity"/>
+        <activity android:name=".activities.GameLobbyActivity"/>
+        <activity android:name=".activities.GameOverActivity"/>
     </application>
 
 </manifest>

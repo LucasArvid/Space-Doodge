@@ -1,4 +1,4 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.interfaces;
 
 import android.graphics.Canvas;
 import android.view.MotionEvent;

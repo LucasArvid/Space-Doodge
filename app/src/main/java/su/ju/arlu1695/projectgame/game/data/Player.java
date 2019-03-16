@@ -1,14 +1,18 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.game.data;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-public class Player implements GameObjects{
+import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.game.handlers.AnimationHandler;
+import su.ju.arlu1695.projectgame.interfaces.GameObjects;
+import su.ju.arlu1695.projectgame.utils.Constants;
+
+public class Player implements GameObjects {
 
     private Rect rectangle;
     private int color;

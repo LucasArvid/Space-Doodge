@@ -1,4 +1,4 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.game;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,10 +7,10 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-
+import su.ju.arlu1695.projectgame.game.handlers.SceneHandler;
+import su.ju.arlu1695.projectgame.utils.Constants;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-
 
     private GameThread thread;
     private Context context;
@@ -18,14 +18,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     // Scene handler for easier switching and managing of scenes.
     private SceneHandler handler;
 
-
-
-
     public GameView(Context context, String mode, String gameId, String me) {
         super(context);
         this.context = context;
         getHolder().addCallback(this);
-
         Constants.GAME_CONTEXT = context;
 
         thread = new GameThread(getHolder(),this);
@@ -47,6 +43,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         boolean retry = true;
@@ -60,6 +57,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             retry = false;
         }
     }
+
 
     @Override
     public void draw(Canvas canvas) {
@@ -80,8 +78,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
         // default return true
     }
-
-
 
 
 }

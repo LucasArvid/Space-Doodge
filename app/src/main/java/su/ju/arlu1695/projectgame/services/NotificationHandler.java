@@ -1,41 +1,45 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.services;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import su.ju.arlu1695.projectgame.activities.GameLobbyActivity;
+import su.ju.arlu1695.projectgame.utils.Constants;
 
-import static su.ju.arlu1695.projectgame.Util.getCurrentUserId;
+import static su.ju.arlu1695.projectgame.utils.Util.getCurrentUserId;
 
 // Directed to from MyFirebaseMessagingService
 public class NotificationHandler extends BroadcastReceiver {
 
     private static final String LOG_TAG = "NotificationHandler";
 
+    private DatabaseReference gamesRef;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
-       String me = Constants.thisUser.getNickname();
+
+       String me = Constants.currentUser;
        String to = intent.getExtras().getString("to");
        String fromUserId = intent.getExtras().getString("withId");
 
+       String gameId = fromUserId + "-" + getCurrentUserId();
+       gamesRef = FirebaseDatabase.getInstance().getReference().child("Games").child(gameId);
+
+       // Dismiss notification
+       NotificationManagerCompat.from(context).cancel(1);
 
        // Open a Http request for sending notification reply.
        OkHttpClient client = new OkHttpClient();
@@ -60,20 +64,18 @@ public class NotificationHandler extends BroadcastReceiver {
            }
        });
 
-
+       //handle accept
        if (intent.getAction().equals("accept")){
-           //handle accept
-           String gameId = fromUserId + "-" + getCurrentUserId();
 
            // Setup game on Firebase database.
-           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenger").child("Score").setValue("0");
-           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenged").child("Score").setValue("0");
-           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenged").child("Dead").setValue("false");
-           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("challenger").child("Dead").setValue("false");
-           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("playerOneReady").setValue("false");
-           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("playerTwoReady").setValue("false");
-           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("startGame").setValue("false");
-           FirebaseDatabase.getInstance().getReference().child("Games").child(gameId).child("level").setValue("0");
+           gamesRef.child("challenger").child("Score").setValue("0");
+           gamesRef.child("challenged").child("Score").setValue("0");
+           gamesRef.child("challenged").child("Dead").setValue("false");
+           gamesRef.child("challenger").child("Dead").setValue("false");
+           gamesRef.child("playerOneReady").setValue("false");
+           gamesRef.child("playerTwoReady").setValue("false");
+           gamesRef.child("startGame").setValue("false");
+           gamesRef.child("level").setValue("0");
 
            context.startActivity(new Intent(context, GameLobbyActivity.class)
                    .putExtra("type", "duel")

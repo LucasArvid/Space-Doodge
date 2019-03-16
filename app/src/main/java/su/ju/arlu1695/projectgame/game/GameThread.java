@@ -1,9 +1,9 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.game;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-import java.util.Queue;
+import su.ju.arlu1695.projectgame.game.GameView;
 
 public class GameThread extends Thread {
     private int FPS = 60;

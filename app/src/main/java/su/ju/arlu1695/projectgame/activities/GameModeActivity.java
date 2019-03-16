@@ -1,8 +1,7 @@
-package su.ju.arlu1695.projectgame;
+package su.ju.arlu1695.projectgame.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,13 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
+import su.ju.arlu1695.projectgame.utils.Constants;
+import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.utils.Util;
 
 
 public class GameModeActivity extends AppCompatActivity {
@@ -47,12 +44,14 @@ public class GameModeActivity extends AppCompatActivity {
     public void offlineButtonClicked(View view) {
         Intent intent = new Intent(this, LevelSelectActivity.class)
                 .putExtra("me", "offline");
+        finish();
         startActivity(intent);
     }
 
     public void soloButtonClicked(View view) {
         Intent intent = new Intent (this, LoginActivity.class)
                 .putExtra("mode","solo");
+        finish();
         startActivity(intent);
     }
 
@@ -63,10 +62,12 @@ public class GameModeActivity extends AppCompatActivity {
     }
 
     public void gameModelogoutButtonClicked(View view) {
+        FirebaseDatabase.getInstance().getReference().child("User").child(Util.getCurrentUserId()).child("online").setValue("false");
         firebaseAuth.signOut();
         getAuthStatus();
     }
 
+    // Change text and hide/show logout button dependent on if the user is logged in or not
     private void getAuthStatus() {
 
         if (firebaseAuth.getCurrentUser() != null) {
