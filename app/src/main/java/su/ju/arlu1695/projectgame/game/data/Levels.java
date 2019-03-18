@@ -1,11 +1,4 @@
-/*
-    This class grabs the data contained in the local raw resources csv file.
-    This file contains the data for each level.
-    Object height, object gap, player gap and bg color in rgb format.
- */
 package su.ju.arlu1695.projectgame.game.data;
-
-
 
 import android.content.Context;
 import android.util.Log;
@@ -17,8 +10,11 @@ import java.nio.charset.Charset;
 
 import su.ju.arlu1695.projectgame.R;
 import su.ju.arlu1695.projectgame.utils.Constants;
-
-
+/*
+    This class grabs the data contained in the local raw resources csv file.
+    This file contains the data for each level.
+    Object height, object gap, player gap and bg color in rgb format.
+ */
 public class Levels {
 
     private Context context;

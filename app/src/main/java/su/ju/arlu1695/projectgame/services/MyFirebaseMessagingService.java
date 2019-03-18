@@ -5,17 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
 import su.ju.arlu1695.projectgame.R;
 import su.ju.arlu1695.projectgame.activities.GameLobbyActivity;
 import su.ju.arlu1695.projectgame.utils.Constants;
-
 import static su.ju.arlu1695.projectgame.utils.Util.getCurrentUserId;
-
+/*
+    This class is reached when the user receives a notification.
+    Notifications are only accepted while user are logged in.
+ */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -26,8 +25,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         // Grab data + text from recieved notification.
-        String title = remoteMessage.getNotification().getTitle();
-        String body = remoteMessage.getNotification().getBody();
+        String title = remoteMessage.getData().get("title");
+        String body = remoteMessage.getData().get("body");
 
         String fromUserId = remoteMessage.getData().get("fromId");
         String fromName = remoteMessage.getData().get("fromName");
@@ -35,20 +34,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         // Verify type of notification
-        if (type.equals("invite") && Constants.ALLOW_INVITES) {
-            handleInvite(fromUserId, fromName, getApplicationContext());
-        }
-        else if (type.equals("accept")) {
+        // Only accept notifications if user isn't null
+        if (Constants.currentUser != null) {
+            if (type.equals("invite") && Constants.ALLOW_INVITES) {
+                handleInvite(fromUserId, fromName, getApplicationContext());
+            } else if (type.equals("accept")) {
 
-            startActivity(new Intent(getBaseContext(), GameLobbyActivity.class)
-                .putExtra("type", "duel")
-                .putExtra("me", "challenger")
-                .putExtra("gameId", getCurrentUserId() + "-" + fromUserId)
-                .putExtra("fromName", fromName));
+                startActivity(new Intent(getBaseContext(), GameLobbyActivity.class)
+                        .putExtra("type", "duel")
+                        .putExtra("me", "challenger")
+                        .putExtra("gameId", getCurrentUserId() + "-" + fromUserId)
+                        .putExtra("fromName", fromName));
 
-        }
-        else if (type.equals("reject")) {
-            displayNotification(getApplicationContext(),"Ouch!",getResources().getString(R.string.game_invite_has_been_rejected));
+            } else if (type.equals("reject")) {
+                displayNotification(getApplicationContext(), "Ouch!", getResources().getString(R.string.game_invite_has_been_rejected));
+            }
         }
 
     }
