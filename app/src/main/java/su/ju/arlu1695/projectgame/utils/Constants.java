@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 
 import java.util.ArrayList;
 
+import su.ju.arlu1695.projectgame.R;
 import su.ju.arlu1695.projectgame.game.GameThread;
 
 public class Constants {
@@ -51,24 +52,7 @@ public class Constants {
 
 
     // Level select array list.
-    public static ArrayList<levelName> levels = new ArrayList<>();
-    static {
-        levels.add(new levelName("Level 1"));
-        levels.add(new levelName("Level 2"));
-        levels.add(new levelName("Level 3"));
-        levels.add(new levelName("Level 4"));
-        levels.add(new levelName("Level 5"));
-    }
 
-
-    public static class levelName {
-        public String title;
-        public levelName(String title) { this.title = title; }
-        @Override
-        public String toString() {
-            return title;
-        }
-    }
 
     // filePath = 0 for simple resume
     public static void startMediaPlayer(int filePath) {

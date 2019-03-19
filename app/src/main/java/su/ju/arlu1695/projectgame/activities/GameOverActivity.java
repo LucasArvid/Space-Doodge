@@ -83,6 +83,7 @@ public class GameOverActivity extends AppCompatActivity {
 
     }
 
+
     public void handleOfflinePlay() {
         tv_score.setText(String.format(
                 "%s: %s",
@@ -99,6 +100,7 @@ public class GameOverActivity extends AppCompatActivity {
         });
 
     }
+
 
     public void handleSoloPlay() {
         tv_score.setText(String.format(
@@ -120,6 +122,7 @@ public class GameOverActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void handleOnlinePlay() {
         boolean retry = true;
@@ -169,12 +172,14 @@ public class GameOverActivity extends AppCompatActivity {
         if(wonOrLost.equals("won")) {
             tv_wonOrLoss.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.hurray_opponent_died));
             iv_alien.setImageResource(R.drawable.aliengreen);
+            tv_hsUpdate.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.duel_wins_updated));
         }
         else if (wonOrLost.equals("lost")) {
             tv_wonOrLoss.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.bitter_defeat));
+            tv_hsUpdate.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.highscores_do_not_update_in_duel));
 
         }
-        tv_hsUpdate.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.highscores_only_updated_in_solo));
+
 
 
     }

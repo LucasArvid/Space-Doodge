@@ -27,7 +27,6 @@ public class GameModeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_mode);
-
         Constants.startMediaPlayer(0);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -81,11 +80,11 @@ public class GameModeActivity extends AppCompatActivity {
     }
 
 
-    @Override
+    /*@Override
     public void onPause() {
         super.onPause();
         Constants.pauseMediaPlayer();
-    }
+    } */
 
     @Override
     public void onResume() {

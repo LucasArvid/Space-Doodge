@@ -19,6 +19,7 @@ import java.util.Collections;
 
 import okhttp3.OkHttpClient;
 import su.ju.arlu1695.projectgame.MainActivity;
+import su.ju.arlu1695.projectgame.R;
 
 import static su.ju.arlu1695.projectgame.utils.Constants.CHANNEL_DESC;
 import static su.ju.arlu1695.projectgame.utils.Constants.CHANNEL_ID;
@@ -75,6 +76,19 @@ public class Util {
 
         }
     }
+
+    public static ArrayList<String> getLevelList (Context context) {
+        ArrayList<String> levels = new ArrayList<>();
+        levels.add((context.getResources().getString(R.string.level) + "1"));
+        levels.add(( context.getResources().getString(R.string.level) + "2"));
+        levels.add(( context.getResources().getString(R.string.level) + "3"));
+        levels.add(( context.getResources().getString(R.string.level) + "4"));
+        levels.add(( context.getResources().getString(R.string.level) + "5"));
+
+        return levels;
+    }
+
+
 
 
 }

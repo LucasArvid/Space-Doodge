@@ -9,8 +9,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 import su.ju.arlu1695.projectgame.utils.Constants;
 import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.utils.Util;
 
 public class LevelSelectActivity extends AppCompatActivity {
 
@@ -26,17 +29,19 @@ public class LevelSelectActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String me = intent.getExtras().getString("me");
 
-        // Simple ListView of levels grabbed from local csv resource.
+
         ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<Constants.levelName>(
+        listView.setAdapter(new ArrayAdapter<String>(
                 this,
-                android.R.layout.simple_list_item_1,
-                Constants.levels
+                R.layout.list_white_text,
+                Util.getLevelList(this)
+
         ));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Start selected level
                 Intent intent = new Intent(LevelSelectActivity.this, MainGameActivity.class)
                         .putExtra("mode","solo")
                         .putExtra("gameId", "solo")
@@ -50,11 +55,7 @@ public class LevelSelectActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Constants.pauseMediaPlayer();
-    }
+
 
     @Override
     public void onResume() {

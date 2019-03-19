@@ -1,4 +1,4 @@
-package su.ju.arlu1695.projectgame.services;
+package su.ju.arlu1695.projectgame.utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,9 +21,7 @@ import su.ju.arlu1695.projectgame.utils.Constants;
 import static su.ju.arlu1695.projectgame.utils.Util.getCurrentUserId;
 
 // Directed to from MyFirebaseMessagingService
-public class NotificationHandler extends BroadcastReceiver {
-
-    private static final String LOG_TAG = "NotificationHandler";
+public class NotificationReceiver extends BroadcastReceiver {
 
     private DatabaseReference gamesRef;
 

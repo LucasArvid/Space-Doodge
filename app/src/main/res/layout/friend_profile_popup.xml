@@ -10,6 +10,7 @@
 
 
 
+
         <TextView
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -89,6 +90,14 @@
             android:visibility="invisible"
             android:background="@drawable/transparent_button"/>
     </LinearLayout>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar_profile"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_centerInParent="true"/>
 
     <Button
         android:id="@+id/b_remove_friend"

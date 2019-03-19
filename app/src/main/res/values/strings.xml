@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjectGame</string>
+    <string name="app_name">SpaceDoodge</string>
     <string name="start_game">Start Game</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="settings">Settings</string>
@@ -26,7 +26,7 @@
     <string name="enter_nickname">Enter Nickname</string>
     <string name="save">Save</string>
     <string name="getting_highscores">Getting highscores...</string>
-    <string name="game_over">Game Over</string>
+    <string name="game_over">Game Over!</string>
     <string name="final_score">Final score</string>
     <string name="currently_logged_in">Currently logged in</string>
     <string name="currently_offline">Currently offline</string>
@@ -63,4 +63,11 @@
     <string name="decline">Decline</string>
     <string name="challenged">Challenged!</string>
     <string name="game_invite_has_been_rejected">Your game invite has been rejected</string>
+    <string name="level">"Level "</string>
+    <string name="rank">Rank</string>
+    <string name="top">Top</string>
+    <string name="tap_a_user_to_challenge">Tap on a user to challenge them!</string>
+    <string name="waiting_for_user_response">Waiting the user to respond...</string>
+    <string name="highscores_do_not_update_in_duel">Highscores do not update in duel</string>
+    <string name="duel_wins_updated">Total duel wins will be updated!</string>
 </resources>

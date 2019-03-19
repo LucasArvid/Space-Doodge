@@ -91,6 +91,13 @@ public class LoginActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         user = firebaseAuth.getCurrentUser();
 
+        // If user already logged in, bypass this LoginActivity
+        if (firebaseAuth.getCurrentUser() != null){
+            setNotificationTopic();
+            finish();
+            startNextActivity(mode);
+        }
+
         // Google Sign in Button
         googleSignInButton = (SignInButton) findViewById(R.id.googleSignInButton);
         googleSignInProgressDialog = new ProgressDialog(this);
@@ -98,13 +105,6 @@ public class LoginActivity extends AppCompatActivity {
         googleAccountProgressDialog.setMessage(getResources().getString(R.string.changing_account));
         googleSignInProgressDialog.setMessage(getResources().getString(R.string.logging_in_please_wait));
         configureGoogleSignIn();
-
-        // If user already logged in, bypass this activity
-        if (firebaseAuth.getCurrentUser() != null){
-            setNotificationTopic();
-            finish();
-            startNextActivity(mode);
-        }
 
         progressDialog = new ProgressDialog(this);
 
@@ -122,10 +122,8 @@ public class LoginActivity extends AppCompatActivity {
                 googleSignIn();
             }
         });
-
-
-
     }
+
 
     private void registerUser() {
         String email = editTextEmail.getText().toString().trim();
@@ -161,6 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     private void userLogin() {
         String email = editTextEmail.getText().toString().trim();
@@ -198,6 +197,8 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+
+    // Email sign in or register listener
     public void signinOrRegisterClicked(View view) {
         if(view == buttonRegister) {
             registerUser();
@@ -207,32 +208,33 @@ public class LoginActivity extends AppCompatActivity {
             userLogin();
         }
     }
+
+
+    // Nickname popup dialog
     public void setNickName() {
         Button saveUsername;
         nickNameDialog.setContentView(R.layout.nickname_popup);
         saveUsername = (Button) nickNameDialog.findViewById(R.id.b_save_username);
 
-
         saveUsername.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                EditText setNickName = (EditText) nickNameDialog.findViewById(R.id.et_nickname);
-                                                final String nickname = setNickName.getText().toString().trim();
-                                                final FirebaseUser user = firebaseAuth.getCurrentUser();
-                                                userRef.child(user.getUid()).child("nickname").setValue(nickname);
-                                                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( LoginActivity.this, new OnSuccessListener<InstanceIdResult>() {
-                                                    @Override
-                                                    public void onSuccess(InstanceIdResult instanceIdResult) {
-                                                        setNotificationTopic();
-
-                                                    }
-                                                });
-                                                setupFirebaseUser();
-                                                nickNameDialog.dismiss();
-                                                finish();
-                                                startNextActivity(mode);
-                                            }
-                                        });
+                @Override
+                public void onClick(View view) {
+                    EditText setNickName = (EditText) nickNameDialog.findViewById(R.id.et_nickname);
+                    final String nickname = setNickName.getText().toString().trim();
+                    final FirebaseUser user = firebaseAuth.getCurrentUser();
+                    userRef.child(user.getUid()).child("nickname").setValue(nickname);
+                    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( LoginActivity.this, new OnSuccessListener<InstanceIdResult>() {
+                        @Override
+                        public void onSuccess(InstanceIdResult instanceIdResult) {
+                            setNotificationTopic();
+                        }
+                    });
+                    setupFirebaseUser();
+                    nickNameDialog.dismiss();
+                    finish();
+                    startNextActivity(mode);
+                }
+            });
 
         nickNameDialog.show();
 
@@ -253,13 +255,11 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
 
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
     }
 
 
@@ -287,7 +287,7 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        // Build a googlesigninclient specified by gso
+        // Build a google sign in client specified by gso
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
     }
 
@@ -327,6 +327,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -347,6 +348,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    // Google sign in Listener
     public void googleChangeAccountClicked(View view) {
         firebaseAuth.signOut();
         mGoogleSignInClient.signOut();
@@ -356,8 +358,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void startNextActivity(String mode) {
-        // Set online flag true
 
+        // Set online flag true
         userRef.child(Util.getCurrentUserId()).child("online").setValue("true");
 
         if(mode.equals("solo"))
@@ -365,13 +367,6 @@ public class LoginActivity extends AppCompatActivity {
                     .putExtra("me","solo"));
         else if(mode.equals("duel"))
             startActivity(new Intent(LoginActivity.this, OnlineActivity.class));
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Constants.pauseMediaPlayer();
     }
 
 

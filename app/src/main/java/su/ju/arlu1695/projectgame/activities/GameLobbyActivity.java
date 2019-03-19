@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import su.ju.arlu1695.projectgame.utils.Constants;
 import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.utils.Util;
 
 public class GameLobbyActivity extends AppCompatActivity {
 
@@ -50,6 +51,8 @@ public class GameLobbyActivity extends AppCompatActivity {
     private int levelSelected;
     private Dialog levelSelectDialog;
 
+    ValueEventListener vEventListener;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +62,8 @@ public class GameLobbyActivity extends AppCompatActivity {
         levelSelectDialog = new Dialog(this); // level select pop up
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
+
+
         gamesRef = FirebaseDatabase.getInstance().getReference().child("Games");
 
         // Unpack Intent extras
@@ -66,7 +71,6 @@ public class GameLobbyActivity extends AppCompatActivity {
         gameId = extrasBundle.getString("gameId");
         me = extrasBundle.getString("me");
         fromName = extrasBundle.getString("fromName");
-
 
 
         // Setup View dependent on challenger or challenged
@@ -126,11 +130,7 @@ public class GameLobbyActivity extends AppCompatActivity {
                 }
             });
         }
-
-        /*
-            Database listener to track whenever opponent is ready, and the level has been selected
-         */
-        gamesRef.child(gameId).addValueEventListener(new ValueEventListener() {
+        vEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 boolean r1,r2;
@@ -185,7 +185,13 @@ public class GameLobbyActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        /*
+            Database listener to track whenever opponent is ready, and the level has been selected
+         */
+        gamesRef.child(gameId).addValueEventListener(vEventListener);
+
 
     }
 
@@ -195,10 +201,10 @@ public class GameLobbyActivity extends AppCompatActivity {
         levelSelectDialog.setContentView(R.layout.activity_levelselect);
 
         ListView listView = (ListView) levelSelectDialog.findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<Constants.levelName>(
+        listView.setAdapter(new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
-                Constants.levels
+                Util.getLevelList(this)
         ));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -217,4 +223,15 @@ public class GameLobbyActivity extends AppCompatActivity {
     public void levelStartButtonClicked (View view) {
         gamesRef.child(gameId).child("startGame").setValue("true");
     }
+
+    // Ensure that the eventListener stops and the activity finishes if the user -
+    // leaves the game lobby.
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        gamesRef.child(gameId).removeEventListener(vEventListener);
+        finish();
+    }
+
+
 }

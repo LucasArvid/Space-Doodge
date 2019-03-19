@@ -10,6 +10,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import su.ju.arlu1695.projectgame.R;
 import su.ju.arlu1695.projectgame.activities.GameLobbyActivity;
 import su.ju.arlu1695.projectgame.utils.Constants;
+import su.ju.arlu1695.projectgame.utils.NotificationReceiver;
+
 import static su.ju.arlu1695.projectgame.utils.Util.getCurrentUserId;
 /*
     This class is reached when the user receives a notification.
@@ -55,7 +57,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void handleInvite(String fromUserId, String fromName, Context context) {
         //Reject handling
-        Intent rejectIntent = new Intent(getApplicationContext(), NotificationHandler.class)
+        Intent rejectIntent = new Intent(getApplicationContext(), NotificationReceiver.class)
                 .setAction("reject")
                 .putExtra("to", fromName)
                 .putExtra("withId",fromUserId);
@@ -65,7 +67,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         //Accept handling
-        Intent acceptIntent = new Intent(getApplicationContext(), NotificationHandler.class)
+        Intent acceptIntent = new Intent(getApplicationContext(), NotificationReceiver.class)
                 .setAction("accept")
                 .putExtra("to",fromName)
                 .putExtra("withId",fromUserId);

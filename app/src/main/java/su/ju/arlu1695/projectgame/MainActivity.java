@@ -9,6 +9,8 @@ import android.view.View;
 import su.ju.arlu1695.projectgame.activities.GameModeActivity;
 import su.ju.arlu1695.projectgame.activities.LeaderboardActivity;
 import su.ju.arlu1695.projectgame.activities.SettingsActivity;
+import su.ju.arlu1695.projectgame.interfaces.OnHomePressedListener;
+import su.ju.arlu1695.projectgame.utils.HomeWatcher;
 import su.ju.arlu1695.projectgame.utils.Constants;
 import su.ju.arlu1695.projectgame.utils.Util;
 /*
@@ -16,6 +18,8 @@ import su.ju.arlu1695.projectgame.utils.Util;
  Usage allowed for personal and/or commercial projects.
  */
 public class MainActivity extends AppCompatActivity {
+
+    private HomeWatcher mHomeWatcher;
 
 
     @Override
@@ -38,6 +42,15 @@ public class MainActivity extends AppCompatActivity {
         Util.setCurrentUserName(); // Enables notifications if already logged in on earlier use of app
         Util.createNotificationChannel(this); // Required for notifications if on API 26+
 
+        mHomeWatcher = new HomeWatcher(this);
+        mHomeWatcher.setOnHomePressedListener(new OnHomePressedListener() {
+            @Override
+            public void onHomePressed() {
+                Constants.pauseMediaPlayer();
+            }
+        });
+        mHomeWatcher.startWatch();
+
     }
 
     public void startGameButtonClicked(View view) {
@@ -58,17 +71,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
+   /* @Override
     public void onPause() {
         super.onPause();
         Constants.pauseMediaPlayer();
     }
-
+    */
 
     @Override
     public void onResume() {
         super.onResume();
         Constants.startMediaPlayer(0);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHomeWatcher.stopWatch();
+
     }
 
 

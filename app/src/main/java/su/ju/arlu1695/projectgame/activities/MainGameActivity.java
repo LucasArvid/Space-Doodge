@@ -54,6 +54,12 @@ public class MainGameActivity extends Activity {
         }
     };
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Constants.startMediaPlayer(0);
+    }
+
 
 
 

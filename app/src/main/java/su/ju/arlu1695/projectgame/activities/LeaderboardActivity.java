@@ -24,6 +24,7 @@ import java.util.Collections;
 
 import su.ju.arlu1695.projectgame.utils.Constants;
 import su.ju.arlu1695.projectgame.R;
+import su.ju.arlu1695.projectgame.utils.Util;
 
 
 public class LeaderboardActivity extends AppCompatActivity {
@@ -61,12 +62,12 @@ public class LeaderboardActivity extends AppCompatActivity {
         leaderboardDialog = new Dialog(this);
 
         ListView listView = (ListView) findViewById(R.id.lw_leaderboard);
-        listView.setAdapter(new ArrayAdapter<Constants.levelName>(
+        listView.setAdapter(new ArrayAdapter<String>(
                 this,
-                android.R.layout.simple_list_item_1,
-                Constants.levels
-        ));
+                R.layout.list_white_text,
+                Util.getLevelList(this)
 
+        ));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
                                             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -93,7 +94,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         leaderBoardListView = (ListView) leaderboardDialog.findViewById(R.id.lw_level_scores);
         exitButton = (TextView) leaderboardDialog.findViewById(R.id.tv_exitButton);
         tvLevelSelected = (TextView) leaderboardDialog.findViewById(R.id.tv_levelSelected);
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mLeaderBoardList);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_white_text, mLeaderBoardList);
         leaderBoardListView.setAdapter(arrayAdapter);
 
         // Sort firebase by value, lowest first and then grab a query of the ordered data
@@ -122,7 +123,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                 arrayAdapter.notifyDataSetChanged();
                 progressDialog.dismiss();
 
-                tvLevelSelected.setText(String.format("Level %s Top50.",(position + 1)));
+                tvLevelSelected.setText(String.format("%s %s %s 50.", getResources().getString(R.string.level),position + 1, getResources().getString(R.string.top)));
             }
 
 
@@ -143,11 +144,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Constants.pauseMediaPlayer();
-    }
+
 
 
     @Override

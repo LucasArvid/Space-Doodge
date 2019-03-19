@@ -2,6 +2,7 @@ package su.ju.arlu1695.projectgame.activities;
 
 import android.app.Dialog;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
@@ -48,13 +50,16 @@ import static su.ju.arlu1695.projectgame.utils.Util.getCurrentUserId;
 
 public class OnlineActivity extends AppCompatActivity {
 
-    // Firebase var
-
+    // Firebase and user var
     private DatabaseReference userRef;
     private DatabaseReference leaderboardRef;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
+    // Getting user list progress bar
+    private ProgressBar progressBar;
+    // Popup Dialog
+    private Dialog friendsDialog;
 
     //User -List,Arr var
     private ListView userListView;
@@ -65,13 +70,14 @@ public class OnlineActivity extends AppCompatActivity {
     private ListView friendsListView;
     private ArrayList<String> mFriendsName = new ArrayList<>();
     private ArrayList<String> mFriendsId = new ArrayList<>();
+
+    //Information and status TextView
+    private TextView infoAndStatus;
+    // Variable for changing user list status.
+    private TextView userListStatus;
+
     private TextView findFried;
 
-    // Variable for changing user status.
-    private TextView textView;
-
-    // Popup Dialog
-    private Dialog friendsDialog;
 
 
     @Override
@@ -82,18 +88,22 @@ public class OnlineActivity extends AppCompatActivity {
 
         Constants.startMediaPlayer(0);
 
-        textView = (TextView) findViewById(R.id.user_list_status);
-
+        userListStatus = (TextView) findViewById(R.id.user_list_status);
+        infoAndStatus = (TextView) findViewById(R.id.tv_online_info);
 
         // Popup dialog
         friendsDialog = new Dialog(this);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
+        progressBar.bringToFront();
 
         firebaseAuth = FirebaseAuth.getInstance();
         userRef = FirebaseDatabase.getInstance().getReference("User");
         leaderboardRef = FirebaseDatabase.getInstance().getReference("leaderboard");
 
         userListView = (ListView) findViewById(R.id.user_listView);
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mUserName);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_white_text, mUserName);
         userListView.setAdapter(arrayAdapter);
 
         // Parse Database for online users.
@@ -112,7 +122,9 @@ public class OnlineActivity extends AppCompatActivity {
                         }
                     }
                 }
-                textView.setText(getResources().getString(R.string.online_users));
+
+                userListStatus.setText(getResources().getString(R.string.online_users));
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
                 @Override
@@ -128,6 +140,7 @@ public class OnlineActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String userClicked = mUserName.get(position);
                 OkHttpClient client = new OkHttpClient();
+                infoAndStatus.setText(getResources().getString(R.string.waiting_for_user_response));
 
                 String format = String.format("%s/sendNotification?to=%s&fromName=%s&fromId=%s&type=invite&title=hello&body=body",
                         Constants.FIREBASE_CLOUD_FUNCTIONS_BASE,
@@ -153,6 +166,8 @@ public class OnlineActivity extends AppCompatActivity {
             }
 
         });
+
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     public void logoutButtonClicked(View view) {
@@ -167,7 +182,7 @@ public class OnlineActivity extends AppCompatActivity {
         friendsDialog.setContentView(R.layout.friends_popup);
 
         friendsListView = (ListView) friendsDialog.findViewById(R.id.lw_friends);
-        final ArrayAdapter<String> friendsArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mFriendsName);
+        final ArrayAdapter<String> friendsArrayAdapter = new ArrayAdapter<String>(this, R.layout.list_white_text, mFriendsName);
         friendsListView.setAdapter(friendsArrayAdapter);
 
         // Parse only current users friends list.
@@ -215,6 +230,12 @@ public class OnlineActivity extends AppCompatActivity {
         final String friend = mFriendsName.get(position);
         tv_friend.setText(friend + getResources().getString(R.string.s_profile));
 
+        // Reuse progressbar, new context
+        progressBar = new ProgressBar(friendsDialog.getContext());
+        progressBar = (ProgressBar) friendsDialog.findViewById(R.id.progressBar_profile);
+        progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
+        progressBar.setVisibility(View.VISIBLE);
+
         userRef.child(mFriendsId.get(position)).child("wins").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -260,6 +281,7 @@ public class OnlineActivity extends AppCompatActivity {
                                 tv_friend_rank.setLayoutParams(params);
                                 ll_ranking_layout.addView(tv_friend_rank);
                             }
+                            progressBar.setVisibility(View.INVISIBLE);
 
                         }
 
@@ -331,15 +353,12 @@ public class OnlineActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Constants.pauseMediaPlayer();
-    }
+
 
     @Override
     public void onResume() {
         super.onResume();
+        infoAndStatus.setText(getResources().getString(R.string.tap_a_user_to_challenge)); // Reached after a finished game
         Constants.startMediaPlayer(0);
     }
 

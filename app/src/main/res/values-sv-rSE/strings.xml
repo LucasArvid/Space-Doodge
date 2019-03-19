@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ProjectGame</string>
+    <string name="app_name">SpaceDoodge</string>
     <string name="start_game">Starta Spel</string>
     <string name="settings">Inställningar</string>
     <string name="leaderboard">Leaderboard</string>
@@ -13,7 +13,7 @@
     <string name="offline">Offline Spel</string>
     <string name="solo">Ensam Spel</string>
     <string name="duel">Duell</string>
-    <string name="select_a_level">Välj level</string>
+    <string name="select_a_level">Välj nivå</string>
     <string name="log_out">Logga ut</string>
     <string name="enter_email">Ange Email</string>
     <string name="enter_password">Ange Lösenord</string>
@@ -27,7 +27,7 @@
     <string name="enter_nickname">Ange Smeknamn</string>
     <string name="save">Spara</string>
     <string name="getting_highscores">Hämtar highscores...</string>
-    <string name="game_over">Game Over</string>
+    <string name="game_over">Förlust!</string>
     <string name="final_score">Slutresultat</string>
     <string name="currently_logged_in">Inloggad</string>
     <string name="currently_offline">Utloggad</string>
@@ -54,9 +54,9 @@
     <string name="registered_successfully">Registrering lyckades</string>
     <string name="registering_user">Registrerar  användare, vänligen vänta</string>
     <string name="new_highscore">Nytt highscore!</string>
-    <string name="is_chosing_level">väljer level</string>
+    <string name="is_chosing_level">väljer nivå</string>
     <string name="changing_account">Byter konto, vänligen vänta...</string>
-    <string name="getting_highscores_for_level">"Hämtar highscore för level: "</string>
+    <string name="getting_highscores_for_level">"Hämtar highscore för nivå: "</string>
     <string name="total_wins">"Antal vinster: "</string>
     <string name="google_login_faield">Google login misslyckades</string>
     <string name="has_invited_you_to_a_game">har bjudit in dig till en duell</string>
@@ -64,4 +64,11 @@
     <string name="decline">Avböj</string>
     <string name="challenged">Utmanad!</string>
     <string name="game_invite_has_been_rejected">Din inbjudan har avböjts</string>
+    <string name="level">"Nivå "</string>
+    <string name="rank">Rank</string>
+    <string name="top">Topp</string>
+    <string name="tap_a_user_to_challenge">Klicka på en spelare för att utmana!</string>
+    <string name="waiting_for_user_response">Väntar på svar från spelare...</string>
+    <string name="highscores_do_not_update_in_duel">Highscores uppdateras inte i duell spel</string>
+    <string name="duel_wins_updated">Totala vinster uppdateras!</string>
 </resources>
