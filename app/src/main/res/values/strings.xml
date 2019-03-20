@@ -70,4 +70,5 @@
     <string name="waiting_for_user_response">Waiting the user to respond...</string>
     <string name="highscores_do_not_update_in_duel">Highscores do not update in duel</string>
     <string name="duel_wins_updated">Total duel wins will be updated!</string>
+    <string name="change_google_account">Change google account</string>
 </resources>

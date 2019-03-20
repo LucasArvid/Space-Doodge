@@ -2,6 +2,7 @@ package su.ju.arlu1695.projectgame.activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +37,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     private DatabaseReference myRef;
 
     // Progress message
-    private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
 
     // Popup layout
     private Dialog leaderboardDialog;
@@ -87,8 +89,9 @@ public class LeaderboardActivity extends AppCompatActivity {
         myRef = database.getReference("leaderboard");
 
         leaderboardDialog.setContentView(R.layout.leaderboard_popup);
-        progressDialog = new ProgressDialog(leaderboardDialog.getContext());
-        progressDialog.setMessage(getResources().getString(R.string.getting_highscores_for_level)+ (position + 1));
+        progressBar = (ProgressBar) leaderboardDialog.findViewById(R.id.progressBar_leaderboard);
+        progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY);
+        progressBar.bringToFront();
 
 
         leaderBoardListView = (ListView) leaderboardDialog.findViewById(R.id.lw_level_scores);
@@ -109,7 +112,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                             count++;
                             String score = ds.getValue().toString();
                             String user = ds.getKey();
-                            String format = String.format("%s: %s   %s:%s",
+                            String format = String.format("%s: %s   %s: %s",
                                     getResources().getString(R.string.player),
                                     user,
                                     getResources().getString(R.string.score),
@@ -121,7 +124,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                 // reverse list after filled
                 Collections.reverse(mLeaderBoardList);
                 arrayAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
+                progressBar.setVisibility(View.INVISIBLE);
 
                 tvLevelSelected.setText(String.format("%s %s %s 50.", getResources().getString(R.string.level),position + 1, getResources().getString(R.string.top)));
             }
@@ -135,7 +138,8 @@ public class LeaderboardActivity extends AppCompatActivity {
         });
 
         leaderboardDialog.show();
-        progressDialog.show();
+        progressBar.setVisibility(View.VISIBLE);
+
     }
 
 

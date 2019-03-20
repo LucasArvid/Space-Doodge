@@ -63,6 +63,7 @@
             <EditText
                 android:id="@+id/et_nickname"
                 style="@style/myEditText_style"
+                android:layout_gravity="center"
                 android:hint="@string/enter_nickname" />
 
             <Button

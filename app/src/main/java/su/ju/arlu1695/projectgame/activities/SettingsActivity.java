@@ -45,8 +45,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(compoundButton.isChecked() == true) {
-                    Constants.startMediaPlayer(R.raw.soft_and_furious_06_and_never_come_back);
                     Constants.ALLOW_MUSIC = true;
+                    Constants.startMediaPlayer(0);
                 } else {
                     Constants.pauseMediaPlayer();
                     Constants.ALLOW_MUSIC = false;
@@ -64,11 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Constants.pauseMediaPlayer();
-    }
 
     @Override
     public void onResume() {

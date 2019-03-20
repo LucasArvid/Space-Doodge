@@ -18,5 +18,6 @@
     <color name="primary">#3F51B5</color>
     <color name="blue_light">#49acd5</color>
     <color name="color_accent">#FF4081</color>
+    <color name="google_sign_in">#dc4e41</color>
 
 </resources>

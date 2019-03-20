@@ -1,97 +1,155 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/Login_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/primaryDark"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+<?xml version="1.0" encoding="utf-8"?>
 
-    <LinearLayout
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/primaryDark"
+        tools:context = ".activities.LoginActivity">
+            <FrameLayout
+                android:id="@+id/googleSignInFrame"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:id="@+id/tv_google_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="googleSignInClicked"
+                    android:background="@drawable/google_plus"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBarGoogleSignIn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"/>
+
+            </FrameLayout>
 
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/aliengreen_walk1" />
 
-        <EditText
-            android:id="@+id/fieldEmail"
-            style="@style/myEditText_style"
-            android:hint="@string/enter_email"
-            android:inputType="textEmailAddress" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                app:srcCompat="@drawable/aliengreen_walk1" />
 
-        <EditText
-            android:id="@+id/fieldPassword"
-            style="@style/myEditText_style"
-            android:autofillHints=""
-            android:hint="@string/enter_password"
-            android:inputType="textPassword" />
+            <EditText
+                android:id="@+id/fieldEmail"
+                style="@style/myEditText_style"
+                android:hint="@string/enter_email"
+                android:layout_below="@id/imageView"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/fieldPassword"
+                style="@style/myEditText_style"
+                android:layout_below="@id/fieldEmail"
+                android:autofillHints=""
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp"
+                android:hint="@string/enter_password"
+                android:inputType="textPassword" />
 
 
-        <Button
+        <FrameLayout
             android:id="@+id/emailSignInButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/fieldPassword"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/transparent_button"
-            android:onClick="signinOrRegisterClicked"
-            android:text="@string/sign_in"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:clickable="true"
+            android:onClick="signInButtonClicked"
+            android:elevation="0dp"
+            android:foreground="?selectableItemBackground">
 
-        <Button
+            <TextView
+                android:id="@+id/signInText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_in"
+                android:layout_gravity="center"
+                android:textColor="#ffff"/>
+
+            <ProgressBar
+                android:id="@+id/progressBarSignIn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:visibility="invisible"/>
+
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/emailCreateAccountButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/emailSignInButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/transparent_button"
-            android:onClick="signinOrRegisterClicked"
-            android:text="@string/create_account"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:clickable="true"
+            android:onClick="registerButtonClicked"
+            android:elevation="0dp"
+            android:foreground="?selectableItemBackground">
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/googleSignInButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </com.google.android.gms.common.SignInButton>
+            <TextView
+                android:id="@+id/registerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_account"
+                android:layout_gravity="center"
+                android:textColor="#ffff"/>
+
+            <ProgressBar
+                android:id="@+id/progressBarRegister"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:visibility="invisible"/>
+
+        </FrameLayout>
+
+
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Change Google Account"
+            android:text="@string/change_google_account"
             android:textSize="17dp"
             android:textStyle="italic"
-            android:layout_marginTop="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
             android:gravity="center"
             android:textColor="@color/white"
             android:onClick="googleChangeAccountClicked"/>
 
 
+        <View
+            android:id="@+id/revealView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primaryDark"
+            android:visibility="invisible"/>
 
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+</layout>

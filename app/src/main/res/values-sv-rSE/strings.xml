@@ -71,4 +71,5 @@
     <string name="waiting_for_user_response">Väntar på svar från spelare...</string>
     <string name="highscores_do_not_update_in_duel">Highscores uppdateras inte i duell spel</string>
     <string name="duel_wins_updated">Totala vinster uppdateras!</string>
+    <string name="change_google_account">Byt google konto</string>
 </resources>
