@@ -32,7 +32,6 @@ public class GameOverActivity extends AppCompatActivity {
     private String opponentScore;
     private String wonOrLost;
 
-    private ProgressDialog progressDialog;
 
     private Button restartButton;
 
@@ -61,8 +60,6 @@ public class GameOverActivity extends AppCompatActivity {
         score = extrasBundle.getInt("score");
         wonOrLost = extrasBundle.getString("wonOrLost");
         opponentScore = extrasBundle.getString("opponentScore");
-
-        progressDialog = new ProgressDialog(this); // Updating score progress message
 
         tv_score = (TextView) findViewById(R.id.tv_my_score);
         tv_wonOrLoss = (TextView) findViewById(R.id.tv_game_won_lost);
@@ -109,8 +106,6 @@ public class GameOverActivity extends AppCompatActivity {
                 score
         ));
         tv_hsUpdate.setText(" ");
-        progressDialog.setMessage(Constants.GAME_CONTEXT.getResources().getString(R.string.updating_highscores_please_wait));
-        progressDialog.show();
 
         udpateScore();
 
@@ -199,8 +194,7 @@ public class GameOverActivity extends AppCompatActivity {
                             firebaseRef.child("User").child(currentUser.getUid()).child("highscore").child(format).setValue(score);
                             tv_hsUpdate.setText(Constants.GAME_CONTEXT.getResources().getString(R.string.new_highscore));
                             updateLeaderboard();
-                        } else
-                            progressDialog.dismiss();
+                        }
                     }
 
                     @Override
@@ -226,7 +220,6 @@ public class GameOverActivity extends AppCompatActivity {
                 } else
                     firebaseRef.child("leaderboard").child(format).child(Constants.currentUser).setValue(score);
 
-                progressDialog.dismiss();
             }
 
             @Override

@@ -27,7 +27,7 @@
     <string name="enter_nickname">Ange Smeknamn</string>
     <string name="save">Spara</string>
     <string name="getting_highscores">Hämtar highscores...</string>
-    <string name="game_over">Förlust!</string>
+    <string name="game_over">Spel över!</string>
     <string name="final_score">Slutresultat</string>
     <string name="currently_logged_in">Inloggad</string>
     <string name="currently_offline">Utloggad</string>

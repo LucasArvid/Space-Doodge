@@ -61,10 +61,10 @@ public class GameplayScene implements Scene {
     }
 
     public void resetGame() {
-        gameOver = false;
         player.update(playerPoint);
         obstacleHandler = new ObstacleHandler(level.getPlayerGap(),level.getObstacleGap(), level.getObstacleHeight(), Color.BLACK);
         playerPoint = new Point(START_POS_X,START_POS_Y);
+        gameOver = false;
         playerMoving = false;
     }
 
