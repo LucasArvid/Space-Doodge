@@ -78,7 +78,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Show Notification
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, Constants.CHANNEL_ID)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.ic_default_icon)
                         .setContentText(String.format("%s %s", fromName,getResources().getString(R.string.has_invited_you_to_a_game)))
                         .setContentTitle(getResources().getString(R.string.challenged))
                         .setChannelId(Constants.CHANNEL_ID)
@@ -103,7 +103,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, Constants.CHANNEL_ID)
-                        .setSmallIcon(R.drawable.app_background)
+                        .setSmallIcon(R.drawable.ic_default_icon)
                         .setContentTitle(title)
                         .setContentText(body)
                         .setAutoCancel(true)

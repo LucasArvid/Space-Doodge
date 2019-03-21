@@ -37,6 +37,13 @@
         <activity android:name=".activities.OnlineActivity"/>
         <activity android:name=".activities.GameLobbyActivity"/>
         <activity android:name=".activities.GameOverActivity"/>
+
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_default_icon" />
     </application>
+
+
+
+
 
 </manifest>
