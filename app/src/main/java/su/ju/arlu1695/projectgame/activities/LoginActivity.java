@@ -260,6 +260,7 @@ public class LoginActivity extends AppCompatActivity {
     private void setupFirebaseUser() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         DatabaseReference hsRef = userRef.child(user.getUid()).child("highscore");
+        userRef.child(user.getUid()).child("online").setValue("true");
         hsRef.child("level1").setValue(0);
         hsRef.child("level2").setValue(0);
         hsRef.child("level3").setValue(0);
@@ -307,6 +308,7 @@ public class LoginActivity extends AppCompatActivity {
                                 setNickName();
                             } else {
                                 mBinding.revealView.setBackground(getResources().getDrawable(R.color.google_sign_in));
+                                setNotificationTopic();
                                 revealButton(mBinding.googleSignInFrame);
                                 delayedStartNextActivity(mode);
                             }
@@ -348,6 +350,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void googleChangeAccountClicked(View view) {
+        Util.unSubscribeFromTopic();
         firebaseAuth.signOut();
         mGoogleSignInClient.signOut();
         googleSignIn();

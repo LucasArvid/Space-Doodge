@@ -61,6 +61,7 @@ public class GameModeActivity extends AppCompatActivity {
     }
 
     public void gameModelogoutButtonClicked(View view) {
+        Util.unSubscribeFromTopic(); // Disables user notifications
         FirebaseDatabase.getInstance().getReference().child("User").child(Util.getCurrentUserId()).child("online").setValue("false");
         firebaseAuth.signOut();
         getAuthStatus();

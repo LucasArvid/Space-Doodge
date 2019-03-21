@@ -21,67 +21,62 @@
         android:orientation="vertical">
 
 
-    <TextView
-        android:layout_width="30dp"
-        android:id="@+id/tv_exitButton"
-        android:layout_height="30dp"
-        android:textColor="@color/white"
-        android:text="X"
-        android:textStyle="bold"
-        android:layout_gravity="end"
-        android:gravity="center"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/circlebackground"
-        android:onClick="popUpExitButtonCLicked"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-
-
         <TextView
-            android:layout_width="wrap_content"
-            android:id="@+id/tv_levelSelected"
-            android:layout_height="wrap_content"
-            android:text="@string/getting_highscores"
-            android:textStyle="italic"
-            android:textSize="15dp"
+            android:layout_width="30dp"
+            android:id="@+id/tv_exitButton"
+            android:layout_height="30dp"
             android:textColor="@color/white"
-            android:layout_marginLeft="45dp"
-            android:layout_marginTop="5dp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:background="@drawable/transparent_button">
-
-
+            android:text="X"
+            android:textStyle="bold"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/circlebackground"
+            android:onClick="popUpExitButtonCLicked"/>
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_height="400dp">
-
-            <ListView
-                android:id="@+id/lw_level_scores"
-                android:paddingTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
 
 
-
-
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/tv_levelSelected"
+                android:layout_height="wrap_content"
+                android:text="@string/getting_highscores"
+                android:textStyle="italic"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="5dp"/>
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/transparent_button">
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_height="400dp">
+
+                <ListView
+                    android:id="@+id/lw_level_scores"
+                    android:paddingTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

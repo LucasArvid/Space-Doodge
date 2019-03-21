@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="@string/game_over"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"/>
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:text="@string/final_score"
             android:textStyle="bold"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"/>
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:text="@string/highscore_will_only_be_updated_if_logged_in"
             android:textStyle="italic"
-            android:textSize="10dp"
+            android:textSize="10sp"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"/>

@@ -13,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,6 +87,11 @@ public class Util {
         levels.add(( context.getResources().getString(R.string.level) + "5"));
 
         return levels;
+    }
+
+    // Unsubscribe from the user specific notification channel
+    public static void unSubscribeFromTopic () {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(Constants.currentUser);
     }
 
 

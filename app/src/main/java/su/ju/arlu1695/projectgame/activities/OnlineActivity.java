@@ -112,14 +112,15 @@ public class OnlineActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUserName.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if (ds.child("online").getValue(String.class).equals("true")) {
-                        for (DataSnapshot dsName : ds.getChildren()) {
-                            if (dsName.getKey().equals("nickname") && !(dsName.getValue().equals(Constants.currentUser))) {
-                                String name = dsName.getValue().toString();
-                                mUserName.add(name);
-                                arrayAdapter.notifyDataSetChanged();
+                    if (ds.child("online").exists())
+                            if (ds.child("online").getValue(String.class).equals("true")) {
+                                for (DataSnapshot dsName : ds.getChildren()) {
+                                    if (dsName.getKey().equals("nickname") && !(dsName.getValue().equals(Constants.currentUser))) {
+                                        String name = dsName.getValue().toString();
+                                        mUserName.add(name);
+                                        arrayAdapter.notifyDataSetChanged();
+                                    }
                             }
-                        }
                     }
                 }
 
@@ -171,6 +172,7 @@ public class OnlineActivity extends AppCompatActivity {
     }
 
     public void logoutButtonClicked(View view) {
+        Util.unSubscribeFromTopic(); // Disables user notifications
         userRef.child(Util.getCurrentUserId()).child("online").setValue("false");
         firebaseAuth.signOut();
         finish();

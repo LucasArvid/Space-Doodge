@@ -1,4 +1,4 @@
-Levels obstacles x/y position seperated by ","
+Gap,player-gap,obstacle-gap,r,g,b
 500,450,150,218,222,229
 450,400,150,226,177,93
 400,400,150,226,177,93

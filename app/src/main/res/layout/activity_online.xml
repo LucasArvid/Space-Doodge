@@ -24,7 +24,7 @@ android:background="@color/primaryDark">
             android:text="@string/tap_a_user_to_challenge"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_marginTop="50dp"
             android:gravity="center_horizontal"/>
         <LinearLayout
@@ -72,7 +72,7 @@ android:background="@color/primaryDark">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/getting_user_list"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textColor="@color/white" />
             <View
                 android:layout_width="match_parent"

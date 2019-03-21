@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:text="@string/friends"
             android:textStyle="italic"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textColor="@color/white"
             android:layout_marginLeft="45dp"
             android:layout_marginTop="5dp"/>
